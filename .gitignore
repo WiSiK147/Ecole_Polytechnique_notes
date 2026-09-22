@@ -2,3 +2,4 @@ sem1/analysis
 *.tex
 *.bbl
 *.gz
+.DS_Store
