@@ -18,6 +18,7 @@ The goal of this repository is to help fellow students review course topics and 
 | Course Code | Subject | Term / Semester |
 | FMA_1F001_EP | Linear Algebra I | Fall 2025 |
 | APM_2F010_EP | Probability & Statistics | Fall 2026 |
+| FMA_2F001_EP | Linear Algebra II | Fall 2026 |
 | FMA_2F002_EP | Topology & Multivariable Calculus | Fall 2026 |
 ```
 ---
