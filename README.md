@@ -26,8 +26,6 @@ The goal of this repository is to help fellow students review course topics and 
 ## 🤝 Contributions & Corrections
 
 Found an error or want to improve a section? Contributions are very welcome!
-- Open an **Issue** to report typos or incorrect derivations.
-- Submit a **Pull Request** with your proposed fixes.
 
 ---
 
