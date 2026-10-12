@@ -1,0 +1,850 @@
+% ============================================================
+%   LECTURE NOTES TEMPLATE
+%   Supports: theorems, proofs, code, plots, geometry, figures
+% ============================================================
+
+\documentclass[11pt, a4paper]{article}
+
+% ── Core packages ───────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}                   % Better fonts
+\usepackage[margin=2.5cm]{geometry}    % Page margins
+\usepackage{microtype}                 % Better text justification
+
+% ── Math ────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{thmtools}                  % Extended theorem tools
+\usepackage{bbm}                       % \mathbbm{1} indicator
+\usepackage{bm}                        % Bold math \bm{}
+
+% ── Colors ──────────────────────────────────────────────────
+\usepackage[dvipsnames, svgnames, x11names]{xcolor}
+
+% ── Define Color Palette ────────────────────────────────────
+\definecolor{TheoremBG}    {RGB}{230, 245, 230}   % soft green
+\definecolor{TheoremBorder}{RGB}{ 34, 139,  34}   % forest green
+\definecolor{PropBG}       {RGB}{230, 240, 255}   % soft blue
+\definecolor{PropBorder}   {RGB}{ 70, 130, 180}   % steel blue
+\definecolor{CorolBG}      {RGB}{255, 245, 220}   % warm cream
+\definecolor{CorolBorder}  {RGB}{205, 133,  63}   % peru
+\definecolor{DefBG}        {RGB}{245, 230, 255}   % lavender
+\definecolor{DefBorder}    {RGB}{128,   0, 128}   % purple
+\definecolor{ExBG}         {RGB}{240, 248, 255}   % alice blue
+\definecolor{ExBorder}     {RGB}{ 70, 130, 180}   % steel blue
+\definecolor{RemBG}        {RGB}{255, 250, 240}   % floral white
+\definecolor{RemBorder}    {RGB}{169, 169, 169}   % dark gray
+\definecolor{LemmaBG}      {RGB}{230, 250, 250}   % light cyan
+\definecolor{LemmaBorder}  {RGB}{ 32, 178, 170}   % light sea green
+\definecolor{ProblemBG}    {RGB}{230, 240, 255}   % same as Prop
+\definecolor{ProblemBorder}{RGB}{ 30,  90, 200}   % royal blue
+\definecolor{CodeBG}       {RGB}{ 40,  44,  52}   % dark (One Dark)
+\definecolor{CodeKey}      {RGB}{198, 120, 221}   % purple keyword
+\definecolor{CodeStr}      {RGB}{152, 195, 121}   % green string
+\definecolor{CodeCom}      {RGB}{ 92, 100, 112}   % gray comment
+\definecolor{CodeNum}      {RGB}{209, 154, 102}   % orange number
+\definecolor{LinkColor}    {RGB}{ 10,  80, 160}
+
+% ── Theorem Environments (tcolorbox) ────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems, skins, breakable}
+
+%  Macro for colored theorem boxes
+\newcommand{\maketheorbox}[6]{%
+  % #1 = env name, #2 = display name, #3 = BG color, #4 = border color
+  % #5 = title text color, #6 = counter (share with: e.g. theorem)
+  \tcbset{#1style/.style={%
+    enhanced, breakable,
+    colback=#3, colframe=#4,
+    arc=4pt,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+    boxed title style={colback=#4, colframe=#4, sharp corners},
+    sharp corners=south,
+    boxrule=1pt,
+    top=4mm, bottom=4mm,
+  }}%
+}
+
+% ── Theorem / Proposition / etc. counters ───────────────────
+\newcounter{thmcounter}[section]
+\renewcommand{\thethmcounter}{\thesection.\arabic{thmcounter}}
+
+% THEOREM
+\newtcbtheorem[use counter=thmcounter]{theorem}{Theorem}{
+  enhanced, breakable,
+  colback=TheoremBG, colframe=TheoremBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=TheoremBorder, colframe=TheoremBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{thm}
+
+% PROPOSITION
+\newtcbtheorem[use counter=thmcounter]{proposition}{Proposition}{
+  enhanced, breakable,
+  colback=PropBG, colframe=PropBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=PropBorder, colframe=PropBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prop}
+
+% LEMMA
+\newtcbtheorem[use counter=thmcounter]{lemma}{Lemma}{
+  enhanced, breakable,
+  colback=LemmaBG, colframe=LemmaBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=LemmaBorder, colframe=LemmaBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{lem}
+
+% COROLLARY
+\newtcbtheorem[use counter=thmcounter]{corollary}{Corollary}{
+  enhanced, breakable,
+  colback=CorolBG, colframe=CorolBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=CorolBorder, colframe=CorolBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{cor}
+
+% DEFINITION
+\newtcbtheorem[use counter=thmcounter]{definition}{Definition}{
+  enhanced, breakable,
+  colback=DefBG, colframe=DefBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=DefBorder, colframe=DefBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{def}
+
+% EXAMPLE
+\newtcbtheorem[use counter=thmcounter]{example}{Example}{
+  enhanced, breakable,
+  colback=ExBG, colframe=ExBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ExBorder, colframe=ExBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.8pt,
+  top=5mm, bottom=4mm,
+}{ex}
+
+% REMARK  (lighter, no box title)
+\newtcbtheorem[use counter=thmcounter]{remark}{Remark}{
+  enhanced, breakable,
+  colback=RemBG, colframe=RemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=RemBorder, colframe=RemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.6pt,
+  top=5mm, bottom=4mm,
+}{rem}
+
+% PROBLEM
+\newtcbtheorem[use counter=thmcounter]{problem}{Problem}{
+  enhanced, breakable,
+  colback=ProblemBG, colframe=ProblemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ProblemBorder, colframe=ProblemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prob}
+
+% ── PROOF style (white background, left gray bar, italic) ───
+% Matches the screenshot: "Proof of Theorem X.X" header, plain body
+\tcolorboxenvironment{proof}{
+  blanker, breakable,
+  left=4mm,
+  before skip=6pt, after skip=10pt,
+  borderline west={2pt}{0pt}{gray!60},
+}
+% Override proof header style
+\renewcommand{\proofname}{\normalfont\color{gray}\small\scshape Proof}
+
+% ── Code listings (listings + tcolorbox) ────────────────────
+\usepackage{listings}
+
+\lstdefinestyle{CppStyle}{
+  language=C++,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={auto, nullptr, constexpr, override, final,
+                uint8_t, uint16_t, uint32_t, uint64_t,
+                int8_t, int16_t, int32_t, int64_t},
+  frame=none,
+}
+
+\lstdefinestyle{PythonStyle}{
+  language=Python,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={self, None, True, False, as, with, yield,
+                lambda, import, from, pass, assert, raise,
+                except, finally, elif},
+  frame=none,
+}
+
+% Wrap lstlisting in a tcolorbox for rounded corners + title
+\newtcblisting{cppcode}[1][]{
+  listing only, listing style=CppStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=\faCode\ C++,            % remove \faCode if not using fontawesome
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+\newtcblisting{pycode}[1][]{
+  listing only, listing style=PythonStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=Python,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% Fallback plain code block (language-agnostic)
+\newtcblisting{code}[2][]{
+  listing only,
+  listing options={
+    style=PythonStyle,
+    language=#2,
+  },
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=#2,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% ── Plots and Geometry (pgfplots + tikz) ────────────────────
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,         % Better arrow tips
+  calc,                % Coordinate calculations
+  shapes.geometric,    % circles, rectangles, etc.
+  positioning,         % node placement
+  decorations.markings,% marks on paths
+  intersections,       % path intersections
+  patterns,            % hatching
+  angles, quotes,      % angle labeling
+  3d,                  % 3D axes
+}
+
+% Convenience: TikZ picture wrapper with caption
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ── Figures / Images ────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{wrapfig}   % Text-wrapped figures
+
+% Figure box style (tcolorbox)
+\newtcolorbox{figurebox}[2][]{
+  enhanced, breakable,
+  colback=white, colframe=gray!50,
+  title=#2,
+  fonttitle=\bfseries\small,
+  boxed title style={colback=gray!20, colframe=gray!50},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  sharp corners, boxrule=0.8pt,
+  #1
+}
+
+% ── Tables ──────────────────────────────────────────────────
+\usepackage{booktabs}   % \toprule, \midrule, \bottomrule
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}  % Tables spanning multiple pages
+
+% ── Hyperlinks & PDF metadata ───────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = LinkColor,
+  citecolor  = LinkColor,
+  urlcolor   = LinkColor,
+  pdftitle   = {Lecture Notes},
+  pdfauthor  = {Your Name},
+}
+
+% ── Table of Contents style ─────────────────────────────────
+\usepackage{titletoc}
+\usepackage{titlesec}
+
+% Section numbering depth
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% Section title styling
+\titleformat{\section}
+  {\large\bfseries}
+  {\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {\thesubsection}{1em}{}
+
+% ── Bibliography ────────────────────────────────────────────
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+% \addbibresource{references.bib}   % uncomment and add your .bib
+
+% ── Miscellaneous Useful Packages ───────────────────────────
+\usepackage{enumitem}          % Customise lists
+\usepackage{todonotes}         % \todo{} margin notes
+\usepackage{cleveref}          % \cref{} smart cross-refs
+\usepackage{siunitx}           % SI units: \SI{9.8}{\metre\per\second}
+\usepackage{physics}           % \dd, \grad, \curl, \laplacian …
+\usepackage{mathrsfs}          % \mathscr{F} script font
+
+% ── Convenience Math Macros ─────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\one}{\mathbbm{1}}          % indicator
+\newcommand{\eps}{\varepsilon}
+% \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+% \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\sgn}{sgn}
+% \DeclareMathOperator{\tr}{tr}
+% \DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\supp}{supp}
+
+% ── Header / Footer ─────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{\CourseName}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Metadata Commands (fill these per lecture) ──────────────
+\newcommand{\CourseName}{Probability \& Statistics}
+\newcommand{\CourseCode}{APM\_2F010\_EP}
+\newcommand{\University}{Ecole Polytechnique}
+\newcommand{\Lecturer}{Prof. Tardy Yoan}
+\newcommand{\StudentName}{Nikolay Kharovskiy}
+\newcommand{\Semester}{Fall 2026}
+
+% ============================================================
+%   DOCUMENT BEGIN
+% ============================================================
+\begin{document}
+
+% ── Title Page ──────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\Huge\bfseries \CourseName \par}
+  \vspace{0.5cm}
+  {\large \CourseCode \par}
+
+  \vspace{1.5cm}
+  \hrule height 1pt
+  \vspace{0.4cm}
+  {\Large\bfseries Lecture Notes \par}
+  \vspace{0.4cm}
+  \hrule height 1pt
+
+  \vspace{2cm}
+
+  \begin{tabular}{rl}
+    \textbf{University:} & \University \\[4pt]
+    \textbf{Lecturer:}   & \Lecturer   \\[4pt]
+    \textbf{Student:}    & \StudentName \\[4pt]
+    \textbf{Semester:}   & \Semester   \\[4pt]
+  \end{tabular}
+
+  \vfill
+
+  {\small These are personal lecture notes and may contain errors.
+         For the official course material consult the lecturer.}
+\end{titlepage}
+
+% ── Table of Contents ───────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ============================================================
+%  LECTURE 1
+% ============================================================
+
+\section{Lecture 1}
+
+\begin{theorem}{Fubini positive}{}
+Let $f: X \times Y \to [0,\infty)$, $g: X \to [0,\infty)$ and $h: Y \to [0,\infty)$ be piecewise continuous. Then:
+\[\int_Y \left( \int_X f(x,y) g(x) dx \right) h(y) dy = \int_X \left( \int_Y f(x,y) h(y) dy \right) g(x) dx\]
+
+\begin{itemize}
+    \item Works without integrability assumptions.
+    \item Analogue: reordering double series with nonnegative terms.
+\end{itemize}
+\end{theorem}
+
+\begin{theorem}{Fubini - Tonelli}{}
+Let $f: X \times Y \to \mathbb{R}$ (not necessarily positive), and let $g: X \to [0,\infty)$ and $h: Y \to [0,\infty)$ be piecewise continuous. If:
+\[\int_Y \left( \int_X \vert{}f(x,y)\vert{} g(x) dx \right) h(y) dy < \infty\]
+
+Then:
+\[\int_Y \left( \int_X f(x,y) g(x) dx \right) h(y) dy = \int_X \left( \int_Y f(x,y) h(y) dy \right) g(x) dx\]
+
+\begin{itemize}
+    \item Key assumption: integrable.
+\end{itemize}
+\end{theorem}
+
+\subsection*{What is a probability?}
+
+\begin{example}{Rolling a fair dice}{}
+\begin{itemize}
+    \item Possible outcomes $\Omega = \{1, \dots, 6\}$.
+    \item All outcomes have probability $1/6$.
+    \item An event is ``The result is odd''.
+\end{itemize}
+\end{example}
+
+\begin{proposition}{Discrete probability space}{}
+$(\Omega, \mathbb{P})$ is a discrete prob. space. $\mathbb{P}$ is called the discrete prob. on $\Omega$.
+If $\forall A \subset \Omega$, $\mathbb{P}(A) = \frac{\text{Card}(A)}{\text{Card}(\Omega)}$, then $\mathbb{P}$ is called the uniform discrete probability.
+\end{proposition}
+
+\begin{example}{Non-discrete probability space}{}
+Let $E = \text{``the extraction of a number in } [0, 1] \text{ uniformly at random''}$.
+$E$ is modeled with the uniform probability $\mathbb{P}$ on the space $\Omega = [0,1]$.
+\[\forall 0 \le a \le b \le 1, \quad \mathbb{P}([a,b]) = b - a\]
+
+$(\Omega, \mathbb{P})$ cannot be a discrete prob. space.
+\end{example}
+
+\begin{definition}{Probability function}{}
+We define a prob. function $\mathbb{P}: \mathcal{P}([0, 1]) \to [0, 1]$ s.t.
+\begin{enumerate}
+    \item $\mathbb{P}([0, 1]) = 1$
+    \item $\mathbb{P}$ is $\sigma$-additive
+    \item $\mathbb{P}([a, b]) = b - a \quad \forall a, b$
+\end{enumerate}
+\end{definition}
+
+% ============================================================
+%  LECTURE 2
+% ============================================================
+
+\section{Lecture 2}
+
+\subsection{General Probability Spaces}
+
+\begin{definition}{Sigma-algebra}{}
+Let $\Omega$ be an arbitrary set. A $\sigma$-algebra $\mathscr{A}$ is a subset of $\mathcal{P}(\Omega)$ such that:
+\begin{enumerate}
+    \item $\emptyset \in \mathscr{A}$
+    \item If $A \in \mathscr{A}$, then $A^c \in \mathscr{A}$
+    \item If $(A_n)_{n \in \mathbb{N}}$ is a sequence of events in $\mathscr{A}$, then $\bigcup_{n \in \mathbb{N}} A_n$ is also in $\mathscr{A}$.
+\end{enumerate}
+$\sigma$-algebras are subsets of $\mathcal{P}(\Omega)$ that are closed under the basic operations on sets.
+\end{definition}
+
+\begin{example}{Sigma-algebras}{}
+Let $\Omega$ be an arbitrary set and $A \subseteq \Omega$. The following are $\sigma$-algebras:
+\begin{itemize}
+    \item $\mathcal{P}(\Omega)$
+    \item $\{\emptyset, A, A^c, \Omega\}$
+\end{itemize}
+\end{example}
+
+\begin{definition}{General probability space}{}
+Let $\Omega$ be an arbitrary set, $\mathscr{A} \subseteq \mathcal{P}(\Omega)$ a sigma algebra and $\mathbb{P}: \mathscr{A} \rightarrow [0,1]$. The triplet $(\Omega, \mathscr{A}, \mathbb{P})$ is called a (general) probability space if:
+\begin{enumerate}
+    \item $\mathbb{P}[\Omega] = 1$
+    \item If $(A_n)_{n \in \mathbb{N}}$ is a sequence of disjoint events in $\mathscr{A}$, then $\mathbb{P}\left[\bigcup_{n \in \mathbb{N}} A_n\right] = \sum_{n \in \mathbb{N}} \mathbb{P}[A_n]$.
+\end{enumerate}
+If conditions (i) and (ii) are verified, $\mathbb{P}$ is called a (general) probability.
+\end{definition}
+
+\begin{example}{General probability space}{}
+If $(\Omega, \mathbb{P})$ is a discrete probability space, then $(\Omega, \mathcal{P}(\Omega), \mathbb{P})$ is a general probability space.
+\end{example}
+
+\begin{proposition}{Basic properties of probability spaces}{}
+Let $\mathbb{P}: \mathcal{P}(\Omega) \rightarrow [0,1]$ be a probability and $A, B \subseteq \Omega$. Then:
+\begin{enumerate}
+    \item Let $A_1, \dots, A_n$ be a finite collection of pairwise disjoint events. Then $\mathbb{P}[A_1 \cup \dots \cup A_n] = \sum_{j=1}^n \mathbb{P}[A_j]$. This property is called finite $\sigma$-additivity or additivity.
+    \item If $A \subseteq B$, $\mathbb{P}[B \setminus A] = \mathbb{P}[B] - \mathbb{P}[A]$. In particular, $\mathbb{P}[A] \le \mathbb{P}[B]$ and $\mathbb{P}[A^c] = 1 - \mathbb{P}[A]$.
+    \item $\mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B] - \mathbb{P}[A \cap B]$. In particular, $\mathbb{P}[A \cup B] \le \mathbb{P}[A] + \mathbb{P}[B]$.
+\end{enumerate}
+\end{proposition}
+
+\subsection{The Borel \texorpdfstring{$\sigma$}{sigma}-algebra}
+
+We need a $\sigma$-algebra which contains all intervals and is smaller than $\mathcal{P}(\Omega)$. The easiest choice is to take the smallest possible sigma algebra.
+
+\begin{definition}{The Borel $\sigma$-algebra}{}
+Let $I \subseteq \mathbb{R}$ be an interval. The Borel sigma algebra $\mathcal{B}(I)$ is defined as:
+\[\mathcal{B}(I) = \bigcap_{\{[a,b] : a,b \in I\} \subseteq \mathscr{A} \subseteq \mathcal{P}(I)} \mathscr{A}\]
+
+To check that it is a good definition one has to verify that $\mathcal{B}(I)$ is indeed a sigma algebra.
+\end{definition}
+
+\begin{theorem}{Uniform Probability Measure}{}
+There exists a general probability space $([0, 1], \mathcal{B}([0, 1]), \mathbb{P})$ such that $\mathbb{P}[[a,b]] = b - a$ for all $a, b \in \mathbb{R}$.
+\end{theorem}
+
+\subsection{Random Variables on General Probability Spaces}
+
+\begin{definition}{Real random variable}{}
+Let $(\Omega, \mathscr{A}, \mathbb{P})$ be a probability space. A function $X: \Omega \rightarrow \mathbb{R}$ is called a real random variable if and only if for any $a, b \in \mathbb{R}$ we have that:
+\[X^{-1}([a,b]) := \{\omega : X(\omega) \in [a,b]\} \in \mathscr{A}\]
+
+A real random variable $X$ defined on a general probability space $(\Omega, \mathscr{A}, \mathbb{P})$ is discrete if $X(\Omega)$ is at most countable.
+\end{definition}
+
+\begin{proposition}{Discrete random variables as general r.v.}{}
+Let $(\Omega, \mathbb{P})$ be a discrete p.s. and $X: \Omega \rightarrow \mathbb{R}$ a r.v. Then $X$ is a real random variable on $(\Omega, \mathcal{P}(\Omega), \mathbb{P})$.
+\end{proposition}
+
+\begin{remark}{Conventions}{}
+\begin{itemize}
+    \item If $E = \mathbb{R}$, we call $X$ a real random variable; if $E = \mathbb{R}^n$ we call $X$ a random vector.
+    \item ``Let $X$ be a random variable'' has to be read as ``Let $(\Omega, \mathbb{P})$ be a discrete probability space and $X$ be a random variable defined on it''.
+    \item We may denote events without brackets, and not specify the probability space. For instance: $\mathbb{P}[\{\omega : X(\omega) \in A\}] \Leftrightarrow \mathbb{P}[X \in A]$ and $\mathbb{P}[\omega] \Leftrightarrow \mathbb{P}[\{\omega\}]$.
+    \item We may replace the intersection with a comma. For example: $\mathbb{P}[\{X \in A\} \cap \{Y \in B\}] \Leftrightarrow \mathbb{P}[X \in A, Y \in B]$.
+\end{itemize}
+\end{remark}
+
+\subsection{The Law (Distribution) of a Random Variable}
+
+\begin{proposition}{The law of a random variable}{}
+Let $X$ be a real valued r.v. The law (distribution) $\mu_X$ of $X$ is the application $\mu_X: \mathcal{B}(\mathbb{R}) \rightarrow [0,1]$ defined by $\mu_X(C) := \mathbb{P}[X^{-1}(C)]$. In this setting, the law $(\mathbb{R}, \mathcal{B}(\mathbb{R}), \mu_X)$ is a general probability space.
+\end{proposition}
+
+\begin{remark}{Two Kinds of Random Variables}{}
+In this course, a random variable $X: \Omega \rightarrow \mathbb{R}$ will be of one of two types:
+\begin{itemize}
+    \item \textbf{Discrete random variables:} it exists a countable set $E \subset \mathbb{R}$ and $p_X: E \rightarrow \mathbb{R}_+$ s.t. $\forall C \in \mathcal{B}(\mathbb{R})$, $\mu_X(C) = \sum_{x \in C \cap E} p_X(x)$.
+    \item \textbf{Absolutely continuous random variables:} it exists $f_X: \mathbb{R} \rightarrow \mathbb{R}_+$ s.t. $\forall a < b \in \mathbb{R}$, $\mu_X([a,b]) = \int_a^b f_X(u) du$.
+\end{itemize}
+Fundamental intuition: $\mathbb{P}(X \in [a-\epsilon, a+\epsilon]) = \mu_X([a-\epsilon, a+\epsilon]) \approx 2\epsilon f_X(a)$. Here, $p_X$ and $f_X$ are respectively called the discrete density and the density of the random variable $X$.
+\end{remark}
+
+\subsection{Conditional Probability and Independence}
+
+\begin{definition}{Conditional probability}{}
+Let $(\Omega, \mathbb{P})$ be a discrete probability space and $A, B$ two events such that $\mathbb{P}[B] > 0$. The conditional probability of $A$ given $B$ is denoted $\mathbb{P}[A\vert{}B]$ and defined by:
+\[\mathbb{P}[A\vert{}B] := \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}\]
+
+\end{definition}
+
+\begin{definition}{Independence of two events}{}
+Let $(\Omega, \mathbb{P})$ be a discrete probability space and $A, B$ two events. We say that $A, B$ are independent if $\mathbb{P}[A \cap B] = \mathbb{P}[A]\mathbb{P}[B]$. If $\mathbb{P}[B] > 0$, we have the equivalent definition $\mathbb{P}[A\vert{}B] = \mathbb{P}[A]$.
+\end{definition}
+
+\begin{definition}{Joint and marginal law}{}
+Let $X: \Omega \rightarrow E$, $Y: \Omega \rightarrow F$ be two r.v. The joint law $\mu_{X,Y}$ is the law of the random vector $(X, Y)$. In particular, for all $C_1, C_2 \in \mathcal{B}(\mathbb{R})$:
+\[\mu_{X,Y}(C_1 \times C_2) = \mathbb{P}[(X, Y) \in C_1 \times C_2] = \mathbb{P}[X \in C_1, Y \in C_2]\]
+
+In this context $\mu_X, \mu_Y$ are called marginal laws. We will write $p_{X,Y}$ and $f_{X,Y}$ for respectively the discrete joint density and the joint density according to the case we study.
+\end{definition}
+
+\begin{proposition}{Marginal probabilities from joint density}{}
+Let $(\Omega, \mathbb{P})$ be a discrete probability space and $X: \Omega \rightarrow E$, $Y: \Omega \rightarrow F$ two random variables. Then:
+\begin{align*}
+    \forall y \in F, \quad p_Y(y) &= \sum_{x \in E} p_{X,Y}(x,y) \\
+    \forall x \in E, \quad p_X(x) &= \sum_{y \in F} p_{X,Y}(x,y)
+\end{align*}
+\end{proposition}
+
+\begin{definition}{Independence of random variables}{}
+Let $(X_1, \dots, X_N)$ be real valued random variables defined all on the same p.s. $(\Omega, \mathscr{A}, \mathbb{P})$. We say that they are independent if and only if for all possible choices of $[a_1, b_1], \dots, [a_N, b_N]$ we have:
+\[\mathbb{P}[X_1 \in [a_1, b_1], \dots, X_N \in [a_N, b_N]] = \prod_{i=1}^N \mathbb{P}[X_i \in [a_i, b_i]]\]
+
+An arbitrary family $(X_i)_{i \in I}$ of random variables defined on the same probability space is independent if and only if each finite subfamily is independent.
+\end{definition}
+
+\begin{proposition}{Independence under complementation}{}
+Let $(A_i)_{i \in I}$ be independent events and $I' \subseteq I$. Then the events $(B_i)_{i \in I}$ defined by
+\[B_i = \begin{cases} A_i, & i \in I' \\ A_i^c, & i \in I \setminus I' \end{cases}\]
+
+are independent.
+\end{proposition}
+
+\begin{proposition}{Independence and joint density}{}
+Let $X: \Omega \rightarrow E_1, Y: \Omega \rightarrow E_2$ be two random variables defined on the same discrete probability space $(\Omega, \mathbb{P})$. Then $X$ and $Y$ are independent if and only if:
+\[\forall x \in E_1, y \in E_2, \quad p_{X,Y}(x, y) = p_X(x)p_Y(y)\]
+
+\end{proposition}
+
+\begin{proposition}{Functions of independent random variables}{}
+Let $X, Y$ be two independent random variables taking values in $E$ and $F$ respectively. Moreover, let $H, K$ be two other sets and $f: E \rightarrow H$ and $g: F \rightarrow K$ two functions. Then the random variables $f(X)$ and $g(Y)$ are independent.
+\end{proposition}
+
+\begin{proposition}{The sum of independent random variables}{}
+Let $X, Y$ be two absolutely continuous and independent random variables whose densities are $f_X$ and $f_Y$. Then, the random variable $X+Y$ is absolutely continuous. Its density $f_{X+Y}$ is given by the convolution $f_X * f_Y$ of $f_X$ and $f_Y$, defined by:
+\[(f_X * f_Y)(z) = \int_{-\infty}^{+\infty} f_X(x)f_Y(z-x) dx\]
+
+It is also true in the discrete case:
+\[p_{X+Y}(z) = \sum_{x \in \mathbb{R}} p_X(x)p_Y(z-x)\]
+
+Be careful, the notation $\sum_{x \in \mathbb{R}}$ is only licit because this is the discrete case, this is highly wrong to write it in the absolutely continuous case.
+\end{proposition}
+
+% ============================================================
+%  LECTURE 3
+% ============================================================
+
+\section{Lecture 3}
+
+\subsection{Important Distributions}
+
+\begin{definition}{Bernoulli Distribution}{}
+$X$ is a Bernoulli random variable of parameter $p$ if $p_X(1) = p$ and $p_X(0) = (1 - p)$. In this case, the distribution of $X$ is the Bernoulli distribution of parameter $p$ and we write $X \sim \text{Be}(p)$.
+\end{definition}
+
+\begin{definition}{Geometric Distribution}{}
+$X$ is a geometric random variable of parameter $p$ if $p_X(0) = 0$ and $p_X(n) = p(1 - p)^{n-1}$ for $n \ge 1$. In this case, the distribution of $X$ is the geometric distribution of parameter $p$ and we write $X \sim \text{Geo}(p)$.
+\end{definition}
+
+\begin{definition}{Binomial Distribution}{}
+$X$ is a Binomial random variable of parameters $N$ and $p$ if
+\[ p_{X}(k) = \binom{N}{k}p^{k}(1-p)^{N-k}, \quad \forall k=0,1,\dots,N. \]
+In this case, the distribution of $X$ is the binomial distribution of parameters $N$ and $p$ and we write $X \sim \text{Bin}(N,p)$.
+\end{definition}
+
+\begin{definition}{Poisson Distribution}{}
+$X$ is a Poisson random variable of parameter $\lambda$, if
+\[ \forall n \in \mathbb{N}, \quad p_{X}(n) = \exp(-\lambda)\frac{\lambda^{n}}{n!} \]
+In this case, the distribution of $X$ is the Poisson distribution of parameter $\lambda$ and we write $X \sim \text{Poi}(\lambda)$.
+\end{definition}
+
+\subsection{Relations Between Distributions}
+
+\begin{proposition}{From Bernoulli to Binomial}{}
+Let $(X_i)_{i \ge 1}$ be a sequence of i.i.d.\ random variables such that $X_1 \sim \text{Be}(p)$. Then $\sum_{i=1}^N X_i \sim \text{Bin}(N, p)$.
+\end{proposition}
+
+\begin{proof}
+Let $X = \sum_{i=1}^N X_i$. We have:
+\[ \mathbb{P}(X=k) = \mathbb{P}\left(\sum_{i=1}^{N} X_i = k\right) = \mathbb{P}\left(\bigcup_{K \subset \{1, \dots, N\}, |K|=k} \{X_i=1 \forall i \in K, X_i=0 \forall i \notin K\}\right) \]
+By $\sigma$-additivity, since the sets are disjoint:
+\[ = \sum_{|K|=k} \prod_{i \in K} \mathbb{P}(X_i=1) \prod_{i \notin K} \mathbb{P}(X_i=0) \]
+\[ = \binom{N}{k} p^k (1-p)^{N-k} \]
+\end{proof}
+
+\begin{proposition}{From Bernoulli to Geometrical}{}
+Let $(X_i)_{i \ge 1}$ be a sequence of i.i.d.\ random variables such that $X_1 \sim \text{Be}(p)$. Then $T = \inf\{i \ge 1 : X_i = 1\}$ is a geometric random variable of parameter $p$, i.e., $T \sim \text{Geo}(p)$.
+\end{proposition}
+
+\begin{proof}
+First, we find the probability that $T \ge n$:
+\[ \mathbb{P}(T \ge n) = \mathbb{P}(X_i = 0 \; \forall i \in \{1, \dots, n-1\}) = (1-p)^{n-1} \]
+Then, using the difference of probabilities:
+\[ \mathbb{P}(T = n) = \mathbb{P}(T \ge n) - \mathbb{P}(T \ge n+1) = (1-p)^{n-1} - (1-p)^n \]
+\[ = (1-p)^{n-1} (1 - (1-p)) = p(1-p)^{n-1} \]
+\end{proof}
+
+\begin{proposition}{Law of Small Numbers (simplified version)}{}
+Let $\lambda > 0$ and $(X_n)_{n \ge \lceil\lambda\rceil}$ be a sequence of random variables such that $X_n \sim \text{Bin}(n, \lambda/n)$. In particular, this means $\mathbb{E}[X_n] = \lambda$ for all $n$. Then we have
+\[ \lim_{n \to +\infty} p_{X_n}(k) = e^{-\lambda} \frac{\lambda^k}{k!} = p_X(k), \text{ with } X \sim \text{Poi}(\lambda). \]
+\end{proposition}
+
+\begin{proof}
+Let $p = \lambda/n$. For a given $r$:
+\[ \mathbb{P}(X_n = r) = \binom{n}{r} \left(\frac{\lambda}{n}\right)^r \left(1-\frac{\lambda}{n}\right)^{n-r} \]
+\[ = \frac{n(n-1)\dots(n-r+1)}{r!} \frac{\lambda^r}{n^r} \left(1-\frac{\lambda}{n}\right)^n \left(1-\frac{\lambda}{n}\right)^{-r} \]
+As $n \to \infty$, we analyze the terms:
+\begin{itemize}
+    \item $\frac{n(n-1)\dots(n-r+1)}{n^r} \to 1$
+    \item $\left(1-\frac{\lambda}{n}\right)^n \to e^{-\lambda}$
+    \item $\left(1-\frac{\lambda}{n}\right)^{-r} \to 1$
+\end{itemize}
+Thus, $\mathbb{P}(X_n = r) \to e^{-\lambda} \frac{\lambda^r}{r!}$.
+\end{proof}
+
+\subsection{Expectation}
+
+\begin{definition}{Expectation}{}
+Let $X$ be a non negative valued random variable defined on a general probability space $(\Omega, \mathbb{P})$. We write $\mathbb{E}[X]$ the expectation of $X$ which equals:
+\begin{itemize}
+    \item $\sum_{x \ge 0} x p_X(x)$ in the discrete case,
+    \item $\int_{\mathbb{R}} x f_X(x) dx$ in the absolute continuous case.
+\end{itemize}
+If $X$ is a real valued random variable, we say that the expectation $\mathbb{E}[X]$ of $X$ exists if one of the following conditions $\mathbb{E}[\mathbbm{1}_{X \ge 0} X] < +\infty$ or $\mathbb{E}[\mathbbm{1}_{X \le 0} (-X)] < +\infty$ is verified. In that case the expectation value of $X$ is given by
+\[ \mathbb{E}[X] = \mathbb{E}[\mathbbm{1}_{X \ge 0} X] - \mathbb{E}[\mathbbm{1}_{X \le 0} (-X)]. \]
+\end{definition}
+
+\begin{example}{Expectation Examples}{}
+\begin{itemize}
+    \item \textbf{Fair dice:} If $p_X(x) = 1/6$ for $x \in \{1, 2, 3, 4, 5, 6\}$, then $\mathbb{E}[X] = 3.5$.
+    \item \textbf{Uniform law on $[0, 1]$:} If $f_X = \mathbbm{1}_{[0,1]}$, then $\mathbb{E}[X] = 0.5$.
+\end{itemize}
+\end{example}
+
+\begin{proposition}{Expectation - Equivalent Definition}{}
+Let $X: \Omega \to E$ be a discrete random variable defined over a discrete probability space $(\Omega, \mathbb{P})$. We have that $\mathbb{E}[X]$ exists if and only if one of the two conditions
+\[ \sum_{\omega \in \Omega, X(\omega) \ge 0} X(\omega) \mathbb{P}[\{\omega\}] < +\infty, \quad \sum_{\omega \in \Omega, X(\omega) < 0} X(\omega) \mathbb{P}[\{\omega\}] > -\infty \]
+is verified. In this case
+\[ \mathbb{E}[X] = \sum_{\omega \in \Omega} X(\omega) \mathbb{P}[\{\omega\}] \]
+\end{proposition}
+
+\begin{proof}
+Assume $X \ge 0$. Using the positive Fubini theorem:
+\[ \sum_{\omega \in \Omega} X(\omega) \mathbb{P}[\{\omega\}] = \sum_{x \in X(\Omega)} \sum_{\omega \in \Omega, X(\omega)=x} X(\omega) \mathbb{P}[\{\omega\}] \]
+\[ = \sum_{x \in X(\Omega)} x \sum_{\omega: X(\omega)=x} \mathbb{P}[\{\omega\}] = \sum_{x \in X(\Omega)} x \mathbb{P}(X=x) = \mathbb{E}[X] \]
+The same logic extends to $\mathbb{E}[\mathbbm{1}_{X \ge 0}X]$ and $\mathbb{E}[\mathbbm{1}_{X \le 0}(-X)]$.
+\end{proof}
+
+\begin{proposition}{Expectation of a Function of a Random Variable}{}
+Let $X: \Omega \to E$ be a random variable defined over a general probability space $(\Omega, \mathbb{P})$ and $g: E \to \mathbb{R}$ any function. 
+In the discrete case, $\mathbb{E}[g(X)]$ exists if and only if either $\sum_{x: g(x) \ge 0} g(x) p_X(x) < +\infty$ or $\sum_{x: g(x) < 0} g(x) p_X(x) > -\infty$ is verified. Then:
+\[ \mathbb{E}[g(X)] = \sum_{x \in X(\Omega)} g(x) p_X(x) \]
+In the absolutely continuous case, if $g$ is piecewise continuous, $\mathbb{E}[g(X)]$ exists if and only if either $\int_{\mathbb{R}} \mathbbm{1}_{g(x) \ge 0} g(x) f_X(x) dx < +\infty$ or $\int_{\mathbb{R}} \mathbbm{1}_{g(x) \le 0} g(x) f_X(x) dx > -\infty$ is verified. Then:
+\[ \mathbb{E}[g(X)] = \int_{\mathbb{R}} g(x) f_X(x) dx \]
+\end{proposition}
+
+\begin{proof}
+For the discrete case, assuming $g \ge 0$:
+\[ \sum_{x \in X(\Omega)} g(x) p_X(x) = \sum_{q \ge 0} \sum_{x: g(x)=q} q \mathbb{P}(X=x) \]
+\[ = \sum_{q \ge 0} q \mathbb{P}(g(X)=q) = \mathbb{E}[g(X)] \]
+\end{proof}
+
+\begin{proposition}{Product of Independent Random Variables}{}
+Let $X, Y$ be two independent random variables. If $\mathbb{E}[X], \mathbb{E}[Y] < +\infty$, then $\mathbb{E}[XY] < +\infty$ as well and
+\[ \mathbb{E}[XY] = \mathbb{E}[X]\mathbb{E}[Y] \]
+\end{proposition}
+
+\begin{proof}
+By Fubini positive, in the discrete case:
+\[ \mathbb{E}[XY] = \sum_{x} \sum_{y} xy \mathbb{P}(X=x, Y=y) = \sum_{x} \sum_{y} xy \mathbb{P}(X=x)\mathbb{P}(Y=y) \]
+\[ = \left( \sum_{x} x \mathbb{P}(X=x) \right) \left( \sum_{y} y \mathbb{P}(Y=y) \right) = \mathbb{E}[X]\mathbb{E}[Y] \]
+\end{proof}
+
+\begin{proposition}{Properties of Expectation}{}
+Let $X, Y$ two real valued random variables defined on the same general probability space $(\Omega, \mathbb{P})$. The following holds:
+\begin{enumerate}
+    \item \textbf{Monotonicity:} If both $\mathbb{E}[X], \mathbb{E}[Y]$ exist, and $X(\omega) \le Y(\omega) \; \forall \omega \in \Omega$, then $\mathbb{E}[X] \le \mathbb{E}[Y]$.
+    \item \textbf{Absolute Value:} If $\mathbb{E}[X]$ exists, then $|\mathbb{E}[X]| \le \mathbb{E}[|X|]$.
+    \item \textbf{Linearity:} If $X, Y$ have finite expectation, and $a, b \in \mathbb{R}$, then $aX + bY$ has finite expectation and $\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For discrete random variables:
+\begin{enumerate}
+    \item $\mathbb{E}[X] = \sum_{\omega} X(\omega) \mathbb{P}[\{\omega\}] \le \sum_{\omega} Y(\omega) \mathbb{P}[\{\omega\}] = \mathbb{E}[Y]$.
+    \item $|\mathbb{E}[X]| = \left| \sum_{\omega} X(\omega) \mathbb{P}[\{\omega\}] \right| \le \sum_{\omega} |X(\omega)| \mathbb{P}[\{\omega\}] = \mathbb{E}[|X|]$ (by triangle inequality).
+    \item $\mathbb{E}[aX + bY] = \sum_{\omega} (aX(\omega) + bY(\omega)) \mathbb{P}[\{\omega\}] = a\mathbb{E}[X] + b\mathbb{E}[Y]$.
+\end{enumerate}
+\end{proof}
+
+\begin{example}{Uniform Random Variables Moments}{}
+If $X$ is a uniform random variable over the interval $[a, b]$, then $f_X(x) = \frac{1}{b-a}$ for $x \in [a,b]$ and $0$ otherwise.
+\[ \mathbb{E}[X] = \frac{1}{b - a} \int_a^b x dx = \frac{b^2 - a^2}{2(b - a)} = \frac{a + b}{2} \]
+\[ \mathbb{E}[X^2] = \frac{1}{b - a} \int_a^b x^2 dx = \frac{b^3 - a^3}{3(b - a)} = \frac{b^2 + ab + a^2}{3} \]
+\end{example}
+
+\subsection{Variance and Covariance}
+
+\begin{definition}{Variance}{}
+Let $X$ be a real valued random variable with $\mathbb{E}[X^2] < +\infty$. The variance of $X$ is
+\[ \mathbb{V}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] \]
+\end{definition}
+
+\begin{definition}{Covariance}{}
+Let $X, Y$ be two random variables s.t. $\mathbb{E}[|X|], \mathbb{E}[|Y|] < +\infty$ and $\mathbb{E}[|XY|] < +\infty$. The covariance of $X$ and $Y$ is
+\[ \text{Cov}(X, Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])] \]
+In particular, $\mathbb{V}(X) = \text{Cov}(X, X)$.
+\end{definition}
+
+\begin{proposition}{Properties of Variance and Covariance}{}
+Let $X, Y$ be two random variables such that $\mathbb{E}[X^2], \mathbb{E}[Y^2] < +\infty$. Then we have
+\[ \mathbb{V}(X) = \mathbb{E}[X^2] - \mathbb{E}[X]^2, \quad \text{Cov}(X, Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]. \]
+and
+\[ \mathbb{V}(X + Y) = \mathbb{V}(X) + \mathbb{V}(Y) + 2\text{Cov}(X, Y). \]
+\begin{itemize}
+    \item If $X \sim \text{Be}(p)$, then $\mathbb{V}(X) = p - p^2$.
+    \item If $X$ is uniformly distributed on $\{-N, -N + 1, \dots, N - 1, N\}$, then $\mathbb{V}(X) = \frac{N(N + 1)}{3}$.
+\end{itemize}
+\end{proposition}
+
+% \subsection{\texorpdfstring{$L^p$}{Lp} Spaces}
+
+% \begin{definition}{$L^p$ spaces and norms}{}
+% For any $p \ge 0$ we set
+% \[ L^p(\Omega, \mathbb{P}) = \{X : \Omega \to \mathbb{R} : \mathbb{E}[|X|^p] < +\infty\} \]
+% Whenever there is no ambiguity, we abbreviate $L^p(\Omega, \mathbb{P})$ with $L^p$. If $X \in L^p$, its $p$-norm $\|X\|_p$ is defined as
+% \[ \|X\|_p = (\mathbb{E}[|X|^p])^{1/p} \]
+% \end{definition}
+
+% \begin{theorem}{Seminorm property}{}
+% $\| \cdot \|_p$ is a seminorm on the space $L^p(\Omega, \mathbb{P})$. Recall that it verifies homogeneity ($\|\lambda x\| = |\lambda|\|x\|$) and the triangular inequality ($\|x + y\| \le \|x\| + \|y\|$).
+% \end{theorem}
+
+% \begin{proposition}{Properties of $L^p$ spaces}{}
+% Let $(\Omega, \mathbb{P})$ be a general probability space and $1 \le p \le q < +\infty$. Then $L^p(\Omega, \mathbb{P})$ is a vector space:
+% \begin{itemize}
+%     \item $X \in L^p \implies \lambda X \in L^p$
+%     \item $X, Y \in L^p \implies X + Y \in L^p$
+% \end{itemize}
+% If $(\Omega, \mathbb{P})$ is a discrete probability space:
+% \begin{enumerate}
+%     \item If $0 < p \le q < +\infty$, $L^p(\Omega, \mathbb{P}) \supseteq L^q(\Omega, \mathbb{P})$.
+%     \item If $X, Y \in L^2(\Omega, \mathbb{P})$, then $XY \in L^1(\Omega, \mathbb{P})$.
+% \end{enumerate}
+% \end{proposition}
+
+\end{document}

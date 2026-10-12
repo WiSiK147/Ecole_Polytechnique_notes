@@ -1,5 +1,4 @@
 personal/
-*.tex
 *.bbl
 *.gz
 .DS_Store

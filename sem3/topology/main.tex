@@ -1,0 +1,1028 @@
+% ============================================================
+%   LECTURE NOTES TEMPLATE
+%   Supports: theorems, proofs, code, plots, geometry, figures
+% ============================================================
+
+\documentclass[11pt, a4paper]{article}
+
+% ── Core packages ───────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}                   % Better fonts
+\usepackage[margin=2.5cm]{geometry}    % Page margins
+\usepackage{microtype}                 % Better text justification
+
+% ── Math ────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{thmtools}                  % Extended theorem tools
+\usepackage{bbm}                       % \mathbbm{1} indicator
+\usepackage{bm}                        % Bold math \bm{}
+
+% ── Colors ──────────────────────────────────────────────────
+\usepackage[dvipsnames, svgnames, x11names]{xcolor}
+
+% ── Define Color Palette ────────────────────────────────────
+\definecolor{TheoremBG}    {RGB}{230, 245, 230}   % soft green
+\definecolor{TheoremBorder}{RGB}{ 34, 139,  34}   % forest green
+\definecolor{PropBG}       {RGB}{230, 240, 255}   % soft blue
+\definecolor{PropBorder}   {RGB}{ 70, 130, 180}   % steel blue
+\definecolor{CorolBG}      {RGB}{255, 245, 220}   % warm cream
+\definecolor{CorolBorder}  {RGB}{205, 133,  63}   % peru
+\definecolor{DefBG}        {RGB}{245, 230, 255}   % lavender
+\definecolor{DefBorder}    {RGB}{128,   0, 128}   % purple
+\definecolor{ExBG}         {RGB}{240, 248, 255}   % alice blue
+\definecolor{ExBorder}     {RGB}{ 70, 130, 180}   % steel blue
+\definecolor{RemBG}        {RGB}{255, 250, 240}   % floral white
+\definecolor{RemBorder}    {RGB}{169, 169, 169}   % dark gray
+\definecolor{LemmaBG}      {RGB}{230, 250, 250}   % light cyan
+\definecolor{LemmaBorder}  {RGB}{ 32, 178, 170}   % light sea green
+\definecolor{ProblemBG}    {RGB}{230, 240, 255}   % same as Prop
+\definecolor{ProblemBorder}{RGB}{ 30,  90, 200}   % royal blue
+\definecolor{CodeBG}       {RGB}{ 40,  44,  52}   % dark (One Dark)
+\definecolor{CodeKey}      {RGB}{198, 120, 221}   % purple keyword
+\definecolor{CodeStr}      {RGB}{152, 195, 121}   % green string
+\definecolor{CodeCom}      {RGB}{ 92, 100, 112}   % gray comment
+\definecolor{CodeNum}      {RGB}{209, 154, 102}   % orange number
+\definecolor{LinkColor}    {RGB}{ 10,  80, 160}
+
+% ── Theorem Environments (tcolorbox) ────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems, skins, breakable}
+
+%  Macro for colored theorem boxes
+\newcommand{\maketheorbox}[6]{%
+  % #1 = env name, #2 = display name, #3 = BG color, #4 = border color
+  % #5 = title text color, #6 = counter (share with: e.g. theorem)
+  \tcbset{#1style/.style={%
+    enhanced, breakable,
+    colback=#3, colframe=#4,
+    arc=4pt,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+    boxed title style={colback=#4, colframe=#4, sharp corners},
+    sharp corners=south,
+    boxrule=1pt,
+    top=4mm, bottom=4mm,
+  }}%
+}
+
+% ── Theorem / Proposition / etc. counters ───────────────────
+\newcounter{thmcounter}[section]
+\renewcommand{\thethmcounter}{\thesection.\arabic{thmcounter}}
+
+% THEOREM
+\newtcbtheorem[use counter=thmcounter]{theorem}{Theorem}{
+  enhanced, breakable,
+  colback=TheoremBG, colframe=TheoremBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=TheoremBorder, colframe=TheoremBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{thm}
+
+% PROPOSITION
+\newtcbtheorem[use counter=thmcounter]{proposition}{Proposition}{
+  enhanced, breakable,
+  colback=PropBG, colframe=PropBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=PropBorder, colframe=PropBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prop}
+
+% LEMMA
+\newtcbtheorem[use counter=thmcounter]{lemma}{Lemma}{
+  enhanced, breakable,
+  colback=LemmaBG, colframe=LemmaBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=LemmaBorder, colframe=LemmaBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{lem}
+
+% COROLLARY
+\newtcbtheorem[use counter=thmcounter]{corollary}{Corollary}{
+  enhanced, breakable,
+  colback=CorolBG, colframe=CorolBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=CorolBorder, colframe=CorolBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{cor}
+
+% DEFINITION
+\newtcbtheorem[use counter=thmcounter]{definition}{Definition}{
+  enhanced, breakable,
+  colback=DefBG, colframe=DefBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=DefBorder, colframe=DefBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{def}
+
+% EXAMPLE
+\newtcbtheorem[use counter=thmcounter]{example}{Example}{
+  enhanced, breakable,
+  colback=ExBG, colframe=ExBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ExBorder, colframe=ExBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.8pt,
+  top=5mm, bottom=4mm,
+}{ex}
+
+% REMARK  (lighter, no box title)
+\newtcbtheorem[use counter=thmcounter]{remark}{Remark}{
+  enhanced, breakable,
+  colback=RemBG, colframe=RemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=RemBorder, colframe=RemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.6pt,
+  top=5mm, bottom=4mm,
+}{rem}
+
+% PROBLEM
+\newtcbtheorem[use counter=thmcounter]{problem}{Problem}{
+  enhanced, breakable,
+  colback=ProblemBG, colframe=ProblemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ProblemBorder, colframe=ProblemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prob}
+
+% ── PROOF style (white background, left gray bar, italic) ───
+% Matches the screenshot: "Proof of Theorem X.X" header, plain body
+\tcolorboxenvironment{proof}{
+  blanker, breakable,
+  left=4mm,
+  before skip=6pt, after skip=10pt,
+  borderline west={2pt}{0pt}{gray!60},
+}
+% Override proof header style
+\renewcommand{\proofname}{\normalfont\color{gray}\small\scshape Proof}
+
+% ── Code listings (listings + tcolorbox) ────────────────────
+\usepackage{listings}
+
+\lstdefinestyle{CppStyle}{
+  language=C++,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={auto, nullptr, constexpr, override, final,
+                uint8_t, uint16_t, uint32_t, uint64_t,
+                int8_t, int16_t, int32_t, int64_t},
+  frame=none,
+}
+
+\lstdefinestyle{PythonStyle}{
+  language=Python,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={self, None, True, False, as, with, yield,
+                lambda, import, from, pass, assert, raise,
+                except, finally, elif},
+  frame=none,
+}
+
+% Wrap lstlisting in a tcolorbox for rounded corners + title
+\newtcblisting{cppcode}[1][]{
+  listing only, listing style=CppStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=\faCode\ C++,            % remove \faCode if not using fontawesome
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+\newtcblisting{pycode}[1][]{
+  listing only, listing style=PythonStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=Python,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% Fallback plain code block (language-agnostic)
+\newtcblisting{code}[2][]{
+  listing only,
+  listing options={
+    style=PythonStyle,
+    language=#2,
+  },
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=#2,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% ── Plots and Geometry (pgfplots + tikz) ────────────────────
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,         % Better arrow tips
+  calc,                % Coordinate calculations
+  shapes.geometric,    % circles, rectangles, etc.
+  positioning,         % node placement
+  decorations.markings,% marks on paths
+  intersections,       % path intersections
+  patterns,            % hatching
+  angles, quotes,      % angle labeling
+  3d,                  % 3D axes
+}
+
+% Convenience: TikZ picture wrapper with caption
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ── Figures / Images ────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{wrapfig}   % Text-wrapped figures
+
+% Figure box style (tcolorbox)
+\newtcolorbox{figurebox}[2][]{
+  enhanced, breakable,
+  colback=white, colframe=gray!50,
+  title=#2,
+  fonttitle=\bfseries\small,
+  boxed title style={colback=gray!20, colframe=gray!50},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  sharp corners, boxrule=0.8pt,
+  #1
+}
+
+% ── Tables ──────────────────────────────────────────────────
+\usepackage{booktabs}   % \toprule, \midrule, \bottomrule
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}  % Tables spanning multiple pages
+
+% ── Hyperlinks & PDF metadata ───────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = LinkColor,
+  citecolor  = LinkColor,
+  urlcolor   = LinkColor,
+  pdftitle   = {Lecture Notes},
+  pdfauthor  = {Your Name},
+}
+
+% ── Table of Contents style ─────────────────────────────────
+\usepackage{titletoc}
+\usepackage{titlesec}
+
+% Section numbering depth
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% Section title styling
+\titleformat{\section}
+  {\large\bfseries}
+  {\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {\thesubsection}{1em}{}
+
+% ── Bibliography ────────────────────────────────────────────
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+% \addbibresource{references.bib}   % uncomment and add your .bib
+
+% ── Miscellaneous Useful Packages ───────────────────────────
+\usepackage{enumitem}          % Customise lists
+\usepackage{todonotes}         % \todo{} margin notes
+\usepackage{cleveref}          % \cref{} smart cross-refs
+\usepackage{siunitx}           % SI units: \SI{9.8}{\metre\per\second}
+\usepackage{physics}           % \dd, \grad, \curl, \laplacian …
+\usepackage{mathrsfs}          % \mathscr{F} script font
+
+% ── Convenience Math Macros ─────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\one}{\mathbbm{1}}          % indicator
+\newcommand{\eps}{\varepsilon}
+% \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+% \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\sgn}{sgn}
+% \DeclareMathOperator{\tr}{tr}
+% \DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\supp}{supp}
+
+% ── Header / Footer ─────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{\CourseName}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Metadata Commands (fill these per lecture) ──────────────
+\newcommand{\CourseName}{Topology \& Multivariable Calculus}
+\newcommand{\CourseCode}{FMA\_2F002\_EP}
+\newcommand{\University}{Ecole Polytechnique}
+\newcommand{\Lecturer}{Prof. Luc Pirio}
+\newcommand{\StudentName}{Nikolay Kharovskiy}
+\newcommand{\Semester}{Fall 2026}
+
+% ============================================================
+%   DOCUMENT BEGIN
+% ============================================================
+\begin{document}
+
+% ── Title Page ──────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\Huge\bfseries \CourseName \par}
+  \vspace{0.5cm}
+  {\large \CourseCode \par}
+
+  \vspace{1.5cm}
+  \hrule height 1pt
+  \vspace{0.4cm}
+  {\Large\bfseries Lecture Notes \par}
+  \vspace{0.4cm}
+  \hrule height 1pt
+
+  \vspace{2cm}
+
+  \begin{tabular}{rl}
+    \textbf{University:} & \University \\[4pt]
+    \textbf{Lecturer:}   & \Lecturer   \\[4pt]
+    \textbf{Student:}    & \StudentName \\[4pt]
+    \textbf{Semester:}   & \Semester   \\[4pt]
+  \end{tabular}
+
+  \vfill
+
+  {\small These are personal lecture notes and may contain errors.
+         For the official course material consult the lecturer.}
+\end{titlepage}
+
+% ── Table of Contents ───────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ── Lecture 1: Norms in vector spaces & Sequences ───────────
+\section{Norms in Vector Spaces}
+\subsection{Setting}
+Let $E, F, G, \dots$ be vector spaces over $\mathbb{K} = \mathbb{R}$ or $\mathbb{C}$.
+\begin{itemize}
+    \item If $\mathbb{K} = \mathbb{R}$, for $x \in \mathbb{R}$, $|x| = \max(x, -x)$.
+    \item If $\mathbb{K} = \mathbb{C}$, for $z = x + iy$, we have $|z| = \sqrt{x^2 + y^2} = l$. In polar form, $z = l e^{i\theta}$ where $l \ge 0$ and $\theta \in [0, 2\pi)$.
+\end{itemize}
+
+\subsection{Norms}
+\begin{definition}{Norm}{norm_def}
+A norm on $E$ is a map $N: E \to \mathbb{R}_{\ge 0} = \mathbb{R}^+ = [0, +\infty)$ satisfying the following 3 properties:
+\begin{enumerate}
+    \item \textbf{Triangular inequality:} $\forall x,y \in E$, $N(x+y) \le N(x) + N(y)$.
+    \item \textbf{Absolute homogeneity:} $\forall \lambda \in \mathbb{K}, \forall x \in E$, $N(\lambda x) = |\lambda| N(x)$.
+    \item \textbf{Positive definiteness:} $N(x) = 0 \Leftrightarrow x = 0$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}{}{}
+Positive definiteness is equivalent to the fact that $N$ "separates points". That is, $\forall x, y \in E$, $N(x-y) = 0$ if and only if $x = y$.
+\end{remark}
+
+\begin{proposition}{Reverse Triangular Inequality}{rev_tri}
+The triangular inequality is equivalent to the reverse triangular inequality:
+$\forall x, y \in E$, $\big|N(x) - N(y)\big| \le N(x-y)$.
+\end{proposition}
+
+\begin{proof}
+Let $x, y \in E$. Then $N(x) = N(x - y + y) \le N(x-y) + N(y)$, which implies $N(x) - N(y) \le N(x-y)$.
+Similarly, $N(y) - N(x) \le N(y-x)$.
+Since $N(x-y) = |-1|N(y-x)$, we obtain $\big|N(x) - N(y)\big| \le N(x-y)$.
+\end{proof}
+
+\begin{example}{Common Norms}{common_norms}
+\begin{itemize}
+    \item $|\cdot|$ is a norm on $\mathbb{R}$.
+    \item On $\displaystyle E = \mathbb{R}^d$, Sup Norm $\displaystyle ||x||_\infty = \max_{i=1}^d |x_i|$.
+    \item Euclidean norm on $\displaystyle \mathbb{R}^d$: $\displaystyle||x||_2 = \sqrt{\sum_{i=1}^d x_i^2}$.
+    \item On $F = C^0([0,1], \mathbb{R})$, Sup Norm $\displaystyle ||f||_\infty = \sup_{x \in [0,1]} |f(x)|$.
+    \item On $F$, $L_1$ norm $\displaystyle||f||_{L^1} = \int_0^1 |f(x)| dx$.
+    \item On $F$, $L_2$ norm $\displaystyle||f||_{L^2} = \sqrt{\int_0^1 |f(x)|^2 dx}$.
+\end{itemize}
+\end{example}
+
+\begin{lemma}{Norms on $\mathbb{R}$}{norm_r}
+Let $N: \mathbb{R} \to \mathbb{R}_{\ge 0}$ be a norm. Then $\exists \alpha > 0$ such that $N(\cdot) = \alpha |\cdot|$.
+\end{lemma}
+\begin{proof}
+Let $x \in \mathbb{R}$. Then $N(x) = N(x \cdot 1) = |x|N(1)$. Let $\alpha = N(1) > 0$.
+\end{proof}
+
+\begin{lemma}{Euclidean Norm on $\mathbb{R}^d$}{norm_euclidean}
+$||\cdot||_2$ is a norm on $E = \mathbb{R}^d$.
+\end{lemma}
+\begin{proof}
+Absolute homogeneity is obvious.
+For positive definiteness: $||x||_2 = 0 \Rightarrow \sum_{i=1}^d x_i^2 = 0 \Rightarrow x_i = 0$ for all $i = 1, \dots, d \Rightarrow x = 0_E$.
+For the triangular inequality, we use the Euclidean scalar product $\langle x, y \rangle = \sum_{i=1}^d x_i y_i$. This product is symmetric, $\mathbb{R}$-bilinear, and $\langle x, x \rangle = 0 \Rightarrow x = 0_E$.
+We have $||x+y||_2 = \sqrt{\langle x+y, x+y \rangle} = \sqrt{||x||_2^2 + ||y||_2^2 + 2\langle x, y \rangle}$.
+By the Cauchy-Schwarz inequality, $|\langle x, y \rangle| \le ||x||_2 ||y||_2$. Thus, $||x+y||_2 \le \sqrt{||x||_2^2 + 2||x||_2 ||y||_2 + ||y||_2^2} = ||x||_2 + ||y||_2$.
+\end{proof}
+
+\begin{lemma}{Sup Norm on $C^0([0,1], \mathbb{R})$}{norm_sup}
+$||\cdot||_\infty$ is a norm on $F = C^0([0,1], \mathbb{R})$.
+\end{lemma}
+\begin{proof}
+For any $f \in F$, $f$ is bounded.
+Positive homogeneity: $||\lambda f||_\infty = \sup |\lambda f(x)| = |\lambda| ||f||_\infty$.
+Positive definiteness: If $||f||_\infty = 0$, then $0 \le |f(x)| \le \sup |f(x)| = 0$, which implies $f(x) = 0$ for all $x$, so $f = 0_F$.
+Triangular inequality: $|(f+g)(x)| = |f(x)+g(x)| \le |f(x)| + |g(x)| \le ||f||_\infty + ||g||_\infty$. Taking the supremum yields the result.
+\end{proof}
+
+\subsection{Distances}
+\begin{definition}{Distance}{dist_def}
+A distance on a set $X \neq \emptyset$ is a map $d: X^2 \to \mathbb{R}^+$ satisfying:
+\begin{enumerate}
+    \item \textbf{Triangular inequality:} $\forall x,y,z \in X$, $d(x, z) \le d(x, y) + d(y, z)$.
+    \item \textbf{Symmetry:} $\forall x,y \in X$, $d(x, y) = d(y, x)$.
+    \item \textbf{Positive definiteness:} $\forall x,y \in X$, $d(x, y) = 0 \Leftrightarrow x = y$.
+\end{enumerate}
+\end{definition}
+
+\begin{example}{Discrete Distance}{discrete_dist}
+Let $X \neq \emptyset$. The discrete distance is defined as $d(x,y) = 0$ if $x = y$, and $d(x,y) = 1$ if $x \neq y$.
+\end{example}
+
+\begin{proposition}{Distance Induced by a Norm}{dist_norm}
+Let $(E, N)$ be a normed vector space (NVS) over $\mathbb{K}$. The map $d_N: E^2 \to \mathbb{R}^+$ given by $d(x,y) = N(x-y)$ is a distance on $E$.
+\end{proposition}
+\begin{proof}
+Symmetry: $d(x,y) = N(x-y) = N(y-x) = d(y,x)$.
+Positive definiteness: $d(x,y) = 0 \Leftrightarrow N(x-y) = 0 \Rightarrow x-y = 0 \Rightarrow x = y$.
+Triangular inequality: $d(x,z) = N(x-z) = N(x-y+y-z) \le N(x-y) + N(y-z) = d(x,y) + d(y,z)$.
+\end{proof}
+
+\subsection{Balls and Convexity}
+\begin{definition}{Balls}{ball_def}
+Let $(X, d)$ be a metric space. For $x_0 \in X$ and $r \in \mathbb{R}^+$, we define:
+\begin{itemize}
+    \item \textbf{Open ball:} $B(x_0, r) = \{x \in X \mid d(x_0, x) < r\}$.
+    \item \textbf{Closed ball:} $\overline{B}(x_0, r) = \{x \in X \mid d(x_0, x) \le r\}$.
+\end{itemize}
+In $E$, $B(0, 1)$ is defined as the unit ball.
+\end{definition}
+
+\begin{definition}{Segments and Convexity}{convex_def}
+For $x, y \in E$, the closed segment is $[x,y] = \{tx + (1-t)y \mid t \in [0, 1]\}$. The open segment is $(x,y) = [x,y] \setminus \{x, y\}$.
+A subset $C \subseteq E$ is \textbf{convex} if for all $x, y \in C$, the segment $[x,y] \subseteq C$.
+\end{definition}
+
+\begin{proposition}{Convex Subsets}{convex_prop}
+\begin{enumerate}
+    \item Convex subsets of $\mathbb{R}$ are intervals.
+    \item Balls in a NVS are convex.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+We prove (2) for $B = B(x_0, r)$ with $r > 0$.
+Let $x, y \in B$, meaning $N(x-x_0) < r$ and $N(y-x_0) < r$.
+Let $z = tx + (1-t)y \in [x,y]$ with $t \in [0,1]$.
+We have $d(z, x_0) = N(z-x_0) = N(t(x-x_0) + (1-t)(y-x_0))$.
+By the triangular inequality, $d(z, x_0) \le tN(x-x_0) + (1-t)N(y-x_0) < tr + (1-t)r = r$.
+Thus, $z \in B$, which implies $[x,y] \subseteq B$, meaning $B$ is convex.
+\end{proof}
+
+\section{Sequences}
+\begin{definition}{Convergence of Sequences}{seq_conv}
+Let $\underline{x} = (x_n)_{n \in \mathbb{N}}$ be a sequence in a $\mathbb{K}$-NVS $E$.
+We say $x_n \to x_\infty$ in $E$ (wrt $N$) if $N(x_n - x_\infty) \to 0$ in $\mathbb{R}$.
+We denote this as $x_n \to x_\infty$ or $\lim x_n = x_\infty$. If a sequence does not converge, it diverges.
+\end{definition}
+
+\begin{example}{Convergence in Different Norms}{seq_ex}
+Consider $E = C^0([0,1], \mathbb{R})$ and the sequence of functions $f_n(x) = x^n$.
+\begin{itemize}
+    \item For the sup norm $||\cdot||_\infty$, we have $||f_n||_\infty = 1$ for all $n$, so it does not converge to $0_E$.
+    \item For the $L^1$ norm, we have $||f_n||_{L^1} = \int_0^1 x^n dx = \frac{1}{n+1} \to 0$. Thus $f_n \to 0_E$ for $||\cdot||_{L^1}$.
+\end{itemize}
+\end{example}
+
+\begin{proposition}{Uniqueness of the Limit}{limit_unique}
+The limit of a convergent sequence is unique.
+\end{proposition}
+\begin{proof}
+Let $(x_n)_{n \in \N}$ be a sequence in $E$ converging to both $x_\infty \in E$ and $x_\infty' \in E$.
+By the triangular inequality, $0 \le N(x_\infty - x_\infty') \le N(x_\infty - x_n) + N(x_n - x_\infty')$.
+Since $x_n \to x_\infty$ and $x_n \to x_\infty'$, both $N(x_\infty - x_n) \to 0$ and $N(x_n - x_\infty') \to 0$ as $n \to \infty$. By the squeeze theorem, $N(x_\infty - x_\infty') = 0$, which implies $x_\infty = x_\infty'$.
+\end{proof}
+
+\begin{proposition}{Continuity of the Norm}{norm_cont}
+\begin{enumerate}
+    \item If $x_n \to x_\infty$ in $E$, then $N(x_n) \to N(x_\infty)$ in $\R$.
+    \item Hence, $(N(x_n))_{n \in \N}$ is a bounded sequence, and $N(x_\infty) \le \sup_{n \in \N} N(x_n)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+By the reverse triangular inequality, $0 \le |N(x_n) - N(x_\infty)| \le N(x_n - x_\infty)$.
+Since $x_n \to x_\infty$, we have $N(x_n - x_\infty) \to 0$. By the squeeze theorem, $|N(x_n) - N(x_\infty)| \to 0$, meaning $N(x_n) \to N(x_\infty)$.
+The second part follows from the fact that any convergent sequence $(u_n)_{n \in \N}$ in $\R$ is bounded (i.e., $\sup_{n \in \N} |u_n| < +\infty$). Its limit satisfies $|u_\infty| \le \sup_{n \in \N} |u_n|$.
+\end{proof}
+
+\begin{proposition}{Algebraic Operations on Limits}{limit_algebra}
+Let $(x_n)_{n \in \N}$ and $(y_n)_{n \in \N}$ be sequences in $E$, and let $(\lambda_n)_{n \in \N}$ be a sequence in $\mathbb{K}$. Assume:
+\begin{enumerate}
+    \item $x_n \to x_\infty$ in $E$
+    \item $y_n \to y_\infty$ in $E$
+    \item $\lambda_n \to \lambda_\infty$ in $\mathbb{K}$
+\end{enumerate}
+Then, $x_n + y_n \to x_\infty + y_\infty$ in $E$, and $\lambda_n y_n \to \lambda_\infty y_\infty$ in $E$.
+\end{proposition}
+\begin{proof}
+For $n \in \N$, set $z_n = x_n + \lambda_n y_n$ and $z_\infty = x_\infty + \lambda_\infty y_\infty$. We want to show $N(z_n - z_\infty) \to 0$.
+By the triangular inequality, $0 \le N(z_n - z_\infty) \le N(x_n - x_\infty) + N(\lambda_n y_n - \lambda_\infty y_\infty)$.
+By adding and subtracting $\lambda_\infty y_n$, we get $N(\lambda_n y_n - \lambda_\infty y_\infty) \le |\lambda_n - \lambda_\infty| N(y_n) + |\lambda_\infty| N(y_n - y_\infty)$.
+Since $y_n \to y_\infty$, the sequence $(N(y_n))_{n \in \N}$ is bounded by some $M > 0$.
+Thus, $N(\lambda_n y_n - \lambda_\infty y_\infty) \le M |\lambda_n - \lambda_\infty| + |\lambda_\infty| N(y_n - y_\infty)$.
+As $n \to \infty$, $|\lambda_n - \lambda_\infty| \to 0$ and $N(y_n - y_\infty) \to 0$, so $N(\lambda_n y_n - \lambda_\infty y_\infty) \to 0$.
+Consequently, $N(z_n - z_\infty) \to 0$, which completes the proof.
+\end{proof}
+
+\begin{definition}{Subsequence and Adherence Value}{subseq_def}
+\begin{itemize}
+    \item A sequence $(y_n)_{n \in \N}$ is a \textbf{subsequence} (or extraction) of $(x_n)_{n \in \N}$ if there exists a strictly increasing function $\varphi: \N \to \N$ such that $y_n = x_{\varphi(n)}$.
+    \item An element $l \in E$ is an \textbf{adherence value} (or accumulation point) of $(x_n)_{n \in \N}$ if there exists a strictly increasing extraction $\varphi: \N \to \N$ such that $x_{\varphi(n)} \to l$.
+\end{itemize}
+\end{definition}
+
+\begin{problem}{Accumulation Points of $\Q$}{q_accum}
+The set of rational numbers $\Q$ is countable, so it can be written as a sequence $\Q = \{q_0, q_1, \dots\}$. What are the accumulation points of the sequence $(q_n)_{n \in \N}$?
+\end{problem}
+\begin{remark}{}{}
+Because $\Q$ is dense in $\R$, every real number is an accumulation point. Thus, the set of accumulation points is all of $\R$.
+\end{remark}
+
+% ── Lecture 2 ───────────────────────────────────────────────
+\section{Lecture 2: Open \& Closed Subsets in Normed Vector Spaces}
+Let $(E, \Vert \cdot \Vert)$ be a fixed NVS over $\mathbb{K}$.
+
+\subsection{Open Subsets}
+\begin{definition}{Open Subset}{open_def}
+A subset $U \subset E$ is \textbf{open} if for all $u \in U$, there exists $\eps > 0$ such that $B(u, \eps) \subset U$.
+\end{definition}
+
+\begin{example}{Open Sets}{open_ex}
+\begin{itemize}
+    \item $\emptyset$ and $E$ are open subsets.
+    \item In $\R$, open intervals $(a, b)$ are open subsets.
+\end{itemize}
+\end{example}
+
+\begin{proposition}{Open Balls are Open Sets}{open_ball_open}
+In $(E, \Vert \cdot \Vert)$, open balls are open subsets.
+\end{proposition}
+\begin{proof}
+Let $B = B(x_0, r) \subset E$ with $r > 0$. Let $y \in B$.
+We have $d(x_0, y) = \Vert x_0 - y \Vert = \delta < r$.
+Choose $\eps_y = r - \delta = r - \Vert x_0 - y \Vert > 0$. We claim $B(y, \eps_y) \subset B$.
+Let $z \in B(y, \eps_y)$. By the triangular inequality:
+$d(x_0, z) \le d(x_0, y) + d(y, z) = \Vert x_0 - y \Vert + \Vert y - z \Vert < \delta + \eps_y = r$.
+Therefore, $z \in B$, which implies $B(y, \eps_y) \subset B$. Thus, $B$ is open.
+\end{proof}
+
+\begin{proposition}{Union of Open Balls}{open_union_balls}
+The open subsets of $E$ are exactly the unions of open balls.
+\end{proposition}
+\begin{proof}
+Let $U \subset E$ be an open subset.
+By definition, for every $u \in U$, there exists $\eps_u > 0$ such that $B(u, \eps_u) \subset U$.
+Then $U \subset \bigcup_{u \in U} B(u, \eps_u) \subset U$.
+Thus, $U = \bigcup_{u \in U} B(u, \eps_u)$, which is a union of open balls.
+\end{proof}
+
+\subsection{Closed Subsets}
+\begin{definition}{Closed Subset}{closed_def}
+A subset $F \subset E$ is \textbf{closed} if its complement $F^c = E \setminus F$ is open.
+\end{definition}
+
+\begin{example}{Closed Sets}{closed_ex}
+$\emptyset$ and $E$ are closed subsets of $(E, \Vert \cdot \Vert)$.
+\end{example}
+
+\begin{proposition}{Properties of Open and Closed Sets}{open_closed_prop}
+\begin{enumerate}
+    \item Arbitrary unions of open subsets are open.
+    \item Finite intersections of open subsets are open.
+    \item Arbitrary intersections of closed subsets are closed.
+    \item Finite unions of closed subsets are closed.
+\end{enumerate}
+\end{proposition}
+\begin{remark}{}{}
+An infinite intersection of open sets is not necessarily open. For example, in $\R$, the intersection $\bigcap_{n \ge 1} (-\frac{1}{n}, \frac{1}{n}) = \{0\}$ is not open.
+\end{remark}
+\begin{proof}
+Let us prove the properties for open sets:
+\begin{enumerate}
+    \item Let $(O_i)_{i \in I}$ be a family of open subsets. Let $\mathcal{O} = \bigcup_{i \in I} O_i$. If $x \in \mathcal{O}$, then there exists $i_0 \in I$ such that $x \in O_{i_0}$. Since $O_{i_0}$ is open, there exists $\eps > 0$ such that $B(x, \eps) \subset O_{i_0} \subset \mathcal{O}$. Thus, $\mathcal{O}$ is open.
+    \item Assume $I$ is finite and non-empty. Let $\mathcal{O} = \bigcap_{i \in I} O_i$. Let $u \in \mathcal{O}$. Then for all $i \in I$, $u \in O_i$. Since each $O_i$ is open, there exists $\eps_i > 0$ such that $B(u, \eps_i) \subset O_i$. Because $I$ is finite, $\eps = \min_{i \in I} \eps_i > 0$. Then $B(u, \eps) \subset \bigcap_{i \in I} B(u, \eps_i) \subset \mathcal{O}$. Thus, $\mathcal{O}$ is open.
+\end{enumerate}
+The properties for closed sets follow symmetrically.
+\end{proof}
+
+\subsection{Sequential Characterizations}
+\begin{theorem}{Sequential Characterization of Closed Subsets}{seq_closed}
+For $F \subset E$, the following assertions are equivalent:
+\begin{enumerate}
+    \item $F$ is closed.
+    \item For every sequence $(x_n)_{n \in \N}$ in $F$ converging in $E$, its limit $\lim x_n$ belongs to $F$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{($1 \Rightarrow 2$):} Assume $F$ is closed. We proceed by contradiction. Assume there exists a sequence $(x_n)_{n \in \N}$ in $F$ such that $x_n \to x_\infty \in E$, but $x_\infty \notin F$. Then $x_\infty \in F^c$.
+Since $F$ is closed, $F^c$ is open. Therefore, there exists $\eps > 0$ such that $B(x_\infty, \eps) \subset F^c$.
+Because $x_n \to x_\infty$, there exists $N_\eps$ such that for all $n \ge N_\eps$, $x_n \in B(x_\infty, \eps) \subset F^c$.
+This implies $x_n \in F \cap F^c = \emptyset$, which is a contradiction. Thus, $x_\infty \in F$.
+
+\textbf{($\neg 1 \Rightarrow \neg 2$):} Assume $F$ is not closed. Then $F^c$ is not open.
+This means there exists $u^* \in F^c$ such that for all $\eps > 0$, $B(u^*, \eps) \not\subset F^c$, which is equivalent to saying $B(u^*, \eps) \cap F \neq \emptyset$.
+For each $n \ge 1$, choose $x_n \in F \cap B(u^*, \frac{1}{n})$. This constructs a sequence $(x_n)_{n \in \N}$ in $F$.
+Since $d(x_n, u^*) < \frac{1}{n}$, we have $x_n \to u^*$ as $n \to \infty$. However, $u^* \notin F$, negating the second assertion.
+\end{proof}
+
+\begin{theorem}{Sequential Characterization of Open Subsets}{seq_open}
+For $U \subset E$, the following are equivalent:
+\begin{enumerate}
+    \item $U$ is open.
+    \item For every $u \in U$ and for every sequence $(x_n)_{n \in \N}$ converging to $u$ in $E$, there exists $N \in \N$ such that for all $n \ge N$, $x_n \in U$.
+\end{enumerate}
+\end{theorem}
+
+\subsection{Connectedness and Interior/Closure}
+\begin{proposition}{Clopen Subsets}{clopen}
+If $X \subset E$ (or $\R$) is both closed and open, then $X = \emptyset$ or $X = E$.
+\end{proposition}
+\begin{proof}
+Assume for contradiction that $\emptyset \subsetneq X \subsetneq E$.
+Then there exists $x \in X$ and $y \in X^c$.
+Define $I = \{t \in [0, 1] \mid x + t(y - x) \in X\}$. Since $x \in X$, $0 \in I$. Since $y \notin X$, $1 \notin I$.
+Let $z = \sup I$. Clearly, $z \le 1$.
+By definition of supremum, there exists a sequence $(t_n)_{n \in \N}$ in $I$ such that $t_n \to z$.
+The sequence $x_{t_n} = x + t_n(y - x)$ lies in $X$. Since $X$ is closed, the limit $x_z = x + z(y - x)$ must belong to $X$. Thus, $z \in I$, which implies $z < 1$ (since $1 \notin I$).
+Because $X$ is open and $x_z \in X$, there exists $\eps > 0$ such that $B(x_z, \eps) \subset X$.
+This means for sufficiently small $\delta > 0$, $x_{z+\delta} \in X$, implying $z+\delta \in I$.
+This contradicts $z = \sup I$. Therefore, $X = \emptyset$ or $X = E$.
+\end{proof}
+
+\begin{definition}{Interior and Closure}{int_closure}
+Let $X \subset E$.
+\begin{itemize}
+    \item An element $x \in X$ is an \textbf{interior point} of $X$ if there exists $\eps > 0$ such that $B(x, \eps) \subset X$.
+    \item The \textbf{interior} of $X$, denoted $\mathring{X}$, is the set of all interior points of $X$. It is the largest open subset contained in $X$, given by $\displaystyle \mathring{X} = \bigcup_{\substack{O \subset X \\ O \text{ open}}} O$.
+    \item An element $x \in E$ is \textbf{adherent} to $X$ if for every $\eps > 0$, $B(x, \eps) \cap X \neq \emptyset$.
+    \item The \textbf{topological closure} of $X$, denoted $\overline{X}$, is the set of all adherent points to $X$. It is the smallest closed subset containing $X$, given by $\displaystyle \overline{X} = \bigcap_{\substack{F \supset X \\ F \text{ closed}}} F$.
+\end{itemize}
+\end{definition}
+
+\begin{proposition}{Closure of a Ball}{ball_closure}
+For $x_* \in E$ and $r > 0$, we have $\overline{B(x_*, r)} = \overline{B}(x_*, r)$, where $B(x_*, r)$ is the topological closure of the open ball $B(x_*, r)$ and $\overline{B}(x_*, r)$ is the closed ball.
+\end{proposition}
+\begin{remark}{}{}
+This is false in a general metric space.
+For example, let $X$ be a set with at least two elements, and let $d$ be the discrete metric ($d(x,y) = 1, \forall x \neq y$).
+Then for all $x \in X$, $\overline{B(x, 1)} = \{x\} \subsetneq X$.
+\end{remark}
+\begin{proof}
+First, we show $\overline{B(x_*, r)} \subset \overline{B}(x_*, r)$.
+The closed ball $\overline{B}(x_*, r)$ is a closed set, because its complement $U = E \setminus \overline{B}(x_*, r)$ is open.
+To see this, let $y \in U$, so $\delta = d(x_*, y) > r$.
+Let $\eps \in (0, \delta - r)$. By the reverse triangular inequality, $B(y, \eps) \subset U$, so $U$ is open.
+Since $\overline{B}(x_*, r)$ is closed and contains $B(x_*, r)$, it must contain its closure, so $\overline{B(x_*, r)} \subset \overline{B}(x_*, r)$.
+
+Now we prove the opposite inclusion. Let $x \in \overline{B}(x_*, r)$.
+If $d(x_*, x) = N(x_* - x) < r$, then $x \in B(x_*, r) \subset \overline{B(x_*, r)}$.
+Otherwise, $d(x_*, x) = r$.
+We use the sequential characterization of the closure: $x \in \overline{X}$ if and only if there exists a sequence $(x_n)_{n \in \N}$ in $X$ such that $x_n \to x$.
+For $n \ge 0$, set $x_n = x_* + \frac{n}{n+1}(x - x_*)$.
+Then $d(x_*, x_n) = N(\frac{n}{n+1}(x - x_*)) = \frac{n}{n+1}r < r$.
+So $(x_n)_{n \in \N} \in B(x_*, r)^{\N}$ and $x_n \to x$. This implies $x \in \overline{B(x_*, r)}$.
+\end{proof}
+
+\subsection{Dense Subsets}
+\begin{definition}{Dense Subset}{dense_def}
+Let $X, Y \subset E$ be subsets.
+\begin{itemize}
+    \item $X$ is dense in $E$ if $\overline{X} = E$.
+    \item $X$ is dense in $Y$ if $Y \subset \overline{X}$.
+\end{itemize}
+\end{definition}
+\begin{example}{Dense Sets}{dense_ex}
+\begin{itemize}
+    \item $\overline{\Z} = \Z$, so $\Z$ is not dense in $\R$.
+    \item $\overline{\Q} = \R$, so $\Q$ is dense in $\R$.
+    \item Let $E = C^0([0,1], \R)$ with the norm $||\cdot||_\infty$. Let $P$ be the subspace of polynomials. By the Weierstrass approximation theorem, $\overline{P} = E$.
+\end{itemize}
+\end{example}
+
+\section{Lecture 3: Continuous Maps}
+Let $(E, N_E)$ and $(F, N_F)$ be $\mathbb{K}$-NVS. Let $\Omega \subset E$ be a non-empty open subset. Let $\varphi: \Omega \to F$.
+
+\begin{definition}{Limit of a Map}{limit_map_def}
+Let $l \in F$. $l$ is the limit of $\varphi(w)$ when $w \to w_0$ in $\Omega$ (with $w \neq w_0$) if for all $\eps > 0$, there exists $\delta > 0$ such that for all $w \in \Omega$ with $0 < N_E(w - w_0) < \delta$, we have $\varphi(w) \in B_F(l, \eps)$.
+Notation: $\lim_{w \to w_0} \varphi(w) = l$ or $\varphi(w) \to l$ as $w \to w_0$.
+\end{definition}
+
+\begin{proposition}{Sequential Characterization of Limits}{seq_char_limits}
+We have $\lim_{w \to w_0} \varphi(w) = l$ if and only if for every sequence $(w_n)_{n \in \N}$ in $\Omega$ such that $w_n \to w_0$, we have $\varphi(w_n) \to l$.
+\end{proposition}
+
+\begin{definition}{Continuity}{cont_def}
+\begin{itemize}
+    \item $\varphi$ is continuous ($C^0$) at $w_0 \in \Omega$ if $\lim_{w \to w_0} \varphi(w) = \varphi(w_0)$.
+    \item $\varphi$ is continuous on $\Omega$ (notation: $\varphi \in C^0(\Omega, F)$) if $\varphi$ is continuous at every $w \in \Omega$.
+\end{itemize}
+\end{definition}
+
+\begin{example}{}{cont_ex}
+Let $f: \R^2 \to \R$ be defined by $f(x,y) = 0$ if $(x,y) = (0,0)$, and $f(x,y) = \frac{xy^2}{x^2+y^4}$ otherwise. It can be proven (as an exercise) that $f \notin C^0(\R^2, \R)$.
+\end{example}
+
+\begin{remark}{}{norm_dep}
+Continuity of a map depends on the chosen norm.
+\end{remark}
+\begin{example}{Norm Dependence}{norm_dep_ex}
+Let $E = C^0([0,1], \R) = F$.
+Let $N_E = ||\cdot||_\infty$ (sup norm) and $N_F = ||\cdot||_{L^1}$ (where $||f||_{L^1} = \int_0^1 |f(x)|dx$).
+Let $\Omega = E$, and let $\varphi: E \to F$ be the identity map, $f \mapsto f$.
+The map $\varphi: (E, ||\cdot||_\infty) \to (F, ||\cdot||_{L^1})$ is continuous.
+However, $\varphi^{-1}: (F, ||\cdot||_{L^1}) \to (E, ||\cdot||_\infty)$ is not continuous.
+To see this, consider $f_n(x) = x^n$ on $[0,1]$.
+$||f_n||_{L^1} = \frac{1}{n+1} \to 0$, so $f_n \to 0_F$ in $(F, ||\cdot||_{L^1})$.
+But $||f_n||_\infty = 1$ for all $n$, so $f_n$ does not converge to $0_E$ in $(E, ||\cdot||_\infty)$.
+\end{example}
+
+\begin{proposition}{Operations on Continuous Functions}{cont_ops}
+Let $f, g: \Omega \to F$ and $\lambda \in \mathbb{K}$.
+\begin{itemize}
+    \item If $f$ and $g$ are continuous at $w_0$ (or on $\Omega$), then $f + \lambda g$ is continuous at $w_0$ (or on $\Omega$). Thus, $C^0(\Omega, F)$ is a $\mathbb{K}$-vector subspace of $F^\Omega$.
+    \item If $\mathbb{K} = F$ and $f, g$ are continuous at $w_0$ (or on $\Omega$), then $f \cdot g$ is continuous at $w_0$ (or on $\Omega$).
+    \item If $\mathbb{K} = F$, $f$ is continuous at $w_0$, and $f(w_0) \neq 0$, then $\frac{1}{f}$ is defined on some $B(w_0, \eps)$ and is continuous at $w_0$. (If $f \neq 0$ on $\Omega$, then $\frac{1}{f}$ is continuous on $\Omega$).
+\end{itemize}
+\end{proposition}
+
+\begin{proposition}{Topological Characterization of Continuity}{top_char_cont}
+Let $E, F$ be NVS and $\Omega \subset E$ open. Let $\varphi: \Omega \to F$. The following assertions are equivalent:
+\begin{enumerate}
+    \item $\varphi \in C^0(\Omega, F)$.
+    \item For every open subset $U \subset F$, $\varphi^{-1}(U)$ is open (in $E$).
+\end{enumerate}
+(Note: this also applies when $\Omega = E$).
+\end{proposition}
+\begin{proof}
+$(1 \Rightarrow 2)$ Let $U \subset F$ be an open subset. Let $w \in \varphi^{-1}(U)$, so $\varphi(w) \in U$.
+Since $U$ is open, there exists $\eps > 0$ such that $B_F(\varphi(w), \eps) \subset U$.
+Because $\varphi$ is continuous at $w$, there exists $\delta > 0$ such that $\varphi(B_E(w, \delta) \cap \Omega) \subset B_F(\varphi(w), \eps)$.
+Since $\Omega$ is open, there exists $\delta' \le \delta$ such that $B_E(w, \delta') \subset \Omega$.
+Then $\varphi(B_E(w, \delta')) \subset B_F(\varphi(w), \eps) \subset U$.
+Thus, $B_E(w, \delta') \subset \varphi^{-1}(U)$, which means $\varphi^{-1}(U)$ is open.
+
+$(2 \Rightarrow 1)$ Let $w \in \Omega$ and $\eps > 0$. Then $U = B_F(\varphi(w), \eps)$ is open in $F$.
+By assumption, $\varphi^{-1}(U) = \varphi^{-1}(B_F(\varphi(w), \eps))$ is open in $E$.
+Since $w \in \varphi^{-1}(U)$, there exists $\delta > 0$ such that $B_E(w, \delta) \subset \varphi^{-1}(U)$.
+This means for all $y \in B_E(w, \delta)$, $\varphi(y) \in B_F(\varphi(w), \eps)$, i.e., $d_F(\varphi(w), \varphi(y)) < \eps$. Thus, $\varphi$ is continuous at $w$.
+\end{proof}
+
+\subsection{Continuity of Linear Maps}
+\begin{definition}{Continuous Linear Maps}{cont_lin_maps_def}
+Let $E, F$ be $\mathbb{K}$-NVS.
+Let $L(E,F) = \{L: E \to F \mid L \text{ is } \mathbb{K}\text{-linear}\}$. This is a $\mathbb{K}$-vector space.
+Let $\mathcal{L}(E,F) = \{L \in L(E,F) \mid L \text{ is continuous on } E\}$. This is a $\mathbb{K}$-vector subspace of $L(E,F)$.
+\end{definition}
+
+\begin{theorem}{Characterization of Continuous Linear Maps}{char_cont_lin_maps}
+For $L \in L(E,F)$, the following assertions are equivalent:
+\begin{enumerate}
+    \item $L$ is continuous on $E$.
+    \item $L$ is continuous at $0_E$.
+    \item There exists $C \ge 0$ such that for all $x \in E$ with $N_E(x) = 1$, we have $N_F(L(x)) \le C$.
+    \item There exists $C \ge 0$ such that for all $x \in E$, $N_F(L(x)) \le C N_E(x)$.
+    \item $\sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} < +\infty$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+$1 \Rightarrow 2$: Obvious.
+
+$2 \Rightarrow 3$: For $\eps = 1$, since $L$ is continuous at $0_E$ and $L(0_E) = 0_F$, there exists $\delta > 0$ such that for all $x \in B_E(0_E, \delta)$, we have $L(x) \in B_F(0_F, 1)$.
+Let $x \in E$ with $N_E(x) = 1$. Let $\tilde{x} = \frac{\delta}{2}x$. Then $N_E(\tilde{x}) = \frac{\delta}{2} < \delta$, so $\tilde{x} \in B_E(0_E, \delta)$.
+Thus, $L(\tilde{x}) \in B_F(0_F, 1)$, meaning $N_F(L(\frac{\delta}{2}x)) \le 1$.
+By linearity, $\frac{\delta}{2}N_F(L(x)) \le 1$, which implies $N_F(L(x)) \le \frac{2}{\delta}$. We set $C = \frac{2}{\delta}$.
+
+$3 \Rightarrow 4$: Let $x \in E \setminus \{0\}$. Then $\tilde{x} = \frac{x}{N_E(x)}$ has norm equal to $1$.
+So $N_F(L(\tilde{x})) \le C$.
+By linearity, $N_F\left(\frac{L(x)}{N_E(x)}\right) \le C$, which implies $N_F(L(x)) \le C N_E(x)$.
+(For $x = 0_E$, $N_F(L(0_E)) = 0 = C \cdot 0$).
+
+$4 \Leftrightarrow 5$: By (4), the set $\{\frac{N_F(L(x))}{N_E(x)} \mid x \neq 0\}$ is bounded above by $C$, so its supremum is finite. Let this supremum be denoted as $\Vert L \Vert$.
+Then $\Vert L \Vert = \inf\{C \ge 0 \mid \forall x \in E, N_F(L(x)) \le C N_E(x)\}$.
+
+\textbf{($5 \Rightarrow 1$):} Assume $\sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} = C < +\infty$. Then for all $x \in E$, $N_F(L(x)) \le C N_E(x)$. For any $x_0 \in E$ and $x \in E$, by linearity we have $N_F(L(x) - L(x_0)) = N_F(L(x - x_0)) \le C N_E(x - x_0)$. As $x \to x_0$, $N_E(x - x_0) \to 0$, which implies $N_F(L(x) - L(x_0)) \to 0$. Thus, $L$ is continuous at any $x_0 \in E$, meaning $L$ is continuous on $E$. This completes the cycle of equivalences.
+\end{proof}
+
+\begin{proposition}{Characterization of the Triple Norm}{triple_norm_char}
+Let $\mathcal{N}_L = \left\{ \frac{N_F(L(x))}{N_E(x)} \mid x \in E, x \neq 0 \right\} \subset [0, +\infty)$.
+Then $\mathcal{N}_L = \{ N_F(L(\tilde{x})) \mid \tilde{x} \in E, N_E(\tilde{x}) = 1 \}$.
+Let $\mathcal{C} = \{ C \ge 0 \mid \forall x \in E, N_F(L(x)) \le C N_E(x) \}$ be the set of upper bounds.
+Then $\sup \mathcal{N}_L = \inf \mathcal{C}$.
+\end{proposition}
+
+\subsection{Uniform Continuity and Lipschitz Continuity}
+Let $\varphi: \Omega \to F$.
+\begin{definition}{Uniform Continuity}{unif_cont_def}
+$\varphi$ is \textbf{uniformly continuous} if:
+$\forall \eps > 0, \exists \delta > 0$ such that $\forall x, x' \in \Omega$, if $d_E(x, x') < \delta$ then $d_F(\varphi(x), \varphi(x')) < \eps$.
+\end{definition}
+
+\begin{definition}{Lipschitz Continuity}{lipschitz_def}
+$\varphi$ is \textbf{Lipschitz} of parameter $\alpha \ge 0$ (or $\alpha$-Lipschitz) if:
+$\forall x, x' \in \Omega, d_F(\varphi(x), \varphi(x')) \le \alpha d_E(x, x')$.
+\end{definition}
+
+\begin{example}{Lipschitz Maps}{lipschitz_ex}
+\begin{enumerate}
+    \item By the reverse triangular inequality, $\forall x, x' \in E, |N(x) - N(x')| \le N(x - x')$. Thus, $N: E \to \R$ is 1-Lipschitz.
+    \item Let $L \in \mathcal{L}(E, F)$. Then $\Vert L \Vert = \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} < +\infty$.
+    For all $x, x' \in E$:
+    $d_F(L(x), L(x')) = N_F(L(x) - L(x')) = N_F(L(x - x')) \le \Vert L \Vert N_E(x - x')$.
+    Thus, $L$ is $\Vert L \Vert$-Lipschitz.
+\end{enumerate}
+\end{example}
+
+\begin{proposition}{Implications of Continuity Types}{cont_implications}
+For $\varphi: \Omega \to F$:
+$\varphi \text{ is Lipschitz} \Rightarrow \varphi \text{ is uniformly continuous (on } \Omega) \Rightarrow \varphi \in C^0(\Omega, F)$.
+\end{proposition}
+\begin{remark}{}{}
+These implications are strict.
+\begin{itemize}
+    \item $f: [0, +\infty) \to \R$, $x \mapsto \sqrt{x}$ is uniformly continuous on $[0, +\infty)$ but not Lipschitz.
+    \item $f: \R \to \R$, $x \mapsto x^2$ is continuous on $\R$ but not uniformly continuous on $\R$.
+\end{itemize}
+\end{remark}
+
+\subsection{Properties of the Triple Norm}
+\begin{definition}{Triple Norm}{triple_norm_def}
+For $L \in \mathcal{L}(E, F)$, the triple norm (or operator norm) of $L$ induced by $N_E$ and $N_F$ is:
+$\Vert L \Vert = \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} \in [0, +\infty)$.
+\end{definition}
+
+\begin{proposition}{Properties of Triple Norm}{triple_norm_prop}
+\begin{enumerate}
+    \item For $L \in \mathcal{L}(E, F)$ and $\forall x \in E$, $N_F(L(x)) \le \Vert L \Vert N_E(x)$.
+    \item $\Vert \cdot \Vert$ is a norm on $\mathcal{L}(E, F)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Let us prove that $\Vert \cdot \Vert$ is a norm on $\mathcal{L}(E, F)$.
+\begin{itemize}
+    \item \textbf{Positive definiteness:} Assume $\Vert L \Vert = 0$. Then for all $x \in E$, $N_F(L(x)) = 0$, which implies $L(x) = 0_F$. Thus $L = 0_{\mathcal{L}(E, F)}$.
+    \item \textbf{Absolute homogeneity:} Let $L \in \mathcal{L}(E, F)$ and $\lambda \in \mathbb{K}$.
+    $\Vert \lambda L \Vert = \sup_{x \neq 0} \frac{N_F((\lambda L)(x))}{N_E(x)} = \sup_{x \neq 0} \frac{|\lambda| N_F(L(x))}{N_E(x)} = |\lambda| \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} = |\lambda| \Vert L \Vert$.
+    \item \textbf{Triangular inequality:} Let $x \in E$ and $L, \tilde{L} \in \mathcal{L}(E, F)$.
+    $N_F((L + \tilde{L})(x)) = N_F(L(x) + \tilde{L}(x)) \le N_F(L(x)) + N_F(\tilde{L}(x)) \le \Vert L \Vert N_E(x) + \Vert \tilde{L} \Vert N_E(x) = (\Vert L \Vert + \Vert \tilde{L} \Vert) N_E(x)$.
+    Thus, $\Vert L \Vert + \Vert \tilde{L} \Vert$ is an upper bound for $\frac{N_F((L + \tilde{L})(x))}{N_E(x)}$, which implies $\Vert L + \tilde{L} \Vert \le \Vert L \Vert + \Vert \tilde{L} \Vert$.
+\end{itemize}
+\end{proof}
+
+\begin{proposition}{Unbounded Linear Maps}{unbounded_lin_map}
+$L \in L(E,F)$ is not bounded on $B_E(0,1)$ if and only if $L \notin \mathcal{L}(E, F)$ if and only if there exists a sequence $(x_n)_{n \in \N}$ in $E$ such that $N_E(x_n) \to 1$ and $N_F(L(x_n)) \to +\infty$.
+\end{proposition}
+\begin{proof}
+Left as an exercise.
+\end{proof}
+
+\begin{proposition}{Computing the Operator Norm}{op_norm_compute}
+For $L \in \mathcal{L}(E, F)$ and $C \ge 0$:
+\begin{enumerate}
+    \item If for all $x \in E$, $N_F(L(x)) \le C N_E(x)$, then $\Vert L \Vert \le C$.
+    \item If there exists a sequence $(x_n)_{n \in \N}$ in $E$ such that $N_E(x_n) \to 1$ and $N_F(L(x_n)) \to C$, then $\Vert L \Vert \ge C$.
+\end{enumerate}
+(If both conditions are satisfied, then $\Vert L \Vert = C$).
+\end{proposition}
+
+\begin{example}{Operator on $l^1$}{op_l1_ex}
+Let $l^1(\N) = \{ \underline{x} = (x_n)_{n \in \N} \in \R^\N \mid \Vert \underline{x} \Vert_{l^1} < +\infty \}$, where $\Vert \underline{x} \Vert_{l^1} = \sum_{n \ge 0} |x_n|$.
+Let $\lambda = (\lambda_n)_{n \in \N} \in l^\infty(\N)$, so $\Vert \lambda \Vert_\infty = \sup_n |\lambda_n| < +\infty$.
+Define $\Lambda: l^1(\N) \to l^1(\N)$ by $\Lambda((x_n)_{n \in \N}) = (\lambda_n x_n)_{n \in \N}$.
+We have:
+$\Vert \Lambda(\underline{x}) \Vert_{l^1} = \sum_{n \ge 0} |\lambda_n x_n| \le \Vert \lambda \Vert_\infty \sum_{n \ge 0} |x_n| = \Vert \lambda \Vert_\infty \Vert \underline{x} \Vert_{l^1}$.
+This implies $\Lambda(\underline{x}) \in l^1(\N)$, so $\Lambda$ is well-defined.
+$\Lambda$ is clearly $\R$-linear, so $\Lambda \in L(l^1(\N), l^1(\N))$.
+From the inequality above, we get that $\Lambda \in \mathcal{L}(l^1(\N), l^1(\N))$ and $\Vert \Lambda \Vert \le \Vert \lambda \Vert_\infty$.
+(Exercise: prove that $\Vert \Lambda \Vert = \Vert \lambda \Vert_\infty$ using the second fact from the proposition above).
+\end{example}
+
+\section{Lecture 4: Compactness}
+Let $(E, N)$ be a NVS over $\mathbb{K}$.
+
+\begin{definition}{Compactness}{compact_def}
+A subset $K \subset E$ is \textbf{compact} if $K \neq \emptyset$ and for every sequence $(x_n)_{n \in \N}$ in $K$, there exists a strictly increasing extraction $\varphi: \N \to \N$ such that the subsequence $(x_{\varphi(n)})_{n \in \N}$ converges in $K$.
+\end{definition}
+
+\begin{example}{Compact Sets}{compact_ex}
+\begin{itemize}
+    \item In $E = \R$, let $I = [a, b]$ with $-\infty < a \le b < +\infty$. Then $I$ is compact.
+    \item By the Bolzano-Weierstrass theorem, any bounded sequence in $\R$ admits a convergent subsequence. The proof involves defining $S_n = \inf_{k \ge n} x_k$.
+    \item The rectangle $R = [a, b] \times [a', b']$ is compact in $\R^2$ (for any norm, e.g., $\Vert \cdot \Vert_\infty$). (Exercise).
+\end{itemize}
+\end{example}
+
+\begin{proposition}{Compact Implies Closed and Bounded}{compact_closed_bounded}
+For $K \subset E$, if $K$ is compact, then $K$ is bounded and closed.
+\end{proposition}
+\begin{proof}
+We prove this by contrapositive: if $K$ is not bounded or $K$ is not closed, then $K$ is not compact.
+
+Assume $K$ is not bounded.
+Then for all $n \in \N$, $K \not\subset B(0, n)$. This means there exists $x_n \in K \setminus B(0, n)$, so $N_E(x_n) \ge n$.
+Because any convergent sequence in $E$ is bounded, the sequence $(x_n)_{n \in \N}$ (where $N_E(x_n) \ge n$) can never contain a convergent subsequence. Thus, $K$ is not compact.
+
+Assume $K$ is not closed.
+By the sequential criterion for closedness, there exists a sequence $(x_n)_{n \in \N}$ in $K$ such that $x_n \to x_\infty \in E$, but $x_\infty \notin K$.
+Then any subsequence $(x_{\varphi(n)})_{n \in \N}$ also converges to $x_\infty$. Since $x_\infty \notin K$, the subsequence does not converge in $K$. Thus, $K$ is not compact.
+\end{proof}
+
+\begin{remark}{}{}
+\textbf{Warning:} The converse (bounded and closed implies compact) is generally false in infinite-dimensional spaces.
+\end{remark}
+
+\begin{example}{Closed and Bounded but Not Compact}{not_compact_ex}
+Let $l^\infty(\N) = \{ \underline{x} = (x_n)_{n \in \N} \in \R^\N \mid \Vert \underline{x} \Vert_\infty = \sup_{n \in \N} |x_n| < +\infty \}$.
+Let $S = \{ \underline{x} \in l^\infty(\N) \mid N(\underline{x}) = 1 \} = N^{-1}(\{1\})$.
+$S$ is clearly bounded.
+Since $\{1\}$ is closed in $\R$ and $N$ is 1-Lipschitz (hence continuous), $S = N^{-1}(\{1\})$ is closed in $l^\infty(\N)$.
+Thus, $S$ is bounded and closed.
+However, consider the sequence $(e_n)_{n \in \N}$ where $e_n = (\delta_{n, k})_{k \in \N} = (0, \dots, 0, 1, 0, \dots)$ (the 1 is at the $n$-th position).
+For all $n$, $\Vert e_n \Vert_\infty = 1$, so $e_n \in S$.
+For $n \neq m$, $\Vert e_n - e_m \Vert_\infty = 1$.
+Therefore, no subsequence of $(e_n)_{n \in \N}$ can be Cauchy, and hence no subsequence can converge. Thus, $S$ is not compact.
+\end{example}
+
+\begin{theorem}{Riesz's Theorem}{riesz_thm}
+In a NVS $(E, N)$, the closed unit ball $\overline{B_E}(0, 1)$ is compact if and only if $\dim E < +\infty$.
+\end{theorem}
+
+\end{document}

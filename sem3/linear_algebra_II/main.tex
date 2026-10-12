@@ -1,0 +1,773 @@
+% ============================================================
+%   LECTURE NOTES TEMPLATE
+%   Supports: theorems, proofs, code, plots, geometry, figures
+% ============================================================
+
+\documentclass[11pt, a4paper]{article}
+
+% ── Core packages ───────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}                   % Better fonts
+\usepackage[margin=2.5cm]{geometry}    % Page margins
+\usepackage{microtype}                 % Better text justification
+
+% ── Math ────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{thmtools}                  % Extended theorem tools
+\usepackage{bbm}                       % \mathbbm{1} indicator
+\usepackage{bm}                        % Bold math \bm{}
+
+% ── Colors ──────────────────────────────────────────────────
+\usepackage[dvipsnames, svgnames, x11names]{xcolor}
+
+% ── Define Color Palette ────────────────────────────────────
+\definecolor{TheoremBG}    {RGB}{230, 245, 230}   % soft green
+\definecolor{TheoremBorder}{RGB}{ 34, 139,  34}   % forest green
+\definecolor{PropBG}       {RGB}{230, 240, 255}   % soft blue
+\definecolor{PropBorder}   {RGB}{ 70, 130, 180}   % steel blue
+\definecolor{CorolBG}      {RGB}{255, 245, 220}   % warm cream
+\definecolor{CorolBorder}  {RGB}{205, 133,  63}   % peru
+\definecolor{DefBG}        {RGB}{245, 230, 255}   % lavender
+\definecolor{DefBorder}    {RGB}{128,   0, 128}   % purple
+\definecolor{ExBG}         {RGB}{240, 248, 255}   % alice blue
+\definecolor{ExBorder}     {RGB}{ 70, 130, 180}   % steel blue
+\definecolor{RemBG}        {RGB}{255, 250, 240}   % floral white
+\definecolor{RemBorder}    {RGB}{169, 169, 169}   % dark gray
+\definecolor{LemmaBG}      {RGB}{230, 250, 250}   % light cyan
+\definecolor{LemmaBorder}  {RGB}{ 32, 178, 170}   % light sea green
+\definecolor{ProblemBG}    {RGB}{230, 240, 255}   % same as Prop
+\definecolor{ProblemBorder}{RGB}{ 30,  90, 200}   % royal blue
+\definecolor{CodeBG}       {RGB}{ 40,  44,  52}   % dark (One Dark)
+\definecolor{CodeKey}      {RGB}{198, 120, 221}   % purple keyword
+\definecolor{CodeStr}      {RGB}{152, 195, 121}   % green string
+\definecolor{CodeCom}      {RGB}{ 92, 100, 112}   % gray comment
+\definecolor{CodeNum}      {RGB}{209, 154, 102}   % orange number
+\definecolor{LinkColor}    {RGB}{ 10,  80, 160}
+
+% ── Theorem Environments (tcolorbox) ────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems, skins, breakable}
+
+%  Macro for colored theorem boxes
+\newcommand{\maketheorbox}[6]{%
+  % #1 = env name, #2 = display name, #3 = BG color, #4 = border color
+  % #5 = title text color, #6 = counter (share with: e.g. theorem)
+  \tcbset{#1style/.style={%
+    enhanced, breakable,
+    colback=#3, colframe=#4,
+    arc=4pt,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+    boxed title style={colback=#4, colframe=#4, sharp corners},
+    sharp corners=south,
+    boxrule=1pt,
+    top=4mm, bottom=4mm,
+  }}%
+}
+
+% ── Theorem / Proposition / etc. counters ───────────────────
+\newcounter{thmcounter}[section]
+\renewcommand{\thethmcounter}{\thesection.\arabic{thmcounter}}
+
+% THEOREM
+\newtcbtheorem[use counter=thmcounter]{theorem}{Theorem}{
+  enhanced, breakable,
+  colback=TheoremBG, colframe=TheoremBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=TheoremBorder, colframe=TheoremBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{thm}
+
+% PROPOSITION
+\newtcbtheorem[use counter=thmcounter]{proposition}{Proposition}{
+  enhanced, breakable,
+  colback=PropBG, colframe=PropBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=PropBorder, colframe=PropBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prop}
+
+% LEMMA
+\newtcbtheorem[use counter=thmcounter]{lemma}{Lemma}{
+  enhanced, breakable,
+  colback=LemmaBG, colframe=LemmaBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=LemmaBorder, colframe=LemmaBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{lem}
+
+% COROLLARY
+\newtcbtheorem[use counter=thmcounter]{corollary}{Corollary}{
+  enhanced, breakable,
+  colback=CorolBG, colframe=CorolBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=CorolBorder, colframe=CorolBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{cor}
+
+% DEFINITION
+\newtcbtheorem[use counter=thmcounter]{definition}{Definition}{
+  enhanced, breakable,
+  colback=DefBG, colframe=DefBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=DefBorder, colframe=DefBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{def}
+
+% EXAMPLE
+\newtcbtheorem[use counter=thmcounter]{example}{Example}{
+  enhanced, breakable,
+  colback=ExBG, colframe=ExBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ExBorder, colframe=ExBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.8pt,
+  top=5mm, bottom=4mm,
+}{ex}
+
+% REMARK  (lighter, no box title)
+\newtcbtheorem[use counter=thmcounter]{remark}{Remark}{
+  enhanced, breakable,
+  colback=RemBG, colframe=RemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=RemBorder, colframe=RemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.6pt,
+  top=5mm, bottom=4mm,
+}{rem}
+
+% PROBLEM
+\newtcbtheorem[use counter=thmcounter]{problem}{Problem}{
+  enhanced, breakable,
+  colback=ProblemBG, colframe=ProblemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ProblemBorder, colframe=ProblemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prob}
+
+% ── PROOF style (white background, left gray bar, italic) ───
+% Matches the screenshot: "Proof of Theorem X.X" header, plain body
+\tcolorboxenvironment{proof}{
+  blanker, breakable,
+  left=4mm,
+  before skip=6pt, after skip=10pt,
+  borderline west={2pt}{0pt}{gray!60},
+}
+% Override proof header style
+\renewcommand{\proofname}{\normalfont\color{gray}\small\scshape Proof}
+
+% ── Code listings (listings + tcolorbox) ────────────────────
+\usepackage{listings}
+
+\lstdefinestyle{CppStyle}{
+  language=C++,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={auto, nullptr, constexpr, override, final,
+                uint8_t, uint16_t, uint32_t, uint64_t,
+                int8_t, int16_t, int32_t, int64_t},
+  frame=none,
+}
+
+\lstdefinestyle{PythonStyle}{
+  language=Python,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={self, None, True, False, as, with, yield,
+                lambda, import, from, pass, assert, raise,
+                except, finally, elif},
+  frame=none,
+}
+
+% Wrap lstlisting in a tcolorbox for rounded corners + title
+\newtcblisting{cppcode}[1][]{
+  listing only, listing style=CppStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=\faCode\ C++,            % remove \faCode if not using fontawesome
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+\newtcblisting{pycode}[1][]{
+  listing only, listing style=PythonStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=Python,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% Fallback plain code block (language-agnostic)
+\newtcblisting{code}[2][]{
+  listing only,
+  listing options={
+    style=PythonStyle,
+    language=#2,
+  },
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=#2,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% ── Plots and Geometry (pgfplots + tikz) ────────────────────
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,         % Better arrow tips
+  calc,                % Coordinate calculations
+  shapes.geometric,    % circles, rectangles, etc.
+  positioning,         % node placement
+  decorations.markings,% marks on paths
+  intersections,       % path intersections
+  patterns,            % hatching
+  angles, quotes,      % angle labeling
+  3d,                  % 3D axes
+}
+
+% Convenience: TikZ picture wrapper with caption
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ── Figures / Images ────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{wrapfig}   % Text-wrapped figures
+
+% Figure box style (tcolorbox)
+\newtcolorbox{figurebox}[2][]{
+  enhanced, breakable,
+  colback=white, colframe=gray!50,
+  title=#2,
+  fonttitle=\bfseries\small,
+  boxed title style={colback=gray!20, colframe=gray!50},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  sharp corners, boxrule=0.8pt,
+  #1
+}
+
+% ── Tables ──────────────────────────────────────────────────
+\usepackage{booktabs}   % \toprule, \midrule, \bottomrule
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}  % Tables spanning multiple pages
+
+% ── Hyperlinks & PDF metadata ───────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = LinkColor,
+  citecolor  = LinkColor,
+  urlcolor   = LinkColor,
+  pdftitle   = {Lecture Notes},
+  pdfauthor  = {Your Name},
+}
+
+% ── Table of Contents style ─────────────────────────────────
+\usepackage{titletoc}
+\usepackage{titlesec}
+
+% Section numbering depth
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% Section title styling
+\titleformat{\section}
+  {\large\bfseries}
+  {\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {\thesubsection}{1em}{}
+
+% ── Bibliography ────────────────────────────────────────────
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+% \addbibresource{references.bib}   % uncomment and add your .bib
+
+% ── Miscellaneous Useful Packages ───────────────────────────
+\usepackage{enumitem}          % Customise lists
+\usepackage{todonotes}         % \todo{} margin notes
+\usepackage{cleveref}          % \cref{} smart cross-refs
+\usepackage{siunitx}           % SI units: \SI{9.8}{\metre\per\second}
+\usepackage{physics}           % \dd, \grad, \curl, \laplacian …
+\usepackage{mathrsfs}          % \mathscr{F} script font
+
+% ── Convenience Math Macros ─────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\one}{\mathbbm{1}}          % indicator
+\newcommand{\eps}{\varepsilon}
+% \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+% \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\sgn}{sgn}
+% \DeclareMathOperator{\tr}{tr}
+% \DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\supp}{supp}
+
+% ── Header / Footer ─────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{\CourseName}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Metadata Commands (fill these per lecture) ──────────────
+\newcommand{\CourseName}{Linear Algebra II}
+\newcommand{\CourseCode}{FMA\_2F001\_EP}
+\newcommand{\University}{Ecole Polytechnique}
+\newcommand{\Lecturer}{Prof. Guillaume Dubach}
+\newcommand{\StudentName}{Nikolay Kharovskiy}
+\newcommand{\Semester}{Fall 2026}
+
+% ============================================================
+%   DOCUMENT BEGIN
+% ============================================================
+\begin{document}
+
+% ── Title Page ──────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\Huge\bfseries \CourseName \par}
+  \vspace{0.5cm}
+  {\large \CourseCode \par}
+
+  \vspace{1.5cm}
+  \hrule height 1pt
+  \vspace{0.4cm}
+  {\Large\bfseries Lecture Notes \par}
+  \vspace{0.4cm}
+  \hrule height 1pt
+
+  \vspace{2cm}
+
+  \begin{tabular}{rl}
+    \textbf{University:} & \University \\[4pt]
+    \textbf{Lecturer:}   & \Lecturer   \\[4pt]
+    \textbf{Student:}    & \StudentName \\[4pt]
+    \textbf{Semester:}   & \Semester   \\[4pt]
+  \end{tabular}
+
+  \vfill
+
+  {\small These are personal lecture notes and may contain errors.
+         For the official course material consult the lecturer.}
+\end{titlepage}
+
+% ── Table of Contents ───────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ============================================================
+%  LECTURE 1
+% ============================================================
+\section{Class 1: Basic Arithmetic}
+
+The arithmetic fact $1+1=2$ was shown by Russel and Whitehead. The proof operates using Peano's axioms for the natural numbers $\N$.
+
+\begin{theorem}{Peano's Axioms for $\N$}{}
+\begin{itemize}
+    \item \textbf{Axiom 1:} $0 \in \N$.
+    \item \textbf{Axiom 2:} There exists a successor function $S: \N \rightarrow \N$.
+\end{itemize}
+From these, we can define $1=S(0)$ and $2=S(S(0))$.
+\end{theorem}
+
+\begin{definition}{Addition}{}
+Addition is defined by the following rules:
+\begin{enumerate}
+    \item $\forall m \in \N: m+0 = m$ (Add1).
+    \item $\forall m, n \in \N: m+S(n) = S(m+n)$ (Add2).
+\end{enumerate}
+\end{definition}
+
+\begin{example}{Computing $1+1$}{}
+$1+1 = 1+S(0) \stackrel{\text{(Add2)}}{=} S(1+0) \stackrel{\text{(Add1)}}{=} S(1) = 2$.
+\end{example}
+
+\begin{theorem}{Peano's Axiom 9 (Induction)}{}
+Let $P$ be a unary predicate. To prove $\forall m \in \N, P(m)$ is true, it is enough to prove:
+\begin{itemize}
+    \item $P(0)$ is true.
+    \item $\forall m: P(m) \implies P(S(m))$.
+\end{itemize}
+\end{theorem}
+
+\begin{theorem}{Well Ordering Principle (WOP)}{}
+Every non-empty subset of $\N$ has a minimum.
+\end{theorem}
+
+\begin{proposition}{WOP implies Induction}{}
+The Well Ordering Principle can be used to prove the principle of Induction.
+\end{proposition}
+\begin{proof}
+Let $S = \{m \mid P(m) \text{ is not true}\}$. If $P(m)$ is not true for every $m$, then $S$ is non-empty. We apply WOP to $S$, meaning there is a minimum element $m_0 = \min S$. But $m_0 \neq 0$, so $m_0 = S(m)$ for some $m$. This creates a contradiction.
+\end{proof}
+
+\subsection{Relations on a Set}
+
+\begin{definition}{Relations and Equivalence}{}
+Let $S$ be a set with elements $x, y \in S$. A relation on $S$ is defined as a subset of $S \times S$.
+An equivalence relation must satisfy all three of the following properties:
+\begin{itemize}
+    \item \textbf{Reflexivity:} $\forall x \in S, x \sim x$.
+    \item \textbf{Symmetry:} $\forall x, y \in S, x \sim y \iff y \sim x$.
+    \item \textbf{Transitivity:} $\forall x, y, z \in S, x \sim y \text{ and } y \sim z \implies x \sim z$.
+\end{itemize}
+\end{definition}
+
+\begin{example}{Equivalence Relations}{}
+``Same Parity'' and ``Same remainder mod $n$'' are equivalence relations.
+\end{example}
+
+\begin{remark}{Partitions}{}
+An equivalence relation is the same as a partition of $S$.
+\end{remark}
+
+\begin{definition}{Modular Classes}{}
+For every $n \in \N$, $a \equiv b \pmod{n}$ defines an equivalence relation. The set of equivalence classes for this relation is denoted $\Z/n\Z$.
+\end{definition}
+
+\subsection{Modular Arithmetic and Divisibility}
+
+\begin{theorem}{Chinese Remainder Theorem (Sunzi)}{}
+If $m$ and $n$ are coprime, there is a bijection between $\Z/mn\Z$ and $\Z/m\Z \times \Z/n\Z$.
+\end{theorem}
+
+\begin{example}{Applying the Chinese Remainder Theorem}{}
+For $n=2$ and $m=3$, we can map between $\Z/6\Z$ and $\Z/2\Z \times \Z/3\Z$.
+If we want to find all $m \in \Z$ such that $m \equiv 2 \pmod{5}$ and $m \equiv 3 \pmod{7}$, the solution is the set $\{14 + 35k \mid k \in \Z\}$.
+\end{example}
+
+\begin{theorem}{Euclidean Division}{}
+$\forall a, \forall b \neq 0, \exists (q, r)$ such that $a = bq + r$ and $0 \leq r < \vert{}b\vert{}$.
+\end{theorem}
+
+\begin{theorem}{Bézout's Theorem}{}
+$\exists (u, v) \in \Z^2$ such that $au + bv = \gcd(a,b)$.
+\end{theorem}
+
+\begin{example}{Euclid's Algorithm}{}
+Applying the algorithm to find coefficients for $5$ and $7$:
+\begin{itemize}
+    \item $7 = 1 \times 5 + 2$.
+    \item $5 = 2 \times 2 + \gcd(5,7)$.
+    \item $1 = 5 - 2 \times 2 = 5 - 2 \times (7-5) = 3 \times 5 - 2 \times 7$.
+\end{itemize}
+We have found that $3 \times 5 \rightarrow (0,1)$ and $-2 \times 7 \rightarrow (1,0)$. If we want to find $m$ such that $m \equiv 2 \pmod{5}$ and $m \equiv 3 \pmod{7}$, we compute $(3 \times 5) \times 3 + (-2 \times 7) \times 2$.
+\end{example}
+
+\subsection{Prime Numbers}
+
+\begin{definition}{Prime Number}{}
+A prime number is a number $p \in \N$ such that $p \geq 2$ and $p$ has only divisors $1$ and $p$.
+\end{definition}
+
+\begin{theorem}{Infinitude of Primes}{}
+There are infinitely many primes.
+\end{theorem}
+
+\begin{theorem}{Tao's Theorem}{}
+At least one of the following sets of primes $(p, q)$ is infinite:
+\begin{itemize}
+    \item \textbf{Twin primes:} $\vert{}p-q\vert{} = 2$.
+    \item \textbf{Cousin primes:} $\vert{}p-q\vert{} = 4$.
+    \item \textbf{Sexy primes:} $\vert{}p-q\vert{} = 6$.
+\end{itemize}
+\end{theorem}
+
+\begin{remark}{Goldbach Conjecture}{}
+The Goldbach conjecture posits that every even number is equal to $p+q$ with $p$ and $q$ primes.
+\end{remark}
+
+% ============================================================
+%  LECTURE 2
+% ============================================================
+\section{Lecture 2: Groups}
+
+\begin{definition}{Group}{}
+A group is a set $G$ equipped with a binary operation (or group law) $*$, denoted $(G, *)$, that satisfies the following properties:
+\begin{enumerate}
+    \item \textbf{Associativity:} $\forall a, b, c \in G, (a * b) * c = a * (b * c)$.
+    \item \textbf{Neutral Element:} $\exists e \in G$ such that $\forall a \in G, a * e = e * a = a$.
+    \item \textbf{Inverse Element:} $\forall a \in G, \exists b \in G$ such that $a * b = b * a = e$.
+\end{enumerate}
+\textbf{Optional:} If a group also satisfies commutativity (i.e., $\forall a, b \in G, a * b = b * a$), it is called an \textbf{Abelian group}.
+\end{definition}
+
+\begin{example}{Groups in Modular Arithmetic}{}
+\begin{itemize}
+    \item The set $\Z/n\Z$ with addition is a group. The neutral element is $[0]_n$ and the inverse of $[k]_n$ is $[-k]_n$.
+    \item If $p$ is prime, the non-zero elements modulo $p$ under multiplication form a group. To find the inverse of $k$ modulo $p$, one can use Bézout's identity on $k$ and $p$. Because $p$ is prime, there exist integers $u$ and $v$ such that $uk + vp = 1$. Modulo $p$, this simplifies to $uk \equiv 1 \pmod{p}$, which implies that $u$ is the multiplicative inverse $k^{-1}$.
+\end{itemize}
+\end{example}
+
+\begin{definition}{Powers and Cyclic Groups}{}
+For an element $g \in G$, its powers are defined as follows:
+\begin{itemize}
+    \item For $n > 0$, $g^n = g * g * \dots * g$ ($n$ times).
+    \item For $n = 0$, $g^0 = e$.
+    \item For $n < 0$, $g^n = g^{-1} * g^{-1} * \dots * g^{-1}$ ($|n|$ times).
+\end{itemize}
+A finite group $G$ is called \textbf{cyclic} if it is generated by a single element $g$, meaning $G = \langle g \rangle = \{ g^m \mid m \in \Z \}$.
+\end{definition}
+
+\begin{example}{Common Groups}{}
+\begin{itemize}
+    \item \textbf{Dihedral groups} $D_k$: the group of symmetries of a regular $k$-gon.
+    \item \textbf{Symmetric groups} $\Sigma_n$ (or $S_n$): the group of permutations of $n$ elements.
+    \item \textbf{Alternating group} $A_n$: the subgroup of $\Sigma_n$ containing all even permutations, i.e., $A_n = \{ \sigma \in \Sigma_n \mid \varepsilon(\sigma) = 1 \}$.
+    \item The group of symmetries of polyhedra, such as the Rhombic Triacontahedron.
+\end{itemize}
+\end{example}
+
+\begin{definition}{Subgroups and Morphisms}{}
+\begin{itemize}
+    \item A \textbf{subgroup} is a subset of $G$ that forms a group under the same group law.
+    \item A \textbf{morphism} (or homomorphism) is a map $\varphi$ between groups that preserves the group structure, e.g., $\varphi(a * b) = \varphi(a) * \varphi(b)$.
+    \item An \textbf{isomorphism} is a bijective group morphism.
+\end{itemize}
+\end{definition}
+
+\begin{definition}{Order of an Element}{}
+The order of an element $g \in G$ is the smallest positive integer $m$ such that $g^m = e$. It is denoted $\omega(g) = \min \{ m \ge 1 \mid g^m = e \}$.
+\end{definition}
+
+\begin{theorem}{Weak Lagrange Theorem}{}
+Let $G$ be a finite Abelian group, and let $g \in G$. Then the order of $g$ divides the size of the group, i.e., $\omega(g) \mid \#G$.
+\end{theorem}
+\begin{proof}
+Let $\pi = \prod_{h \in G} h$ be the product of all elements in $G$. Consider the map $\varphi_g : G \to G$ defined by $h \mapsto g * h$. This map is a bijection, as it has an inverse $\varphi_{g^{-1}}$. Because $G$ is Abelian, we can rearrange the product:
+$$ \pi = \prod_{h \in G} h = \prod_{h \in G} \varphi_g(h) = \prod_{h \in G} (g * h) $$
+Factoring out $g$ for each of the $\#G$ elements, we get $\pi = g^{\#G} \cdot \prod_{h \in G} h = g^{\#G} \cdot \pi$. By canceling $\pi$, we find $g^{\#G} = e$.
+
+We can write $\#G = q \cdot \omega(g) + r$ using Euclidean division, with $0 \le r < \omega(g)$. Substituting this into our equation gives:
+$$ e = g^{\#G} = g^{q \omega(g) + r} = (g^{\omega(g)})^q \cdot g^r = e^q \cdot g^r = g^r $$
+Since $g^r = e$ and $0 \le r < \omega(g)$, the minimality of the order implies $r = 0$. Therefore, $\omega(g)$ divides $\#G$.
+\end{proof}
+
+\begin{theorem}{Strong Lagrange Theorem}{}
+If $G$ is a finite group and $H \subset G$ is a subgroup, then $\#H$ divides $\#G$.
+\end{theorem}
+\begin{proof}
+We say two elements $x, y \in G$ are equivalent modulo $H$ ($x \sim y$) if $y^{-1}x \in H$. This condition is equivalent to $x \in yH$, where $yH$ represents a left coset. The left cosets form a partition of the group $G$, so $G = \bigsqcup_{y_i \in I} y_iH$ for some index set $I$ of representatives.
+
+Every coset $y_iH$ has exactly the same size, which is equal to $\#H$. Thus, we can conclude that the total number of elements in $G$ is given by $\#G = \#H \times \#I$. This immediately shows that $\#H \mid \#G$.
+\end{proof}
+
+\begin{theorem}{Cauchy's Theorem}{}
+Let $G$ be a finite group and let $p$ be a prime number such that $p \mid \#G$. Then there exists an element $g \in G$ such that $\omega(g) = p$.
+\end{theorem}
+\begin{proof}
+Consider the set $S_p = \{ (g_1, g_2, \dots, g_p) \mid g_i \in G, g_1 g_2 \dots g_p = e \}$. 
+We define an equivalence relation on $S_p$ using cyclic shifts: two tuples are equivalent if one is a cyclic permutation of the other (i.e., shifting the sequence by some offset $k$).
+Notice that the size of $S_p$ is $(\#G)^{p-1}$, because the first $p-1$ elements can be chosen freely, and the final element $g_p$ is uniquely determined as $(g_1 \dots g_{p-1})^{-1}$.
+
+Under this equivalence relation, every equivalence class contains either $1$ or $p$ elements. The tuple $(e, \dots, e)$ forms an equivalence class of size $1$.
+We can partition $S_p$ into these classes, yielding the equation $\#S_p = N_1 + p N_p$, where $N_1$ is the number of classes of size $1$, and $N_p$ is the number of classes of size $p$.
+
+Since $p \mid \#G$, we know $p \mid (\#G)^{p-1}$, so $p \mid \#S_p$. Thus, $p \mid (N_1 + p N_p)$, which implies $p \mid N_1$.
+We already know $N_1 \ge 1$ because of the class containing $(e, \dots, e)$. Because $p \mid N_1$, we must have $N_1 \ge p \ge 2$.
+
+This means there is at least one other class of size $1$, which corresponds to a tuple $(g, g, \dots, g) \in S_p$ for some $g \neq e$. Since this tuple is in $S_p$, it must satisfy $g^p = e$. Because $p$ is prime and $g \neq e$, the order of $g$ is exactly $p$, so $\omega(g) = p$.
+\end{proof}
+
+% ============================================================
+%  LECTURE 3
+% ============================================================
+\section{Lecture 3: Rings}
+
+\begin{definition}{Unital Ring}{}
+A unital ring is a set $R$ equipped with two binary operations, denoted $(R, +, \times)$, satisfying the following properties:
+\begin{enumerate}
+    \item $(R, +)$ is an Abelian group, with a neutral element denoted $0$ or $0_R$. %[cite: 16]
+    \item Multiplication "$\times$" is associative: $\forall x, y, z \in R, x(yz) = (xy)z$. %[cite: 16]
+    \item Multiplication "$\times$" has a neutral element, denoted $1$ or $1_R$. %[cite: 16]
+    \item Distributivity of multiplication over addition: $\forall a, b, c \in R, a(b+c) = ab + ac$ and $(b+c)a = ba + ca$. %[cite: 16]
+\end{enumerate}
+\textbf{Note:} $(R, \times)$ and $(R \setminus \{0\}, \times)$ are not necessarily groups, because elements do not generally have multiplicative inverses. %[cite: 16]
+
+If the multiplication operation is also commutative, then $R$ is called a \textbf{commutative ring}. %[cite: 16]
+\end{definition}
+
+\begin{definition}{Ring Morphism}{}
+A map $\varphi : (R_1, +, \times) \to (R_2, +, \times)$ is a ring morphism if:
+\begin{enumerate}
+    \item $\varphi : (R_1, +) \to (R_2, +)$ is a group morphism. %[cite: 16, 17]
+    \item $\varphi(1_{R_1}) = 1_{R_2}$. %[cite: 17]
+    \item $\forall a, b \in R_1, \varphi(ab) = \varphi(a)\varphi(b)$. %[cite: 17]
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}{The Ring of Integers as an Initial Object}{}
+The ring $(\Z, +, \times)$ is the paradigmatic example of a ring, and it serves as the initial object in the category of unital rings. %[cite: 17]
+This means that for any ring $R$, there exists a unique ring morphism $\psi : \Z \to R$. %[cite: 17]
+Therefore, $\Z$ is the unique initial object up to ring isomorphism. %[cite: 17]
+\end{theorem}
+\begin{proof}
+By "abstract nonsense", let $R_0$ be another initial object. %[cite: 18]
+Then there exist unique morphisms $\psi_1 : \Z \to R_0$ and $\psi_2 : R_0 \to \Z$. %[cite: 18]
+The composition $\psi_2 \circ \psi_1 : \Z \to \Z$ must be the identity morphism (since $\Z$ is initial), which implies $\psi_1 = \psi_2^{-1}$, establishing a ring isomorphism between $\Z$ and $R_0$. %[cite: 18]
+\end{proof}
+
+\subsection{Subrings and Ideals}
+
+\begin{definition}{Subring}{}
+A subring is a subset that forms a ring under the same (induced) algebraic structure. %[cite: 18]
+For example, we have the chain of subrings: $\Z \subset \Q \subset \R \subset \C \subset \mathbb{H}$. %[cite: 18]
+\end{definition}
+
+\begin{remark}{Ideals vs. Subrings}{}
+For groups, the kernel of a group morphism is a subgroup. %[cite: 18]
+However, for rings, the kernel is generally \textit{not} a subring (it usually does not contain $1_R$). %[cite: 18, 19]
+The correct notion to capture the behavior of kernels in rings is an \textbf{ideal}. %[cite: 19]
+\end{remark}
+
+\begin{definition}{Ideal}{}
+An ideal $I \subset R$ is a subgroup of $(R, +)$ that is stable under multiplication by any element of $R$. %[cite: 19]
+Equivalently: $\forall a, b \in R$ and $\forall x, y \in I$, we have $ax + by \in I$ (analogous to a linear combination in a vector space). %[cite: 19]
+\end{definition}
+
+\begin{proposition}{Kernels are Ideals}{}
+Let $\varphi : R_1 \to R_2$ be a ring morphism. %[cite: 19]
+Then $\ker(\varphi) = \{ x \in R_1 \mid \varphi(x) = 0 \}$ is an ideal of $R_1$ (but not a subring!). %[cite: 19]
+\end{proposition}
+\begin{proof}
+Let $a, b \in R_1$ and $x, y \in \ker(\varphi)$. %[cite: 19]
+We want to prove that $ax + by \in \ker(\varphi)$, which means $\varphi(ax + by) = 0$. %[cite: 20]
+Using the properties of ring morphisms:
+$$ \varphi(ax + by) = \varphi(ax) + \varphi(by) = \varphi(a)\varphi(x) + \varphi(b)\varphi(y) $$ %[cite: 20]
+Since $x, y \in \ker(\varphi)$, we know $\varphi(x) = 0$ and $\varphi(y) = 0$. %[cite: 20]
+Thus, $\varphi(a)\cdot 0 + \varphi(b)\cdot 0 = 0$. %[cite: 20]
+\end{proof}
+
+\begin{definition}{Principal Ideal}{}
+In a commutative ring $R$, ideals of the form $(x) = xR = \{xy \mid y \in R\}$ are called \textbf{principal ideals}. %[cite: 20]
+For example, all ideals of $\Z$ are principal (of the form $m\Z$). %[cite: 20]
+\end{definition}
+
+\subsection{Quotient Rings}
+
+\begin{theorem}{Quotient Ring Construction}{}
+For any commutative ring $R$ and any ideal $I \subset R$, we can construct a quotient space $R/I$ by defining an equivalence relation $r_1 \sim r_2 \iff r_1 - r_2 \in I$. %[cite: 20, 21]
+The equivalence classes (or cosets) are denoted $[r] = r + I$. %[cite: 21]
+
+The set of these classes, $R/I$, inherits a natural ring structure given by:
+\begin{itemize}
+    \item $[r_1] + [r_2] = [r_1 + r_2]$ %[cite: 21]
+    \item $[r_1] \times [r_2] = [r_1 \times r_2]$ %[cite: 21]
+\end{itemize}
+\end{theorem}
+
+\begin{example}{Modular Arithmetic and CRT}{}
+Let $R = \Z$ and $I = m\Z$. %[cite: 22]
+This construction gives the usual quotient ring $\Z/m\Z$. %[cite: 22]
+If $m$ and $n$ are coprime, the Chinese Remainder Theorem establishes a ring isomorphism: $\Z/mn\Z \cong \Z/m\Z \times \Z/n\Z$. %[cite: 22]
+\end{example}
+
+\subsection{Taxonomy of Rings}
+
+\begin{definition}{Types of Rings}{}
+\begin{itemize}
+    \item \textbf{Integral Domain:} A commutative ring where $xy = 0 \implies x = 0 \text{ or } y = 0$ (i.e., it has no zero divisors). %[cite: 22]
+    \item \textbf{Principal Ideal Domain (PID):} An integral domain where every ideal is a principal ideal. %[cite: 22]
+    \item \textbf{Division Ring:} A ring where $(R \setminus \{0\}, \times)$ is a group (i.e., every non-zero element has a multiplicative inverse). %[cite: 23]
+    \item \textbf{Field:} A commutative division ring (i.e., $(R \setminus \{0\}, \times)$ is an Abelian group). %[cite: 23]
+\end{itemize}
+\end{definition}
+
+\begin{remark}{Examples and Hierarchy}{}
+We have the following strict inclusions for commutative rings:
+$$ \text{Commutative Rings} \supset \text{Integral Domains} \supset \text{PIDs} \supset \text{Fields} $$ %[cite: 23]
+\begin{itemize}
+    \item \textbf{Non-commutative Rings:} $M_2(\R), M_3(\R)$. %[cite: 23]
+    \item \textbf{Division Rings (not fields):} The quaternions $\mathbb{H}$. %[cite: 23]
+    \item \textbf{Fields:} $\R, \Q, \Z/p\Z$ (where $p$ is prime). %[cite: 23]
+\end{itemize}
+\end{remark}
+
+\subsection{Special Ideals}
+
+\begin{definition}{Prime and Maximal Ideals}{}
+Let $I \subsetneq R$ be a proper ideal in a commutative ring $R$.
+\begin{itemize}
+    \item $I$ is a \textbf{prime ideal} if $xy \in I \implies x \in I \text{ or } y \in I$. %[cite: 23]
+    For example, $2\Z$ is a prime ideal, but $4\Z$ is not. %[cite: 23]
+    \item $I$ is a \textbf{maximal ideal} if for any ideal $J$ such that $I \subseteq J \subsetneq R$, it must be that $I = J$. %[cite: 24]
+\end{itemize}
+\end{definition}
+
+\begin{theorem}{Quotients by Prime and Maximal Ideals}{}
+Let $R$ be a commutative ring and $I$ be a proper ideal. %[cite: 24]
+\begin{itemize}
+    \item $I$ is a maximal ideal $\iff (R/I, +, \times)$ is a field. %[cite: 24]
+    \item $I$ is a prime ideal $\iff (R/I, +, \times)$ is an integral domain. %[cite: 24]
+\end{itemize}
+Because every field is an integral domain, this immediately implies that every maximal ideal is also a prime ideal. %[cite: 24]
+\end{theorem}
+
+\end{document}

@@ -1,0 +1,1494 @@
+% ============================================================
+%   LECTURE NOTES TEMPLATE
+%   Supports: theorems, proofs, code, plots, geometry, figures
+% ============================================================
+
+\documentclass[11pt, a4paper]{article}
+
+% ── Core packages ───────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}                   % Better fonts
+\usepackage[margin=2.5cm]{geometry}    % Page margins
+\usepackage{microtype}                 % Better text justification
+
+% ── Math ────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{thmtools}                  % Extended theorem tools
+\usepackage{bbm}                       % \mathbbm{1} indicator
+\usepackage{bm}                        % Bold math \bm{}
+
+% ── Colors ──────────────────────────────────────────────────
+\usepackage[dvipsnames, svgnames, x11names]{xcolor}
+
+% ── Define Color Palette ────────────────────────────────────
+\definecolor{TheoremBG}    {RGB}{230, 245, 230}   % soft green
+\definecolor{TheoremBorder}{RGB}{ 34, 139,  34}   % forest green
+\definecolor{PropBG}       {RGB}{230, 250, 250}   % light cyan
+\definecolor{PropBorder}   {RGB}{ 32, 178, 170}   % light sea green
+\definecolor{CorolBG}      {RGB}{255, 245, 220}   % warm cream
+\definecolor{CorolBorder}  {RGB}{205, 133,  63}   % peru
+\definecolor{DefBG}        {RGB}{245, 230, 255}   % lavender
+\definecolor{DefBorder}    {RGB}{128,   0, 128}   % purple
+\definecolor{ExBG}         {RGB}{240, 248, 255}   % alice blue
+\definecolor{ExBorder}     {RGB}{ 70, 130, 180}   % steel blue
+\definecolor{RemBG}        {RGB}{255, 250, 240}   % floral white
+\definecolor{RemBorder}    {RGB}{169, 169, 169}   % dark gray
+\definecolor{LemmaBG}      {RGB}{230, 250, 250}   % light cyan
+\definecolor{LemmaBorder}  {RGB}{ 32, 178, 170}   % light sea green
+\definecolor{ProblemBG}    {RGB}{230, 240, 255}   % same as Prop
+\definecolor{ProblemBorder}{RGB}{ 30,  90, 200}   % royal blue
+\definecolor{CodeBG}       {RGB}{ 40,  44,  52}   % dark (One Dark)
+\definecolor{CodeKey}      {RGB}{198, 120, 221}   % purple keyword
+\definecolor{CodeStr}      {RGB}{152, 195, 121}   % green string
+\definecolor{CodeCom}      {RGB}{ 92, 100, 112}   % gray comment
+\definecolor{CodeNum}      {RGB}{209, 154, 102}   % orange number
+\definecolor{LinkColor}    {RGB}{ 10,  80, 160}
+
+% ── Theorem Environments (tcolorbox) ────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems, skins, breakable}
+
+%  Macro for colored theorem boxes
+\newcommand{\maketheorbox}[6]{%
+  % #1 = env name, #2 = display name, #3 = BG color, #4 = border color
+  % #5 = title text color, #6 = counter (share with: e.g. theorem)
+  \tcbset{#1style/.style={%
+    enhanced, breakable,
+    colback=#3, colframe=#4,
+    arc=4pt,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+    boxed title style={colback=#4, colframe=#4, sharp corners},
+    sharp corners=south,
+    boxrule=1pt,
+    top=4mm, bottom=4mm,
+  }}%
+}
+
+% ── Theorem / Proposition / etc. counters ───────────────────
+\newcounter{thmcounter}
+\renewcommand{\thethmcounter}{\thesection.\arabic{thmcounter}}
+
+% THEOREM
+\newtcbtheorem[use counter=thmcounter]{theorem}{Theorem}{
+  enhanced, breakable,
+  colback=TheoremBG, colframe=TheoremBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=TheoremBorder, colframe=TheoremBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{thm}
+
+% PROPOSITION
+\newtcbtheorem[use counter=thmcounter]{proposition}{Proposition}{
+  enhanced, breakable,
+  colback=PropBG, colframe=PropBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=PropBorder, colframe=PropBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prop}
+
+% LEMMA
+\newtcbtheorem[use counter=thmcounter]{lemma}{Lemma}{
+  enhanced, breakable,
+  colback=LemmaBG, colframe=LemmaBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=LemmaBorder, colframe=LemmaBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{lem}
+
+% COROLLARY
+\newtcbtheorem[use counter=thmcounter]{corollary}{Corollary}{
+  enhanced, breakable,
+  colback=CorolBG, colframe=CorolBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=CorolBorder, colframe=CorolBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{cor}
+
+% DEFINITION
+\newtcbtheorem[use counter=thmcounter]{definition}{Definition}{
+  enhanced, breakable,
+  colback=DefBG, colframe=DefBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=DefBorder, colframe=DefBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{def}
+
+% EXAMPLE
+\newtcbtheorem{example}{Example}{
+  enhanced, breakable,
+  colback=ExBG, colframe=ExBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ExBorder, colframe=ExBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.8pt,
+  top=5mm, bottom=4mm,
+}{ex}
+
+% REMARK  (lighter, no box title)
+\newtcbtheorem[use counter=thmcounter]{remark}{Remark}{
+  enhanced, breakable,
+  colback=RemBG, colframe=RemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=RemBorder, colframe=RemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.6pt,
+  top=5mm, bottom=4mm,
+}{rem}
+
+% PROBLEM
+\newtcbtheorem[use counter=thmcounter]{problem}{Problem}{
+  enhanced, breakable,
+  colback=ProblemBG, colframe=ProblemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ProblemBorder, colframe=ProblemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prob}
+
+% ── PROOF style (white background, left gray bar, italic) ───
+% Matches the screenshot: "Proof of Theorem X.X" header, plain body
+\tcolorboxenvironment{proof}{
+  blanker, breakable,
+  left=4mm,
+  before skip=6pt, after skip=10pt,
+  borderline west={2pt}{0pt}{gray!60},
+}
+% Override proof header style
+\renewcommand{\proofname}{\normalfont\color{gray}\small\scshape Proof}
+
+% ── Code listings (listings + tcolorbox) ────────────────────
+\usepackage{listings}
+
+\lstdefinestyle{CppStyle}{
+  language=C++,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={auto, nullptr, constexpr, override, final,
+                uint8_t, uint16_t, uint32_t, uint64_t,
+                int8_t, int16_t, int32_t, int64_t},
+  frame=none,
+}
+
+\lstdefinestyle{PythonStyle}{
+  language=Python,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={self, None, True, False, as, with, yield,
+                lambda, import, from, pass, assert, raise,
+                except, finally, elif},
+  frame=none,
+}
+
+% Wrap lstlisting in a tcolorbox for rounded corners + title
+\newtcblisting{cppcode}[1][]{
+  listing only, listing style=CppStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=\faCode\ C++,            % remove \faCode if not using fontawesome
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+\newtcblisting{pycode}[1][]{
+  listing only, listing style=PythonStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=Python,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% Fallback plain code block (language-agnostic)
+\newtcblisting{code}[2][]{
+  listing only,
+  listing options={
+    style=PythonStyle,
+    language=#2,
+  },
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=#2,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% ── Plots and Geometry (pgfplots + tikz) ────────────────────
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,         % Better arrow tips
+  calc,                % Coordinate calculations
+  shapes.geometric,    % circles, rectangles, etc.
+  positioning,         % node placement
+  decorations.markings,% marks on paths
+  intersections,       % path intersections
+  patterns,            % hatching
+  angles, quotes,      % angle labeling
+  3d,                  % 3D axes
+}
+
+% Convenience: TikZ picture wrapper with caption
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ── Figures / Images ────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{wrapfig}   % Text-wrapped figures
+
+% Figure box style (tcolorbox)
+\newtcolorbox{figurebox}[2][]{
+  enhanced, breakable,
+  colback=white, colframe=gray!50,
+  title=#2,
+  fonttitle=\bfseries\small,
+  boxed title style={colback=gray!20, colframe=gray!50},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  sharp corners, boxrule=0.8pt,
+  #1
+}
+
+% ── Tables ──────────────────────────────────────────────────
+\usepackage{booktabs}   % \toprule, \midrule, \bottomrule
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}  % Tables spanning multiple pages
+
+% ── Hyperlinks & PDF metadata ───────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = LinkColor,
+  citecolor  = LinkColor,
+  urlcolor   = LinkColor,
+  pdftitle   = {Lecture Notes},
+  pdfauthor  = {Your Name},
+}
+
+% ── Table of Contents style ─────────────────────────────────
+\usepackage{titletoc}
+\usepackage{titlesec}
+
+% Section numbering depth
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% Section title styling
+\titleformat{\section}
+  {\large\bfseries}
+  {\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {\thesubsection}{1em}{}
+
+% ── Bibliography ────────────────────────────────────────────
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+% \addbibresource{references.bib}   % uncomment and add your .bib
+
+% ── Miscellaneous Useful Packages ───────────────────────────
+\usepackage{enumitem}          % Customise lists
+\usepackage{todonotes}         % \todo{} margin notes
+\usepackage{cleveref}          % \cref{} smart cross-refs
+\usepackage{siunitx}           % SI units: \SI{9.8}{\metre\per\second}
+\usepackage{physics}           % \dd, \grad, \curl, \laplacian …
+\usepackage{mathrsfs}          % \mathscr{F} script font
+
+% ── Convenience Math Macros ─────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\one}{\mathbbm{1}}          % indicator
+\newcommand{\eps}{\varepsilon}
+% \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+% \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\sgn}{sgn}
+% \DeclareMathOperator{\tr}{tr}
+% \DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\supp}{supp}
+
+% ── Header / Footer ─────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{\CourseName}}
+\fancyhead[R]{\small\textit{\rightmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Metadata Commands (fill these per lecture) ──────────────
+\newcommand{\CourseName}{Linear Algebra I}
+\newcommand{\CourseCode}{FMA\_1F001\_EP}
+\newcommand{\University}{École Polytechnique}
+\newcommand{\Lecturer}{Prof. Freixas Gerard}
+\newcommand{\StudentName}{Nikolay Kharovskiy}
+\newcommand{\Semester}{Fall 2025}
+
+% ============================================================
+%   DOCUMENT BEGIN
+% ============================================================
+\begin{document}
+
+% ── Title Page ──────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\Huge\bfseries \CourseName\par}
+  \vspace{0.5cm}
+  {\large \CourseCode\par}
+
+  \vspace{1.5cm}
+  \hrule height 1pt
+  \vspace{0.4cm}
+  {\Large\bfseries Lecture Notes \par}
+  \vspace{0.4cm}
+  \hrule height 1pt
+
+  \vspace{2cm}
+
+  \begin{tabular}{rl}
+    \textbf{University:} & \University\\[8pt]
+    \textbf{Lecturer:}   & \Lecturer\\[8pt]
+    \textbf{Student:}    & \StudentName\\[8pt]
+    \textbf{Semester:}   & \Semester\\[8pt]
+  \end{tabular}
+
+  \vfill
+
+  {\small These are personal lecture notes and may contain errors.
+         For the official course material consult the lecturer.}
+\end{titlepage}
+
+% ── Table of Contents ───────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ============================================================
+%  LECTURE 1
+% ============================================================
+\section{Lecture I: Groups. Vector Space}
+
+\begin{definition}{Group}{df1}
+  A \emph{group} is a (non-empty) set $G$, together with an operation $*$: $G \times G \longrightarrow G$, $(g, h) \longmapsto g*h$, 
+  Satisfying: 
+  \begin{itemize}
+    \item Neutral/Identity element $\exists e \in G$ s.t. $\forall g \in G$: $e*g = g*e = g$,
+    \item Associativety $\forall g_1, g_2, g_3 \in G$: $(g_1 * g_2) * g_3 = g_1 * (g_2 * g_3)$,
+    \item Inverses/Opposites $\forall g \in G \exists h \in G$: $g*h = h*g = e$.
+  \end{itemize}
+
+  Furthermore, we say G is \emph{Abelian} or \emph{Commutative} if $\forall g_1, g_2 \in G$: $g_1 * g_2 = g_2 * g_1$.
+\end{definition}
+
+\begin{example}{}{ex1}
+  \begin{itemize}
+    \item $G = \{0\}$, with $0 + 0 = 0$ (zero group),
+    \item $\Z$ with an addition $+$, neutral: $0$, inverse of $n$ is $-n$, commutative,
+    \item $\N$ with $+$ and $0$ is not a group because there's no inverse for $1$.
+    \item $\R ^* = \R \setminus \{0\}$ with product and $1$.
+  \end{itemize}
+\end{example}
+
+\begin{lemma}{}{lm1}
+  Let G be a group, then
+  \begin{enumerate}
+    \item there's a unique neutral element,
+    \item inverses are likewise unique.
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}[Proof of Lemma~\ref{lem:lm1}]
+  \begin{enumerate}
+    \item Suppose that $e_1, e_2$ are neutral elements. Then $e_2 = e_2 * e_1 = e_1$.
+    \item Let $g \in G$ and suppose that $h_1, h_2$ are its inverses, then $(h_1 * g) * h_2 = h_1 * (g * h_2)$ $\implies$ $e * h_2 = h_1 * e$.
+  \end{enumerate}
+
+\end{proof}
+
+\subsubsection*{\underline{Notation:}}
+We will use $g^{-1}$ meaning the inverse of $g$ in a group $G$. In Abelian groups with addition the inverse is denoted as $-g$.
+
+\subsection{Vector Spaces}
+
+\begin{example}{}{ex2}
+  Recall $\R ^2 = \{(x, y) | x, y \in \R\}$. We have a zero vector $(0,0)$ and an addition $(x_1, y_1) + (x_2, y_2) = (x_1 + x_2, y_1 + y_2)$. Easy to proof that it's a group. 
+  
+  But there's something more in it: $\forall \lambda \in \R : \lambda (x, y) = (\lambda x, \lambda y)$.
+  Interaction with $+$: $\lambda ((x, y) + (x', y')) = \lambda (x, y) + \lambda (x', y')$ and $(\lambda + \mu) (x, y) = \lambda (x, y) + \mu (x, y)$.
+\end{example}
+
+\subsubsection*{\underline{Notation:}}
+From now on, $\K$ denotes $\Q$, $\R$ or $\C$.
+
+\begin{definition}{Vector Space}{df3}
+  A $\K$\emph{-vector space(vs)} is a set $E$ together with the following structures:
+  \begin{itemize}
+    \item A stucture of a commutative group with $+$ and neutral element denoted $0$,
+    \item Multiplication by scalars in $\K$: 
+    \[
+      \cdot: \K \times E \longrightarrow E, (\lambda, (x, y)) \longmapsto \lambda (x, y) \text{.}
+    \]
+
+    Satisfying
+    \begin{itemize}
+      \item distributivity over $+_E$: $\lambda (u +_E v) = \lambda u +_E \lambda v$,
+      \item distributivity over addition in $\K$: $(\lambda + \mu) u = \lambda u +_E \lambda v$,
+      \item associativety $\forall \lambda, \mu \in \K, u \in E$: $(\lambda \cdot \mu) \cdot_E u = \lambda \cdot_E (\mu \cdot_E u)$,
+      \item identity/unit: $\forall u \in E: 1 \cdot u = u$.
+    \end{itemize}
+  \end{itemize}
+  
+\end{definition}
+
+\begin{definition}{Vector}{df4}
+  Elements of a vector space are usually called \emph{vectors}.
+\end{definition}
+
+\begin{example}{}{ex3}
+  \begin{itemize}
+    \item $E = \{0\}$ ~--- zero vector space,
+    \item $E = \K ^n = \{(a_1, a_2, \dots, a_n)\, | \, a_i \in \K \}$
+    \begin{itemize}
+      \item addition: $(a_1, \dots a_n) + (b_1, \dots, b_n) = (a_1 + b_1, \dots, a_n + b_n)$,
+      \item zero element: $(0, \dots, 0)$ denoted $\vec{0}$,
+      \item inverse: $-(a_1, \dots, a_n) = (-a_1, \dots, -a_n)$,
+      \item multiplication by scalars: $\lambda (a_1, \dots, a_n) = (\lambda a_1, \dots, \lambda a_n)$.
+    \end{itemize}
+
+    Note: $\K$ itself is a vector space over $\K$.
+    
+    \item Sequences $\K ^\N = \{(a_n)_{n \leq 0} \, | \, a_i \in \K\}$,
+    \item If $X$ is a non-empty set and $f(X, \K) = \{f: X \longrightarrow \K \}$. 
+    \begin{itemize}
+      \item addition: $f, g \in f(X, \K)$ we define $(f+g)(x) = f(x) + g(x)$,
+      \item zero element: $0(x) = 0$,
+      \item inverse: if $f \in f(X, \K)$ then $(-f)(x) = -f(x)$.
+      \item multiplication by scalars if $\lambda \in \K$ and $f \in f(X, \K)$ we define $(\lambda f)(x) = \lambda f(x)$.
+    \end{itemize}
+    
+    Note: $f(X, \K)$ generalises previous examples:
+    \begin{itemize}
+      \item $\K ^ n$ is the same as $f(\{1, \dots, n\}, \K)$.
+    \end{itemize}
+  \end{itemize}
+\end{example}
+
+\begin{lemma}{}{lm5}
+  Let $E$ be a vector space over $\K$. Then: 
+  \begin{itemize}
+    \item $\forall v \in E: 0_{\K} \cdot v = 0_E$,
+    \item $\forall \lambda \in \K: \lambda \cdot 0_E = 0_E$,
+    \item $\forall v \in E: (-1) \cdot v = -v$,
+    \item if $\lambda \in \K, u \in E$ then $\lambda u = 0_E \Leftrightarrow \lambda = 0_\K \text{ or } u = 0_E$.
+  \end{itemize}
+\end{lemma}
+
+\subsubsection*{\underline{Conventions:}}
+\begin{itemize}
+  \item From now on, we use $0$ instead of $0_\K$ and $0_E$.
+  \item In $E$, $u, v \in E$ we write $u - v$ meaning $u + (-v)$.
+  \item We write $u + v + w$ instead of $u + (v + w)$ and $(u + v) + w$.
+  \item We sometimes write $\lambda u$ instead of $\lambda \cdot u$.
+\end{itemize}
+
+More generally, if $I$ is a finite(index) set and $\{u_i\}_{i \in I}$ is a collection of vectors then we can write $\displaystyle \sum_{i \in I} u_i$.
+
+\section{Lecture II: Vector subspaces}
+
+\begin{example}{}{ex4}
+  In $\K ^3$ we can consider $F = \{ (x, y, 0) \, | \, x, y \in \K \}$.
+  
+  We observe:
+  \begin{enumerate}
+    \item if $(x, y, z), (x', y', z') \in F$ then $(x + x', y + y', z + z') \in F$,
+    \item if $(x, y, z) \in F$ and $\lambda \in \K$ then $(\lambda x, \lambda y, \lambda z) \in F$,
+    \item $(0, 0, 0) \in F$.
+  \end{enumerate}
+\end{example}
+
+\begin{definition}{Vector subspace}{df6}
+  Let $E$ be a $\K$-vector space and $F \subseteq E$. We say that $F$ is a \emph{vector subspace(vss)} of $E$ if $F$ inherits from $E$ a structure of $\K$-vs.
+  
+  Namely:
+  \begin{enumerate}
+    \item $F$ is closed under addition in $E$,
+    \item $F$ is closed under multiplication by scalars,
+    \item $0 \in F$.
+  \end{enumerate}
+\end{definition}
+
+\begin{example}{Vector subspaces}{ex5}
+  \begin{itemize}
+    \item $xy$-plane in $\R^3$,
+    \item $\{0\}$ is always a $\K$-vss of a $\K$-vs,
+    \item $\emptyset$ is never a $\K$-vss,
+    \item A $\K$-vs $E$ is also a $\K$-vss of itself,
+    \item $\K[X]$ ~--- the set of all polynomials over $\K$ (expressions of the form $a_0 + a_1 X + \dots a_d X^d$ for some $d \geq 0$ (not fixed) and $a_i \in \K$).
+    $\K[X]$ is a $\K$-vs and $\K[X]_{\leq d}$ is a $\K$-vss of $K[X]$.
+    \item In $\R^2$, consider $F = \{(x, y) \in \R^2 \mid x \cdot y = 0\}$. 
+    $F$ is not a $\K$-vss of $\R^2$ because $(1,0) \in F$ and $(0,1) \in F$, but $(1,0) + (0,1) = (1,1) \notin F$.
+    
+  \end{itemize}
+\end{example}
+
+\subsection{Span of a Family of Vectors}
+
+Let $E$ be a $\K$-vector space and $u_1, \dots, u_n \in E$.
+
+\begin{definition}{Span}{df7}
+  The \emph{span} of $u_1, \dots, u_n$, denoted by $\text{Vect}(u_1, \dots, u_n)$ or $\langle u_1, \dots, u_n \rangle$, is defined as:
+  \[
+    \langle u_1, \dots, u_n \rangle = \{ \lambda_1 u_1 + \dots + \lambda_n u_n \mid \lambda_i \in \K \}.
+  \]
+\end{definition}
+
+\begin{lemma}{}{lm4}
+  Let $E$ and $u_1, \dots, u_n$ be as above. Then $\langle u_1, \dots, u_n \rangle$ is a $\K$-vss of $E$.
+\end{lemma}
+
+\subsubsection*{\underline{Generalisation:}}
+If $\{u_i\}_{i \in I}$ is a family of vectors in $E$ (possibly infinite), we define:
+\[
+  \langle \{u_i\}_{i \in I} \rangle = \text{finite linear combinations of vectors in } \{u_i\}_{i \in I} = \left\{ \sum_{j=1}^k \lambda_j u_{i_j} \;\middle|\; k \ge 0, \, \lambda_j \in \K, \, i_j \in I \right\}.
+\]
+
+\begin{example}{}{ex7}
+  \begin{enumerate}
+    \item $\K^n = \langle (1,0,\dots,0), (0,1,\dots,0), \dots, (0,0,\dots,1) \rangle$, since $(a_1, \dots, a_n) = a_1(1,0,\dots,0) + \dots + a_n(0,0,\dots,1)$.
+    \item $\K[X] = \langle 1, X, X^2, \dots \rangle$.
+    \item $\K[X]_{\le d} = \langle 1, X, X^2, \dots, X^d \rangle$.
+  \end{enumerate}
+\end{example}
+
+\begin{remark}{}{rmk-1}
+  \begin{itemize}
+    \item There can be repeated elements in the family.
+    \item $\langle \emptyset \rangle = \{0\}$.
+    \item Shorthand notation: $\langle A \rangle$, where $A = \{u_i\}_{i \in I}$.
+  \end{itemize}
+\end{remark}
+
+\begin{lemma}{}{lm4b}
+  Let the notation be as above.
+  \begin{enumerate}
+    \item $\langle \{u_i\}_{i \in I} \rangle$ is a vss of $E$ containing $\{u_i\}_{i \in I}$.
+    \item If $H \subseteq E$ is a vss such that $\{u_i\}_{i \in I} \subseteq H$, then $\langle \{u_i\}_{i \in I} \rangle \subseteq H$.
+  \end{enumerate}
+  Informally: $\langle \{u_i\}_{i \in I} \rangle$ is the smallest vss which contains $\{u_i\}_{i \in I}$.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma~\ref{lem:lm4b}]
+  By contradiction.  
+\end{proof}
+
+\subsection{Intersection and Sum of Vector Subspaces}
+
+\begin{proposition}{Intersection of Subspaces}{prop_inter}
+  Let $F, G$ be vector subspaces of a $\K$-vs $E$. Then $F \cap G = \{u \in E \mid u \in F \text{ and } u \in G\}$ is a vss of $E$.
+\end{proposition}
+
+\begin{proof}
+  \begin{itemize}
+    \item $0 \in F$ and $0 \in G \implies 0 \in F \cap G$.
+    \item If $x, y \in F \cap G$, then $x, y \in F \implies x + y \in F$, and $x, y \in G \implies x + y \in G$, so $x + y \in F \cap G$.
+    \item Similarly, $\lambda x \in F \cap G$ for any $\lambda \in \K$.
+  \end{itemize}
+\end{proof}
+
+\begin{remark}{}{rem_inter}
+  Never write $F \cap G = \emptyset$ (the zero element $0$ is always in $F \cap G$).
+\end{remark}
+
+\begin{definition}{Sum of Subspaces}{df8}
+  Let $E$ be a $\K$-vs and $F, G \subseteq E$ two vss. We define the sum of $F$ and $G$ by:
+  \[
+    F + G = \{u + v \in E \mid u \in F, \, v \in G\}.
+  \]
+\end{definition}
+
+\begin{lemma}{}{lm8}
+  \begin{enumerate}
+    \item $F + G$ is a vss of $E$.
+    \item $F, G \subseteq F + G$.
+    \item If $H \subseteq E$ is a vss such that $F \subseteq H$ and $G \subseteq H$, then $F + G \subseteq H$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}[Proof of (1)]
+    $0 \in F$, $0 \in G$ and $0 + 0 = 0 \in F + G$,
+    $u_1 + v_1 \in F + G, u_2 + v_2 \in F + G \implies (u_1 + u_2) + (v_1 + v_2) \in F + G$,
+    Similarly for scalar multiplication.
+\end{proof}
+
+\subsection{Direct Sums and Complementary Subspaces}
+
+\begin{lemma}{}{lm10}
+  Let $E$ be a $\K$-vs and $F, G \subseteq E$ be vss. The following are equivalent:
+  \begin{enumerate}
+    \item $F \cap G = \{0\}$.
+    \item $\forall u \in F + G$, there exist a unique $v \in F$ and a unique $w \in G$ such that $u = v + w$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}[Proof of $(1) \implies (2)$]
+  Assume $F \cap G = \{0\}$. Let $u \in F + G$ and suppose $u = v_1 + w_1 = v_2 + w_2$ with $v_1, v_2 \in F$ and $w_1, w_2 \in G$.
+  Then $v_1 - v_2 = w_2 - w_1$.
+  Since $v_1 - v_2 \in F$ and $w_2 - w_1 \in G$, we have $v_1 - v_2 \in F \cap G = \{0\}$.
+  Thus $v_1 - v_2 = 0 \implies v_1 = v_2$, and similarly $w_1 - w_2 = 0 \implies w_1 = w_2$.
+\end{proof}
+
+\begin{definition}{Direct Sum}{df11}
+  If any of the equivalent conditions of Lemma~\ref{lem:lm10} is satisfied, we say that $F$ and $G$ form a \emph{direct sum}. We write $F \oplus G$ for $F + G$ in this setting.
+\end{definition}
+
+\begin{definition}{Complementary Subspace}{df12}
+  Let $F \subseteq E$ be a vss of $E$. A \emph{complement} for $F$ is a vss $G \subseteq E$ such that $F \oplus G = E$. (Hence $F + G = E$ and $F \cap G = \{0\}$).
+  In such case, we say that $F$ and $G$ are complementary.
+\end{definition}
+
+\begin{example}{}{ex8}
+  In $\R^3$, the $xy$-plane and the $z$-axis are complementary subspaces.
+\end{example}
+
+\begin{proposition}{Existence of Complement}{prop13}
+  Let $E$ be a $\K$-vs and $F \subseteq E$ a $\K$-vss. Then there exists a complement for $F$.
+\end{proposition}
+
+% ============================================================
+%  LECTURE III
+% ============================================================
+\section{Lecture III: Finite Dimensional Vector Spaces}
+
+\begin{definition}{Finite Dimensionality}{df14}
+  Let $E$ be a $\K$-vs. We say $E$ is \emph{finite dimensional} if there exist $e_1, \dots, e_n \in E$ such that $E = \langle e_1, \dots, e_n \rangle$.
+  In this case, we define:
+  \[
+    \dim E = \min \{ n \ge 0 \mid \exists e_1, \dots, e_n \in E \text{ s.t. } \langle e_1, \dots, e_n \rangle = E \}.
+  \]
+\end{definition}
+
+\begin{remark}{}{rem_dim}
+  $\dim E = 0 \iff E = \{0\}$. If $E$ does not have finite dimension, we say $E$ is \emph{infinite dimensional} and write $\dim E = +\infty$.
+\end{remark}
+
+\begin{definition}{Linear Independence}{df15}
+  Let $u_1, \dots, u_n \in E$. We say they are \emph{linearly independent} if:
+  \[
+    \lambda_1 u_1 + \dots + \lambda_n u_n = 0 \implies \lambda_1 = \dots = \lambda_n = 0 \quad (\lambda_i \in \K).
+  \]
+  More generally, a family $\{u_i\}_{i \in I}$ is linearly independent if any finite subfamily is linearly independent.
+\end{definition}
+
+\begin{lemma}{}{lm16}
+  Let $E$ be a $\K$-vs, and $u_1, \dots, u_n \in E$. The following are equivalent:
+  \begin{enumerate}
+    \item $u_1, \dots, u_n$ are linearly independent.
+    \item $\forall u \in \langle u_1, \dots, u_n \rangle$, there exist unique $\lambda_1, \dots, \lambda_n \in \K$ such that $u = \lambda_1 u_1 + \dots + \lambda_n u_n$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{lemma}{}{lm17}
+  Suppose $\{u_i\}_{i \in I}$ is a linearly independent family. Then any subfamily $\{u_j\}_{j \in J}$ (with $J \subseteq I$) is linearly independent.
+\end{lemma}
+
+\begin{proposition}{}{prop18}
+  Let $E$ be a finite dimensional vs with $\dim E = n$. Assume $E = \langle e_1, \dots, e_n \rangle$. Then $e_1, \dots, e_n$ are linearly independent.
+\end{proposition}
+
+\begin{definition}{Linear Dependence}{df19}
+  If vectors are not linearly independent, we say they are \emph{linearly dependent}.
+\end{definition}
+
+\begin{lemma}{}{lm20}
+  A family $u_1, \dots, u_n \in E$ is linearly dependent if and only if there exists some $i \in \{1, \dots, n\}$ such that $u_i \in \langle u_1, \dots, u_{i-1}, u_{i+1}, \dots, u_n \rangle$.
+\end{lemma}
+
+\subsection{Bases}
+
+\begin{definition}{Basis}{df21}
+  Let $E$ be a $\K$-vs. A \emph{basis} of $E$ is a family of vectors $\{e_i\}_{i \in I}$ such that:
+  \begin{enumerate}
+    \item $E = \langle \{e_i\}_{i \in I} \rangle$ (spanning family),
+    \item $\{e_i\}_{i \in I}$ is linearly independent.
+  \end{enumerate}
+\end{definition}
+
+\begin{remark}{}{rem_basis}
+  \begin{enumerate}
+    \item If $e_1, \dots, e_n$ is a basis, then for all $u \in E$, there exist unique $\lambda_1, \dots, \lambda_n \in \K$ such that $u = \sum_{i=1}^n \lambda_i e_i$.
+    \item By convention, if $E = \{0\}$, then $\emptyset$ is a basis of $E$.
+  \end{enumerate}
+\end{remark}
+
+\begin{theorem}{Existence of Basis}{thm22}
+  Every vector space admits a basis.
+\end{theorem}
+
+\begin{theorem}{Dimension Theorem}{thm23}
+  Let $E$ be a finite dimensional space with $\dim E = n$. Then all bases of $E$ have exactly $n$ vectors.
+\end{theorem}
+
+\begin{lemma}{}{lm24}
+  Let $u_1, \dots, u_n \in E$ be linearly independent vectors in a vs $E$. Let $k \in \{1, \dots, n-1\}$. Then:
+  \[
+    \langle u_1, \dots, u_k \rangle \cap \langle u_{k+1}, \dots, u_n \rangle = \{0\}.
+  \]
+\end{lemma}
+
+\begin{lemma}{}{lm25}
+  Let $u_1, \dots, u_n \in E$. Let $k \in \{1, \dots, n\}$ and $v_{k+1}, \dots, v_n \in \langle u_1, \dots, u_k \rangle$. Then:
+  \[
+    \langle u_1, \dots, u_n \rangle = \langle u_1, \dots, u_k, u_{k+1} + v_{k+1}, \dots, u_n + v_n \rangle.
+  \]
+\end{lemma}
+
+\begin{lemma}{}{lm26}
+  In the setting of Lemma~\ref{lem:lm25}, assume moreover that $u_1, \dots, u_n$ are linearly independent. Then $u_1, \dots, u_k, u_{k+1} + v_{k+1}, \dots, u_n + v_n$ are also linearly independent.
+\end{lemma}
+
+\begin{proposition}{Steinitz Exchange Lemma / Comparison}{prop27}
+  Let $E$ be a $\K$-vs. Let $u_1, \dots, u_m \in E$ be a linearly independent family, and $e_1, \dots, e_n \in E$ another family. Suppose $\langle u_1, \dots, u_m \rangle \subseteq \langle e_1, \dots, e_n \rangle$. Then $m \le n$, and equality holds if and only if $\langle u_1, \dots, u_m \rangle = \langle e_1, \dots, e_n \rangle$.
+\end{proposition}
+
+\begin{proof}[Proof Sketch (Gaussian Elimination Idea)]
+  First, since $u_1 \in \langle e_1, \dots, e_n \rangle$, write $u_1 = a_{11}e_1 + \dots + a_{n1}e_n$. Since $u_1 \neq 0$, at least one coefficient is non-zero (say $a_{11} \neq 0$). We replace $e_1$ with $u_1$.
+  Next, eliminate the component along $u_1$ from $u_2$ by setting $u_2' = u_2 - \frac{b_1}{a_{11}} u_1$. By Lemma~\ref{lem:lm25} and Lemma~\ref{lem:lm26}, the new family remains linearly independent and spans the same subspace. Proceeding inductively yields $m \le n$.
+\end{proof}
+
+\begin{corollary}{}{cor28}
+  Let $E$ be a $\K$-vs and $e_1, \dots, e_n \in E$ linearly independent. Then $e_1, \dots, e_n$ is a basis of $\langle e_1, \dots, e_n \rangle$, so $\dim \langle e_1, \dots, e_n \rangle = n$.
+\end{corollary}
+
+\begin{corollary}{}{cor29}
+  Let $E$ be a finite dimensional vs with $\dim E = n$. Let $u_1, \dots, u_n \in E$ be linearly independent. Then $E = \langle u_1, \dots, u_n \rangle$, so $u_1, \dots, u_n$ forms a basis of $E$.
+\end{corollary}
+
+\begin{corollary}{}{cor30}
+  Let $E$ be a finite dimensional vs and $F \subseteq E$ a vss. Then $F$ is finite dimensional and $\dim F \le \dim E$. Moreover, $\dim F = \dim E \iff F = E$.
+\end{corollary}
+
+\begin{example}{}{ex9}
+  $\dim \K^n = n$, since $\K^n = \langle (1,0,\dots,0), (0,1,\dots,0), \dots, (0,\dots,0,1) \rangle$.
+\end{example}
+
+\subsection{Extraction and Completion of Bases}
+
+\begin{proposition}{Extraction of Bases}{prop31}
+  Let $E$ be a $\K$-vs. Assume $E = \langle e_1, \dots, e_n \rangle$. Then one can find a subfamily $e_{i_1}, \dots, e_{i_k}$ which is a basis of $E$.
+\end{proposition}
+
+\begin{proposition}{Incomplete Basis Theorem}{prop32}
+  Let $E$ be a finite dimensional vs. Let $e_1, \dots, e_m \in E$ be linearly independent. Then $e_1, \dots, e_m$ can be completed into a basis of $E$, i.e., there exist $e_{m+1}, \dots, e_n$ such that $e_1, \dots, e_n$ is a basis of $E$.
+\end{proposition}
+
+\begin{corollary}{Existence of Complement (Finite Dim)}{cor33}
+  Let $E$ be a finite dimensional vs, and $F \subseteq E$ a vss. Then there exists a vss $G \subseteq E$ such that $E = F \oplus G$.
+\end{corollary}
+
+\begin{theorem}{Grassmann's Formula}{thm34}
+  Let $E$ be a finite dimensional vs, and $F, G \subseteq E$ two vss. Then:
+  \[
+    \dim(F + G) = \dim F + \dim G - \dim(F \cap G).
+  \]
+  In particular, $\dim(F + G) \le \dim F + \dim G$, with equality if and only if $F \cap G = \{0\}$.
+\end{theorem}
+
+\begin{example}{}{ex10}
+  Let $E = \R[X]_{\le 3} = \{P \in \R[X] \mid \deg P \le 3\}$, so $\dim E = 4$.
+  Consider $F = \{P \in E \mid P(0) = P(1) = 0\}$ and $G = \{P \in E \mid P(2) = P(3) = 0\}$.
+  \begin{itemize}
+    \item $F \cap G = \{0\}$: If $P \in F \cap G$, then $P$ has 4 distinct roots ($0,1,2,3$), but $\deg P \le 3 \implies P = 0$.
+    \item $\dim F \ge 2$ since $X(X-1), X^2(X-1) \in F$ are linearly independent. Similarly $\dim G \ge 2$.
+    \item By Grassmann's formula: $\dim(F + G) = \dim F + \dim G \ge 2 + 2 = 4 = \dim E \implies E = F \oplus G$.
+  \end{itemize}
+\end{example}
+
+% ============================================================
+%  LECTURE IV
+% ============================================================
+\section{Lecture IV: Linear Maps}
+
+\begin{definition}{Linear Map}{df35}
+  Let $E, F$ be two $\K$-vs. A map $f: E \to F$ is \emph{$\K$-linear} if:
+  \begin{enumerate}
+    \item $\forall u, v \in E: f(u + v) = f(u) + f(v)$,
+    \item $\forall \lambda \in \K, u \in E: f(\lambda u) = \lambda f(u)$.
+  \end{enumerate}
+  Equivalently, $\forall \lambda, \mu \in \K, u, v \in E: f(\lambda u + \mu v) = \lambda f(u) + \mu f(v)$.
+\end{definition}
+
+\begin{example}{}{ex11}
+  \begin{enumerate}
+    \item Zero map $0: E \to F, u \mapsto 0$.
+    \item Identity map $\text{Id}_E: E \to E, u \mapsto u$.
+    \item Derivative map $D: \K[X] \to \K[X], P(X) \mapsto P'(X)$.
+    \item Evaluation map: Fix $x_0 \in X$. $\text{ev}_{x_0}: \mathcal{F}(X, \R) \to \R, f \mapsto f(x_0)$.
+  \end{enumerate}
+\end{example}
+
+\begin{lemma}{}{lm36}
+  Let $f: E \to F$ be a linear map. Then $f(0_E) = 0_F$.
+\end{lemma}
+
+\subsubsection*{\underline{Notation:}}
+We denote by $\text{Hom}_\K(E, F)$ or $\mathcal{L}(E, F)$ the set of all $\K$-linear maps from $E$ to $F$.
+If $E = F$, we denote $\text{Hom}_\K(E, E) = \text{End}(E)$, and elements of $\text{End}(E)$ are called \emph{endomorphisms} of $E$.
+
+\begin{proposition}{Properties of Linear Maps}{prop37}
+  \begin{enumerate}
+    \item $\text{Hom}_\K(E, F)$ is a $\K$-vector space under point-wise addition and scalar multiplication.
+    \item If $f \in \text{Hom}_\K(E, F)$ and $g \in \text{Hom}_\K(F, G)$, then the composition $g \circ f: E \to G$ is a $\K$-linear map.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}{Images of Subspaces}{prop38}
+  Let $f: E \to F$ be linear.
+  \begin{enumerate}
+    \item If $E' \subseteq E$ is a vss of $E$, then $f(E') = \{f(u) \mid u \in E'\}$ is a vss of $F$.
+    \item If $F' \subseteq F$ is a vss of $F$, then $f^{-1}(F') = \{u \in E \mid f(u) \in F'\}$ is a vss of $E$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{definition}{Image and Kernel}{df39}
+  Let $f: E \to F$ be linear.
+  \begin{itemize}
+    \item The \emph{image} of $f$ is $\text{Im}(f) = f(E) \subseteq F$, which is a vss of $F$.
+    \item The \emph{kernel} of $f$ is $\text{Ker}(f) = f^{-1}(\{0\}) = \{u \in E \mid f(u) = 0\}$, which is a vss of $E$.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}{Injectivity and Surjectivity}{prop40}
+  \begin{enumerate}
+    \item $f$ is surjective $\iff \text{Im}(f) = F$.
+    \item $f$ is injective $\iff \text{Ker}(f) = \{0\}$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{definition}{Isomorphism and Automorphism}{df41}
+  A linear map $f: E \to F$ is an \emph{isomorphism} if it is bijective.
+  An isomorphism $f: E \to E$ is called an \emph{automorphism} of $E$.
+\end{definition}
+
+\begin{proposition}{}{prop42}
+  If $f: E \to F$ is an isomorphism, then its inverse $f^{-1}: F \to E$ is also a $\K$-linear map.
+\end{proposition}
+
+\begin{proposition}{Linear Map Determination by a Basis}{prop43}
+  Let $E, F$ be vector spaces. Fix a basis $\{e_i\}_{i \in I}$ of $E$ and a collection of vectors $\{f_i\}_{i \in I} \subseteq F$.
+  Then there exists a unique linear map $f: E \to F$ such that $f(e_i) = f_i$ for all $i \in I$.
+\end{proposition}
+
+\begin{proposition}{}{prop44}
+  Let $f: E \to F$ be a linear map.
+  \begin{enumerate}
+    \item $f$ is injective $\iff f$ preserves linear independence.
+    \item $f$ is surjective $\iff f$ sends any spanning set to a spanning set of $F$.
+    \item $f$ is bijective $\iff f$ maps any basis of $E$ to a basis of $F$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{corollary}{Dimension and Linear Maps}{cor45}
+  Let $E, F$ be finite dimensional $\K$-vs, and $f: E \to F$ linear.
+  \begin{enumerate}
+    \item If $f$ is injective, then $\dim E \le \dim F$.
+    \item If $f$ is surjective, then $\dim E \ge \dim F$.
+    \item If $f$ is bijective, then $\dim E = \dim F$.
+  \end{enumerate}
+\end{corollary}
+
+\begin{corollary}{Equal Dimension Criteria}{cor47}
+  Let $E, F$ be finite dimensional vector spaces with $\dim E = \dim F$. Let $f: E \to F$ be a linear map. The following are equivalent:
+  \begin{enumerate}
+    \item $f$ is injective.
+    \item $f$ is surjective.
+    \item $f$ is bijective.
+  \end{enumerate}
+\end{corollary}
+
+\subsection{Rank and Nullity}
+
+\begin{definition}{Rank and Nullity}{df48}
+  Let $f: E \to F$ be a linear map.
+  \begin{enumerate}
+    \item The \emph{rank} of $f$ is $\text{rk}(f) = \dim(\text{Im}(f))$.
+    \item The \emph{nullity} of $f$ is $\text{null}(f) = \dim(\text{Ker}(f))$.
+  \end{enumerate}
+\end{definition}
+
+\begin{theorem}{Rank-Nullity Theorem}{thm49}
+  Let $E, F$ be vector spaces with $E$ finite dimensional, and $f: E \to F$ a linear map. Then:
+  \[
+    \dim E = \text{rk}(f) + \text{null}(f).
+  \]
+\end{theorem}
+
+% ============================================================
+%  LECTURE V
+% ============================================================
+\section{Lecture V: Matrices and Determinants}
+
+Let $A \in \text{Mat}_{m \times n}(\K)$ be an $m \times n$ matrix. We associate to $A$ the linear map $f_A: \K^n \to \K^m, X \mapsto AX$.
+
+\begin{definition}{Rank and Nullity of a Matrix}{df50}
+  $\text{rk}(A) = \text{rk}(f_A)$ and $\text{null}(A) = \text{null}(f_A)$.
+\end{definition}
+
+\begin{proposition}{Matrix Representation}{prop53}
+  Let $E, F$ be finite dimensional vs with basis $\mathcal{B} = (e_1, \dots, e_n)$ for $E$ and $\mathcal{B}' = (u_1, \dots, u_m)$ for $F$.
+  For $f \in \text{Hom}_\K(E, F)$, the matrix of $f$ with respect to $\mathcal{B}$ and $\mathcal{B}'$, denoted $\text{Mat}_{\mathcal{B}, \mathcal{B}'}(f)$ or $M_f$, is defined by:
+  \[
+    f(e_j) = \sum_{i=1}^m a_{ij} u_i \quad (j = 1, \dots, n), \qquad M_f = (a_{ij})_{m \times n}.
+  \]
+\end{proposition}
+
+\begin{corollary}{}{cor55}
+  $\dim \text{Hom}_\K(E, F) = \dim \text{Mat}_{m \times n}(\K) = m \cdot n$.
+\end{corollary}
+
+\begin{definition}{Invertibility of Matrix}{df55}
+  A matrix $A \in \text{Mat}_n(\K)$ is invertible if its associated linear map $f_A$ is bijective. In this case, $A^{-1}$ satisfies $A A^{-1} = A^{-1} A = \text{I}_n$.
+\end{definition}
+
+\begin{lemma}{Equivalences of Invertibility}{lm56}
+  Let $A \in \text{Mat}_n(\K)$. The following are equivalent:
+  \begin{enumerate}
+    \item $A$ is invertible.
+    \item $\text{rk}(A) = n$.
+    \item $\text{null}(A) = 0$.
+    \item $\exists B$ s.t. $AB = \text{I}_n$.
+    \item $\exists B$ s.t. $BA = \text{I}_n$.
+    \item $AX = Y$ has a unique solution $X$ for every $Y \in \K^n$.
+  \end{enumerate}
+\end{lemma}
+
+% ============================================================
+%  EXPANDED PERMUTATIONS & SIGNATURE SECTION
+% ============================================================
+
+\subsection{Preliminaries on Permutations}
+
+\begin{definition}{Permutation}{df62}
+  Let $S$ be a non-empty set. A \emph{permutation} on $S$ is a bijective map $f: S \to S$.
+\end{definition}
+
+\begin{lemma}{}{lm63}
+  The set of permutations of a non-empty set $S$, endowed with the composition of maps, has the structure of a group.
+\end{lemma}
+
+\begin{definition}{Symmetric Group}{df64}
+  The \emph{symmetric group of order $n$} is the set of permutations on $\{1, 2, \dots, n\}$ (for $n \ge 1$). It is denoted by $S_n$ or $\mathfrak{S}_n$.
+\end{definition}
+
+\subsubsection*{\underline{Notation:}}
+If $\sigma \in S_n$, we write:
+\[
+  \sigma = \begin{pmatrix} 1 & 2 & \dots & n \\ \sigma(1) & \sigma(2) & \dots & \sigma(n) \end{pmatrix}
+\]
+
+\begin{lemma}{}{lm65}
+  \begin{enumerate}
+    \item $\# S_n = n!$
+    \item If $n \ge 3$, $S_n$ is not commutative (non-Abelian).
+  \end{enumerate}
+\end{lemma}
+
+\subsection{Cycles and Transpositions}
+
+\begin{definition}{Cycles and Transpositions}{df66}
+  \begin{enumerate}
+    \item A \emph{cycle} of $S_n$ (or cyclic permutation) is a permutation $\sigma \in S_n$ such that there exist distinct elements $i_1, i_2, \dots, i_k \in \{1, 2, \dots, n\}$ with:
+    \[
+      \sigma(i_1) = i_2, \quad \sigma(i_2) = i_3, \quad \dots, \quad \sigma(i_k) = i_1,
+    \]
+    and $\sigma(j) = j$ for all $j \notin \{i_1, \dots, i_k\}$.
+    We denote such a cycle by $(i_1 \, i_2 \, \dots \, i_k)$.
+    \item If $\sigma$ is a cycle as in (1), we call $\{i_1, \dots, i_k\}$ the \emph{orbit} of $\sigma$.
+    \item A \emph{transposition} is a cycle of length 2, i.e., of the form $\tau = (i \,\, j)$ with $i \neq j$.
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}{Decomposition of Permutations}{prop67}
+  \begin{enumerate}
+    \item Any permutation can be written as a composition of cycles with disjoint orbits. These cycles commute with each other, and the decomposition is unique up to order: $\sigma = \sigma_1 \circ \sigma_2 \circ \dots \circ \sigma_m$.
+    \item Any cyclic permutation is a composition of transpositions.
+    \item Any permutation is a composition of transpositions. This decomposition is not unique, but the number of transpositions always has a well-defined parity (even or odd).
+  \end{enumerate}
+\end{proposition}
+
+\subsection{Parity and Signature}
+
+\begin{definition}{Parity and Signature}{df68}
+  The \emph{parity} of a permutation $\sigma \in S_n$ is the parity of the number of transpositions in any of its decompositions.
+  The \emph{signature} of $\sigma \in S_n$ is defined by:
+  \[
+    \epsilon(\sigma) = 
+    \begin{cases} 
+      +1 & \text{if } \sigma \text{ is even}, \\
+      -1 & \text{if } \sigma \text{ is odd}.
+    \end{cases}
+  \]
+\end{definition}
+
+\begin{lemma}{}{lm69}
+  The map $\epsilon: S_n \to \{\pm 1\}$ satisfies:
+  \begin{enumerate}
+    \item $\epsilon(\sigma_1 \circ \sigma_2) = \epsilon(\sigma_1) \epsilon(\sigma_2)$,
+    \item $\epsilon(\text{id}) = 1$.
+  \end{enumerate}
+\end{lemma}
+
+\subsubsection*{\underline{Alternative Definition via Inversions:}}
+Let $\sigma \in S_n$. An \emph{inversion} in $\sigma$ is a pair $(i, j)$ with $1 \le i < j \le n$ such that $\sigma(i) > \sigma(j)$.
+If $I(\sigma)$ is the total number of inversions in $\sigma$, then:
+\[
+  \epsilon(\sigma) = (-1)^{I(\sigma)}
+\]
+
+% ============================================================
+%  COMPLETE & MERGED: ALTERNATING FORMS, DETERMINANTS & APPLICATIONS
+% ============================================================
+
+\subsection{Alternating $n$-Forms}
+
+\begin{definition}{Alternating $n$-Form}{df70}
+  Let $E$ be a $\K$-vs and $n \ge 1$ an integer.
+  An \emph{alternating $n$-form} is a map:
+  \[
+    \Theta: \underbrace{E \times \dots \times E}_{n \text{ times}} \longrightarrow \K, \quad (e_1, \dots, e_n) \longmapsto \Theta(e_1, \dots, e_n) \in \K
+  \]
+  such that:
+  \begin{enumerate}
+    \item $\Theta$ is linear in every variable (multilinear),
+    \item If $e_i = e_j$ for some $i < j$, then $\Theta(e_1, \dots, e_i, \dots, e_j, \dots, e_n) = 0$ (alternating property).
+  \end{enumerate}
+  The set of alternating $n$-forms on $E$ is denoted by $\mathcal{A}_n(E)$.
+\end{definition}
+
+\begin{lemma}{}{lm71}
+  Let $\Theta \in \mathcal{A}_n(E)$ and $\sigma \in S_n$. Then:
+  \[
+    \Theta(e_{\sigma(1)}, \dots, e_{\sigma(n)}) = \epsilon(\sigma) \Theta(e_1, \dots, e_n).
+  \]
+\end{lemma}
+
+\begin{proof}
+  Since any permutation $\sigma \in S_n$ can be decomposed into a product of $k$ transpositions, it suffices to prove the statement for a single transposition $\tau = (i \,\, j)$ with $i < j$.
+  Consider the vectors $x, y \in E$ placed at the $i$-th and $j$-th positions. By the alternating property:
+  \[
+    \Theta(\dots, x+y, \dots, x+y, \dots) = 0.
+  \]
+  Expanding by multilinearity yields:
+  \[
+    \Theta(\dots, x, \dots, x, \dots) + \Theta(\dots, x, \dots, y, \dots) + \Theta(\dots, y, \dots, x, \dots) + \Theta(\dots, y, \dots, y, \dots) = 0.
+  \]
+  Since terms with repeated arguments vanish, this simplifies to:
+  \[
+    \Theta(\dots, x, \dots, y, \dots) + \Theta(\dots, y, \dots, x, \dots) = 0 \implies \Theta(e_{\tau(1)}, \dots, e_{\tau(n)}) = -\Theta(e_1, \dots, e_n).
+  \]
+  Since $\epsilon(\tau) = -1$, the result holds for transpositions. By induction on the number of transpositions $k$, we obtain $\Theta(e_{\sigma(1)}, \dots, e_{\sigma(n)}) = (-1)^k \Theta(e_1, \dots, e_n) = \epsilon(\sigma) \Theta(e_1, \dots, e_n)$.
+\end{proof}
+
+\begin{theorem}{Determinant Form}{thm72}
+  Let $E$ be a finite dimensional $\K$-vs with $\dim E = n \ge 1$. Then:
+  \begin{enumerate}
+    \item $\dim \mathcal{A}_n(E) = 1$.
+    \item If $\mathcal{B} = (e_1, \dots, e_n)$ is a basis of $E$, then there exists a unique associated basis element of $\mathcal{A}_n(E)$, denoted by $\det_{\mathcal{B}}$, characterized by:
+    \[
+      \det_{\mathcal{B}}(e_1, \dots, e_n) = 1.
+    \]
+  \end{enumerate}
+  Concretely, if $(u_1, \dots, u_n) \in E^n$ with $u_j = \sum_{i=1}^n a_{ij} e_i$, then:
+  \[
+    \det_{\mathcal{B}}(u_1, \dots, u_n) = \sum_{\sigma \in S_n} \epsilon(\sigma) a_{\sigma(1), 1} a_{\sigma(2), 2} \dots a_{\sigma(n), n} \quad \text{(*)}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Let $\Theta \in \mathcal{A}_n(E)$. Expanding each $u_j = \sum_{i_j=1}^n a_{i_j, j} e_{i_j}$ by multilinearity gives:
+  \[
+    \Theta(u_1, \dots, u_n) = \sum_{i_1=1}^n \dots \sum_{i_n=1}^n a_{i_1, 1} \dots a_{i_n, n} \, \Theta(e_{i_1}, \dots, e_{i_n}).
+  \]
+  By the alternating property, $\Theta(e_{i_1}, \dots, e_{i_n}) = 0$ whenever any index is repeated. Thus, non-zero terms occur only when $(i_1, \dots, i_n)$ is a permutation of $(1, \dots, n)$, i.e., $i_j = \sigma(j)$ for some $\sigma \in S_n$. 
+  Using Lemma~\ref{lem:lm71}:
+  \[
+    \Theta(u_1, \dots, u_n) = \sum_{\sigma \in S_n} a_{\sigma(1), 1} \dots a_{\sigma(n), n} \, \Theta(e_{\sigma(1)}, \dots, e_{\sigma(n)}) = \left( \sum_{\sigma \in S_n} \epsilon(\sigma) a_{\sigma(1), 1} \dots a_{\sigma(n), n} \right) \Theta(e_1, \dots, e_n).
+  \]
+  Setting $\Theta(e_1, \dots, e_n) = 1$ uniquely defines $\det_{\mathcal{B}}$, proving that $\mathcal{A}_n(E)$ is 1-dimensional and spanned by $\det_{\mathcal{B}}$.
+\end{proof}
+
+\begin{definition}{Determinant of Matrices}{df73}
+  \begin{enumerate}
+    \item For $E = \K^n$, we simply denote by $\det$ the alternating $n$-form $\det_{\mathcal{B}}$, where $\mathcal{B} = (e_1, \dots, e_n)$ is the standard basis.
+    \item If $A \in \text{Mat}_n(\K)$ with columns $(C_1, \dots, C_n)$, then we define:
+    \[
+      \det A = \det(C_1, \dots, C_n).
+    \]
+    If $A = (a_{ij})_{1 \le i,j \le n}$, then $\det A$ is given by formula (*).
+  \end{enumerate}
+\end{definition}
+
+\subsection{Properties of Determinants}
+
+Focusing on $\det A$ for $A \in \text{Mat}_n(\K)$ or $\det(C_1, \dots, C_n)$:
+
+\begin{enumerate}
+  \item \textbf{Multilinearity:}
+  \[
+    \det\left(C_1, \dots, \sum_{k=1}^m \lambda_k C_i^{(k)}, \dots, C_n\right) = \sum_{k=1}^m \lambda_k \det\left(C_1, \dots, C_i^{(k)}, \dots, C_n\right).
+  \]
+  In particular, scaling all $n$ columns yields $\det(\lambda A) = \lambda^n \det(A)$.
+
+  \item \textbf{Alternating Property:}
+  If $i \neq j$, then:
+  \[
+    \det(\dots, C_i, \dots, C_j, \dots) = -\det(\dots, C_j, \dots, C_i, \dots).
+  \]
+  In particular, if $C_i = C_j$, then $\det(C_1, \dots, C_n) = 0$.
+
+  \item \textbf{Invariance under Column Operations:}
+  If $C_i' = C_i + \sum_{j \neq i} \lambda_j C_j$, then by multilinearity and alternating properties:
+  \[
+    \det(C_1, \dots, C_i', \dots, C_n) = \det(C_1, \dots, C_i, \dots, C_n).
+  \]
+  \textit{Note:} Properties (1) to (3) allow simplifying computations of determinants using Gaussian elimination, introducing a sign change whenever two columns are swapped.
+
+  \item \textbf{Transpose:}
+  If $A = (a_{ij})_{i,j}$, define ${}^t A = (a_{ji})_{i,j}$ (the transpose of $A$). Then:
+  \[
+    \det A = \det({}^t A).
+  \]
+  \textit{Proof Idea:} Every permutation $\sigma$ has $\epsilon(\sigma) = \epsilon(\sigma^{-1})$, reindexing the product $\prod a_{\sigma(i),i}$ over $\tau = \sigma^{-1}$ yields the sum for ${}^t A$.
+  \textit{Corollary:} Properties (1) to (3) hold identically for rows.
+
+  \item \textbf{Multiplicativity:}
+  \[
+    \det(AB) = \det(A) \det(B).
+  \]
+
+  \item \textbf{Invertibility Criterion:}
+  $C_1, \dots, C_n$ are linearly independent $\iff \det(C_1, \dots, C_n) \neq 0$.
+  Equivalently, $A$ is invertible $\iff \det(A) \neq 0$.
+  In this case:
+  \[
+    \det(A^{-1}) = \det(A)^{-1} = \frac{1}{\det(A)}.
+  \]
+\end{enumerate}
+
+\subsection{Inductive Rule and Inverse Matrix}
+
+Let $A = (a_{ij}) \in \text{Mat}_n(\K)$. Define $A_{ij}$ as the matrix obtained from $A$ by deleting the $i$-th row and $j$-th column.
+Define the cofactor:
+\[
+  a_{ij}^* = (-1)^{i+j} \det(A_{ij}).
+\]
+
+\subsubsection*{\underline{Laplace Expansion:}}
+For every fixed column $j$:
+\[
+  \det A = a_{1j} a_{1j}^* + a_{2j} a_{2j}^* + \dots + a_{nj} a_{nj}^*.
+\]
+Since $\det({}^t A) = \det A$, we have a similar expansion along any row $i$:
+\[
+  \det A = a_{i1} a_{i1}^* + a_{i2} a_{i2}^* + \dots + a_{in} a_{in}^*.
+\]
+
+\begin{definition}{Comatrix}{df74_co}
+  Let $A \in \text{Mat}_n(\K)$. We define the \emph{comatrix} (or matrix of cofactors) of $A$ as:
+  \[
+    \text{com}(A) = (a_{ij}^*)_{1 \le i,j \le n}.
+  \]
+\end{definition}
+
+\begin{proposition}{Comatrix Inverse Formula}{prop74}
+  For any $A \in \text{Mat}_n(\K)$:
+  \[
+    A \cdot {}^t\text{com}(A) = {}^t\text{com}(A) \cdot A = (\det A) \cdot \text{I}_n.
+  \]
+  In particular, if $\det A \neq 0$, then:
+  \[
+    A^{-1} = \frac{1}{\det A} {}^t\text{com}(A).
+  \]
+\end{proposition}
+
+\begin{proof}
+  Consider the $(i, k)$-th entry of the matrix product $A \cdot {}^t\text{com}(A)$:
+  \[
+    \left( A \cdot {}^t\text{com}(A) \right)_{ik} = \sum_{j=1}^n a_{ij} ({}^t\text{com}(A))_{jk} = \sum_{j=1}^n a_{ij} a_{kj}^*.
+  \]
+  \begin{itemize}
+    \item If $i = k$, this is precisely the Laplace expansion of $\det A$ along the $i$-th row.
+    \item If $i \neq k$, this sum corresponds to the Laplace expansion along row $k$ of a modified matrix $A'$ where row $k$ is replaced by a copy of row $i$. Since $A'$ has two identical rows, $\det A' = 0$.
+  \end{itemize}
+  Hence, $\left( A \cdot {}^t\text{com}(A) \right)_{ik} = \delta_{ik} \det A$, so $A \cdot {}^t\text{com}(A) = (\det A) \text{I}_n$. Dividing by $\det A$ yields $A^{-1}$.
+\end{proof}
+
+\begin{example}{}{ex12}
+  Compute $A^{-1}$ for $A = \begin{pmatrix} 1 & -1 & 0 \\ 0 & 1 & 1 \\ 1 & 2 & 1 \end{pmatrix}$:
+  \[
+    \det A = 1 \cdot \begin{vmatrix} 1 & 1 \\ 2 & 1 \end{vmatrix} - 0 \cdot \begin{vmatrix} -1 & 0 \\ 2 & 1 \end{vmatrix} + 1 \cdot \begin{vmatrix} -1 & 0 \\ 1 & 1 \end{vmatrix} = (1 - 2) + 0 + (-1 - 0) = -2.
+  \]
+  Computing cofactors yields:
+  \[
+    \text{com}(A) = \begin{pmatrix} -1 & 1 & -1 \\ 1 & 1 & -3 \\ -1 & -1 & 1 \end{pmatrix} \implies {}^t\text{com}(A) = \begin{pmatrix} -1 & 1 & -1 \\ 1 & 1 & -1 \\ -1 & -3 & 1 \end{pmatrix}.
+  \]
+  Hence:
+  \[
+    A^{-1} = -\frac{1}{2} \begin{pmatrix} -1 & 1 & -1 \\ 1 & 1 & -1 \\ -1 & -3 & 1 \end{pmatrix} = \begin{pmatrix} 1/2 & -1/2 & 1/2 \\ -1/2 & -1/2 & 1/2 \\ 1/2 & 3/2 & -1/2 \end{pmatrix}.
+  \]
+\end{example}
+
+\subsection{Applications of Determinants}
+
+\subsubsection*{1. Rank of a Matrix via Minors}
+
+Let $A \in \text{Mat}_{m \times n}(\K)$. Recall that $\text{rk}(A) = \text{rk}(f_A)$, where $f_A: \K^n \to \K^m$.
+Note that $\text{rk}(f) \le \min(\dim E, \dim F)$.
+
+\begin{definition}{Minor}{df75}
+  Let $r \in \{1, 2, \dots, \min(n, m)\}$. A \emph{minor of order $r$} is the determinant of an $r \times r$ submatrix of $A$.
+  If $A = (a_{ij})$, a minor is of the form:
+  \[
+    \begin{vmatrix}
+      a_{i_1 j_1} & \dots & a_{i_1 j_r} \\
+      \vdots & \ddots & \vdots \\
+      a_{i_r j_1} & \dots & a_{i_r j_r}
+    \end{vmatrix} \quad \text{where } 1 \le i_1 < \dots < i_r \le m \text{ and } 1 \le j_1 < \dots < j_r \le n.
+  \]
+\end{definition}
+
+\begin{proposition}{Rank Characterization by Minors}{prop76}
+  Let $r = \text{rk}(A)$. Then:
+  \begin{enumerate}
+    \item For any $s > r$ with $s \le \min(n, m)$, all minors of order $s$ vanish (equal zero).
+    \item There exists at least one minor of order $r$ which is non-zero.
+  \end{enumerate}
+  Hence, $\text{rk}(A)$ is the largest integer $r \le \min(n, m)$ such that there exists a non-zero minor of order $r$.
+\end{proposition}
+
+\begin{corollary}{}{cor77}
+  $\text{rk}(A) = \text{rk}({}^t A)$.
+\end{corollary}
+
+\subsubsection*{2. Solving Systems of Linear Equations}
+
+Consider a system of linear equations:
+\[
+  \begin{cases}
+    a_{11}x_1 + \dots + a_{1n}x_n = y_1 \\
+    \quad \vdots \\
+    a_{m1}x_1 + \dots + a_{mn}x_n = y_m
+  \end{cases} \quad \iff \quad AX = Y, \text{ where } A = (a_{ij}), \, X = \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix}, \, Y = \begin{pmatrix} y_1 \\ \vdots \\ y_m \end{pmatrix}.
+\]
+
+Three main cases arise:
+\begin{enumerate}
+  \item $A$ is injective ($\text{rk}(A) = n \implies n \le m$): there exists at most one solution for $AX = Y$.
+  \item $A$ is surjective ($\text{rk}(A) = m \implies m \le n$): for every $Y \in \K^m$, there exists at least one solution.
+  \item $A$ is invertible ($\text{rk}(A) = n = m$): there exists a unique solution $X = A^{-1}Y$ for every $Y \in \K^n$.
+\end{enumerate}
+
+\begin{remark}{}{rem_sys}
+  If $Y$ is given and $X_0, X_1 \in \K^n$ satisfy $A X_0 = Y$ and $A X_1 = Y$, then $A(X_0 - X_1) = 0 \implies X_0 - X_1 \in \text{Ker}(A)$.
+  Therefore, $\{X \mid AX = Y\} = X_0 + \text{Ker}(A)$.
+\end{remark}
+
+\begin{proposition}{Cramer's Rule}{prop78}
+  Suppose $A \in \text{Mat}_n(\K)$ is invertible. Let $Y \in \K^n$ be given, and let $X \in \K^n$ be the unique solution to $AX = Y$.
+  Writing $A = (C_1, \dots, C_n)$ in terms of its column vectors:
+  \[
+    x_i = \frac{\det(C_1, \dots, C_{i-1}, Y, C_{i+1}, \dots, C_n)}{\det(C_1, \dots, C_n)}, \qquad \forall i \in \{1, \dots, n\}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  Since $AX = Y$, we can express $Y$ as a linear combination of the columns of $A$:
+  \[
+    Y = \sum_{j=1}^n x_j C_j = x_1 C_1 + \dots + x_i C_i + \dots + x_n C_n.
+  \]
+  Substituting $Y$ into the $i$-th column of the determinant matrix yields:
+  \[
+    \det(C_1, \dots, \underbrace{\sum_{j=1}^n x_j C_j}_{i\text{-th pos}}, \dots, C_n) = \sum_{j=1}^n x_j \det(C_1, \dots, \underbrace{C_j}_{i\text{-th pos}}, \dots, C_n).
+  \]
+  For $j \neq i$, the matrix inside the determinant has two identical columns ($C_j$ at both the $j$-th and $i$-th positions), so those terms vanish. The only non-zero term is $j = i$:
+  \[
+    \det(C_1, \dots, Y, \dots, C_n) = x_i \det(C_1, \dots, C_i, \dots, C_n) = x_i \det A.
+  \]
+  Dividing by $\det A \neq 0$ completes the proof.
+\end{proof}
+
+% ============================================================
+%  LECTURE 9: THE DUAL VECTOR SPACE
+% ============================================================
+\section{Lecture VI: The Dual Vector Space}
+
+\subsection{The Dual Space and Dual Bases}
+
+\begin{definition}{Dual Vector Space}{df79_dual}
+  Let $E$ be a vector space over $\K$.
+  \begin{enumerate}
+    \item A \emph{linear form on $E$} is a linear map $\omega: E \to \K$.
+    \item The \emph{dual vector space of $E$}, denoted by $E^*$ or $E^\vee$, is the vector space of all linear forms on $E$. Namely, $E^* = \mathcal{L}(E, \K) = \text{Hom}_\K(E, \K)$.
+  \end{enumerate}
+\end{definition}
+
+\begin{example}{Linear Forms}{ex13_dual}
+  \begin{enumerate}
+    \item Let $u = (u_1, \dots, u_n) \in \K^n$. We associate to it a linear form:
+    \[
+      \K^n \longrightarrow \K, \quad \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix} \longmapsto u_1 x_1 + \dots + u_n x_n.
+    \]
+    Note that this is the linear map associated to $u$ seen as a row matrix in $\text{Mat}_{1 \times n}(\K)$.
+    
+    \item For a fixed scalar $a \in \K$, evaluation at $a$ defines a linear form on polynomials:
+    \[
+      \text{ev}_a: \K[X] \longrightarrow \K, \quad P(X) \longmapsto P(a).
+    \]
+    
+    \item Let $E$ be a vector space and $e \in E$ a non-zero vector. Let $F$ be a complement for the span $\langle e \rangle$, so $E = \langle e \rangle \oplus F$. Projection onto $\langle e \rangle$ gives a linear map $p: E \to \langle e \rangle$. Choosing $e$ as a basis for $\langle e \rangle$ gives an isomorphism $\iota: \langle e \rangle \to \K$ mapping $\lambda e \mapsto \lambda$. Composing $\omega = \iota \circ p: E \to \K$ yields a linear form: if $u \in E$ is uniquely written as $u = \lambda e + v$ with $v \in F$, then $\omega(u) = \lambda$.
+  \end{enumerate}
+\end{example}
+
+\begin{definition}{Dual Basis Construction}{df80_dualbasis}
+  Let $E$ be a finite dimensional vector space with basis $\mathcal{B} = (e_1, \dots, e_n)$. For every $e_i$, there exists a unique linear map $e_i^*: E \to \K$ defined by:
+  \[
+    e_i^*(e_j) = \delta_{ij} = \begin{cases} 1 & \text{if } i = j, \\ 0 & \text{if } i \neq j. \end{cases}
+  \]
+  Concretely, $e_i^*(a_1 e_1 + \dots + a_n e_n) = a_i$ extracts the $i$-th coordinate of a vector in basis $\mathcal{B}$. The family $\mathcal{B}^* = (e_1^*, \dots, e_n^*)$ is called the \emph{dual basis} of $\mathcal{B}$.
+\end{definition}
+
+\begin{proposition}{Properties of Dual Bases}{prop81_dualprop}
+  Let $E$ be a finite dimensional vector space.
+  \begin{enumerate}
+    \item If $e_1, \dots, e_n$ is a basis of $E$, then $e_1^*, \dots, e_n^*$ is a basis of $E^*$. In particular, $\dim E^* = \dim E$.
+    \item If $\omega: E \to \K$ is a linear form, then its expansion in the dual basis is:
+    \[
+      \omega = \sum_{i=1}^n \omega(e_i) e_i^*.
+    \]
+    Thus, the coefficients of $\omega$ in basis $(e_1^*, \dots, e_n^*)$ are $(\omega(e_1), \dots, \omega(e_n))$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  Let $\omega \in E^*$. Consider the form $\omega' = \sum_{i=1}^n \omega(e_i) e_i^*$. Evaluating $\omega'$ on any basis vector $e_j$:
+  \[
+    \omega'(e_j) = \sum_{i=1}^n \omega(e_i) e_i^*(e_j) = \sum_{i=1}^n \omega(e_i) \delta_{ij} = \omega(e_j).
+  \]
+  Since two linear maps agreeing on a basis are equal, $\omega = \sum_{i=1}^n \omega(e_i) e_i^*$. This proves that $e_1^*, \dots, e_n^*$ span $E^*$.
+
+  For linear independence, suppose $\sum_{i=1}^n a_i e_i^* = 0$. Evaluating this zero form on $e_j$:
+  \[
+    0 = \left(\sum_{i=1}^n a_i e_i^*\right)(e_j) = \sum_{i=1}^n a_i \delta_{ij} = a_j.
+  \]
+  Hence $a_1 = \dots = a_n = 0$, so $e_1^*, \dots, e_n^*$ are linearly independent and form a basis of $E^*$. Consequently, $\dim E^* = n = \dim E$.
+\end{proof}
+
+\subsection{The Transpose of a Linear Map}
+
+\begin{lemma}{Transpose Linear Map}{lm82_transpose}
+  Let $f: E \to F$ be a linear map between vector spaces. The map defined by:
+  \[
+    f^*: F^* \longrightarrow E^*, \quad \omega \longmapsto f^*(\omega) := \omega \circ f
+  \]
+  (where $f^*(\omega)(u) = \omega(f(u))$ for all $u \in E$) is a linear map.
+\end{lemma}
+
+\begin{proof}
+  Let $\omega_1, \omega_2 \in F^*$ and $\lambda, \mu \in \K$. For any $u \in E$:
+  \begin{align*}
+    f^*(\lambda \omega_1 + \mu \omega_2)(u) &= ((\lambda \omega_1 + \mu \omega_2) \circ f)(u) = (\lambda \omega_1 + \mu \omega_2)(f(u)) \\
+    &= \lambda \omega_1(f(u)) + \mu \omega_2(f(u)) = \lambda f^*(\omega_1)(u) + \mu f^*(\omega_2)(u) \\
+    &= (\lambda f^*(\omega_1) + \mu f^*(\omega_2))(u).
+  \end{align*}
+  Hence $f^*(\lambda \omega_1 + \mu \omega_2) = \lambda f^*(\omega_1) + \mu f^*(\omega_2)$, so $f^*$ is linear.
+\end{proof}
+
+\begin{definition}{Transpose Map}{df83_transposedef}
+  Let $f: E \to F$ be a linear map. The map $f^*: F^* \to E^*$ defined by $f^*(\omega) = \omega \circ f$ is called the \emph{transpose} (or dual map) of $f$.
+\end{definition}
+
+\begin{proposition}{Matrix Representation of Transpose Map}{prop84_transposemat}
+  Let $f: E \to F$ be a linear map of finite dimensional vector spaces. Let $\mathcal{B} = (e_1, \dots, e_n)$ be a basis of $E$ and $\mathcal{C} = (u_1, \dots, u_m)$ be a basis of $F$. 
+  Let $A = (a_{ij}) \in \text{Mat}_{m \times n}(\K)$ be the matrix of $f$ relative to these bases. Then the matrix of $f^*$ relative to the dual bases $\mathcal{C}^* = (u_1^*, \dots, u_m^*)$ and $\mathcal{B}^* = (e_1^*, \dots, e_n^*)$ is the transpose of $A$, namely:
+  \[
+    \text{Mat}_{\mathcal{C}^*, \mathcal{B}^*}(f^*) = {}^t A = (a_{ji})_{n \times m}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  To find the matrix of $f^*$, we expand $f^*(u_j^*)$ in terms of the dual basis $(e_1^*, \dots, e_n^*)$ for $j = 1, \dots, m$:
+  \[
+    f^*(u_j^*) = \sum_{k=1}^n b_{kj} e_k^*.
+  \]
+  Thus $B = (b_{ij})_{n \times m}$ is the matrix representing $f^*$. Evaluating both sides of this equation on the basis vector $e_i \in E$:
+  \[
+    \text{RHS} = \left( \sum_{k=1}^n b_{kj} e_k^* \right)(e_i) = \sum_{k=1}^n b_{kj} \delta_{ki} = b_{ij}.
+  \]
+  For the left-hand side, since $f(e_i) = \sum_{l=1}^m a_{li} u_l$:
+  \[
+    \text{LHS} = f^*(u_j^*)(e_i) = u_j^*(f(e_i)) = u_j^*\left( \sum_{l=1}^m a_{li} u_l \right) = \sum_{l=1}^m a_{li} u_j^*(u_l) = \sum_{l=1}^m a_{li} \delta_{jl} = a_{ji}.
+  \]
+  Equating both sides gives $b_{ij} = a_{ji}$ for all $i, j$. Thus $B = {}^t A$.
+\end{proof}
+
+\end{document}
