@@ -821,30 +821,155 @@ and
 \end{itemize}
 \end{proposition}
 
-% \subsection{\texorpdfstring{$L^p$}{Lp} Spaces}
+\subsection{\texorpdfstring{$L^p$}{Lp} Spaces}
 
-% \begin{definition}{$L^p$ spaces and norms}{}
-% For any $p \ge 0$ we set
-% \[ L^p(\Omega, \mathbb{P}) = \{X : \Omega \to \mathbb{R} : \mathbb{E}[|X|^p] < +\infty\} \]
-% Whenever there is no ambiguity, we abbreviate $L^p(\Omega, \mathbb{P})$ with $L^p$. If $X \in L^p$, its $p$-norm $\|X\|_p$ is defined as
-% \[ \|X\|_p = (\mathbb{E}[|X|^p])^{1/p} \]
-% \end{definition}
+\begin{definition}{$L^p$ spaces and norms}{}
+For any $p \ge 0$ we set
+\[ L^p(\Omega, \mathbb{P}) = \{X : \Omega \to \mathbb{R} : \mathbb{E}[|X|^p] < +\infty\} \]
+Whenever there is no ambiguity, we abbreviate $L^p(\Omega, \mathbb{P})$ with $L^p$. If $X \in L^p$, its $p$-norm $\|X\|_p$ is defined as
+\[ \|X\|_p = (\mathbb{E}[|X|^p])^{1/p} \]
+\end{definition}
 
-% \begin{theorem}{Seminorm property}{}
-% $\| \cdot \|_p$ is a seminorm on the space $L^p(\Omega, \mathbb{P})$. Recall that it verifies homogeneity ($\|\lambda x\| = |\lambda|\|x\|$) and the triangular inequality ($\|x + y\| \le \|x\| + \|y\|$).
-% \end{theorem}
+\begin{theorem}{Seminorm property}{}
+$\| \cdot \|_p$ is a seminorm on the space $L^p(\Omega, \mathbb{P})$. Recall that it verifies homogeneity ($\|\lambda x\| = |\lambda|\|x\|$) and the triangular inequality ($\|x + y\| \le \|x\| + \|y\|$).
+\end{theorem}
 
-% \begin{proposition}{Properties of $L^p$ spaces}{}
-% Let $(\Omega, \mathbb{P})$ be a general probability space and $1 \le p \le q < +\infty$. Then $L^p(\Omega, \mathbb{P})$ is a vector space:
-% \begin{itemize}
-%     \item $X \in L^p \implies \lambda X \in L^p$
-%     \item $X, Y \in L^p \implies X + Y \in L^p$
-% \end{itemize}
-% If $(\Omega, \mathbb{P})$ is a discrete probability space:
-% \begin{enumerate}
-%     \item If $0 < p \le q < +\infty$, $L^p(\Omega, \mathbb{P}) \supseteq L^q(\Omega, \mathbb{P})$.
-%     \item If $X, Y \in L^2(\Omega, \mathbb{P})$, then $XY \in L^1(\Omega, \mathbb{P})$.
-% \end{enumerate}
-% \end{proposition}
+\begin{proposition}{Properties of $L^p$ spaces}{}
+Let $(\Omega, \mathbb{P})$ be a general probability space and $1 \le p \le q < +\infty$. Then $L^p(\Omega, \mathbb{P})$ is a vector space:
+\begin{itemize}
+    \item $X \in L^p \implies \lambda X \in L^p$
+    \item $X, Y \in L^p \implies X + Y \in L^p$
+\end{itemize}
+If $(\Omega, \mathbb{P})$ is a discrete probability space:
+\begin{enumerate}
+    \item If $0 < p \le q < +\infty$, $L^p(\Omega, \mathbb{P}) \supseteq L^q(\Omega, \mathbb{P})$.
+    \item If $X, Y \in L^2(\Omega, \mathbb{P})$, then $XY \in L^1(\Omega, \mathbb{P})$.
+\end{enumerate}
+\end{proposition}
+
+% Add this at the very end of Lecture 3:
+
+\begin{proof}[Proof of $L^p$ spaces properties]
+\begin{itemize}
+    \item \textbf{Triangular inequality:} We can use the Minkowski inequality (the proof of it is not required for this course).
+    \item \textbf{Proof of (i) $X \in L^q \implies X \in L^p$ for $p \le q$:} 
+    If $X \in L^q$, then $\mathbb{E}[|X|^q] < +\infty$. Notice that if $|X| \le 1$, then $|X|^p \le 1$; otherwise, if $|X| > 1$, then $|X|^p \le |X|^q$. Thus, in all cases, $|X|^p \le 1 + |X|^q$. Taking the expectation yields $\mathbb{E}[|X|^p] \le 1 + \mathbb{E}[|X|^q] < +\infty$, meaning $X \in L^p$.
+    \item \textbf{Proof of (ii) $X, Y \in L^2 \implies XY \in L^1$:} 
+    Using the algebraic inequality $|xy| \le \frac{x^2 + y^2}{2}$, we get:
+    \[ \mathbb{E}[|XY|] \le \mathbb{E}\left(\frac{|X|^2 + |Y|^2}{2}\right) = \frac{\mathbb{E}[|X|^2] + \mathbb{E}[|Y|^2]}{2} < +\infty \]
+\end{itemize}
+\end{proof}
+
+
+% ============================================================
+%  LECTURE 4
+% ============================================================
+
+\section{Lecture 4}
+
+\subsection{Inequalities}
+
+\begin{proposition}{Markov and Chebyshev's inequalities}{}
+Let $X$ be a random variable and $\epsilon > 0$.
+\begin{itemize}
+    \item \textbf{Markov's inequality:} If $X$ is non negative and in $L^1$:
+    \[ \mathbb{P}[X \ge \epsilon] \le \frac{\mathbb{E}[X]}{\epsilon} \]
+    \item \textbf{Chebyshev's inequality:} If $X \in L^2$:
+    \[ \mathbb{P}[|X - \mathbb{E}[X]| \ge \epsilon] \le \frac{\mathbb{V}(X)}{\epsilon^2} \]
+\end{itemize}
+If $X \sim \text{Ge}(p)$, then Markov's inequality gives $\forall n \ge 0$, $\mathbb{P}[X \ge n] \le \frac{1}{np}$.
+\end{proposition}
+
+\begin{proof}[Proof of Markov and Chebyshev's inequality]
+\textbf{Markov's inequality:}
+\[ \mathbb{P}(X \ge \epsilon) = \mathbb{E}[\mathbbm{1}_{X \ge \epsilon}] \le \mathbb{E}\left[\frac{X}{\epsilon} \mathbbm{1}_{X \ge \epsilon}\right] \le \frac{\mathbb{E}[X]}{\epsilon} \]
+\textit{Remark:} You can apply any non-decreasing function $g(x)$. For example, $\mathbb{P}(X \ge \epsilon) = \mathbb{P}(e^X \ge e^\epsilon) \le \frac{\mathbb{E}[e^X]}{e^\epsilon}$.
+
+\textbf{Chebyshev's inequality:}
+Using Markov's inequality on the random variable $(X - \mathbb{E}[X])^2$:
+\[ \mathbb{P}(|X - \mathbb{E}[X]| \ge \epsilon) = \mathbb{P}(|X - \mathbb{E}[X]|^2 \ge \epsilon^2) \le \frac{\mathbb{V}(X)}{\epsilon^2} \]
+\end{proof}
+
+\begin{example}{Tails of a Poisson $\text{Po}(\lambda)$}{}
+Studying the tail of a random variable $X$ means studying the function $t \mapsto \mathbb{P}[X \ge t]$ for large values of $t$.
+Recall that $\mathbb{E}[X] = \lambda$ and $\mathbb{V}(X) = \lambda$. By Markov's inequality:
+\[ \mathbb{P}[X \ge k] \le \frac{\lambda}{k} \]
+Thus, the tail decays at least as fast as $k^{-1}$. With Chebyshev's inequality we obtain for $k \ge \lambda$:
+\[ \mathbb{P}[X \ge k] \le \mathbb{P}[|X - \mathbb{E}[X]| \ge k - \lambda] \le \frac{\lambda}{(k - \lambda)^2} \]
+This bound is better since it tells that the tail decays at least as fast as $k^{-2}$.
+\end{example}
+
+\begin{proposition}{Jensen's inequality}{}
+Let $X$ be a random variable and $\varphi$ a convex function. If both $X$ and $\varphi(X)$ have finite expectation then
+\[ \mathbb{E}[\varphi(X)] \ge \varphi(\mathbb{E}[X]) \]
+\end{proposition}
+
+\begin{example}{Norm inequalities}{}
+Recall: for $0 < p \le q$, $X \in L^q \implies X \in L^p$. Let $q > 0$ and $X \in L^q$ and $p \le q$. The function $x \mapsto x^{q/p}$ is convex. Therefore, using Jensen's inequality:
+\[ \mathbb{E}[|X|^q] \ge \mathbb{E}[|X|^p]^{\frac{q}{p}} \]
+Raising both members to the power $1/q$ gives:
+\[ \mathbb{E}[|X|^q]^{\frac{1}{q}} \ge \mathbb{E}[|X|^p]^{\frac{1}{p}} \implies \|X\|_q \ge \|X\|_p \]
+\end{example}
+
+\begin{proposition}{Cauchy-Schwartz inequality}{}
+Let $X, Y$ be two general random variables in $L^2$. Then $XY \in L^1$ and
+\[ \mathbb{E}[|XY|] \le \sqrt{\mathbb{E}[X^2]\mathbb{E}[Y^2]} \]
+Equality holds ($\mathbb{E}[|XY|] = \sqrt{\mathbb{E}[X^2]\mathbb{E}[Y^2]}$) if and only if there exists $t \in \mathbb{R}$ such that $X = tY$ almost surely, or $Y = tX$ almost surely.
+
+\textbf{Corollary:} For all $X, Y \in L^2$, $\text{Cov}(X,Y)$ is well defined and $|\text{Cov}(X,Y)| \le \sqrt{\mathbb{V}(X)\mathbb{V}(Y)}$.
+\end{proposition}
+
+\begin{proof}[Proof of Cauchy-Schwartz inequality]
+Consider the function $P(t) = \mathbb{E}((X + tY)^2)$. Expanding this gives:
+\[ P(t) = \mathbb{E}[X^2] + 2t\mathbb{E}[XY] + t^2\mathbb{E}[Y^2] \]
+Since $(X + tY)^2 \ge 0$, we have $P(t) \ge 0$ for all $t \in \mathbb{R}$. Thus, $P(t)$ is a positive second-order polynomial in $t$, meaning its discriminant $\Delta \le 0$.
+\[ \Delta = 4\mathbb{E}[XY]^2 - 4\mathbb{E}[X^2]\mathbb{E}[Y^2] \le 0 \]
+\[ \implies |\mathbb{E}[XY]| \le \sqrt{\mathbb{E}[X^2]}\sqrt{\mathbb{E}[Y^2]} = \|X\|_2 \|Y\|_2 \]
+(If $\mathbb{E}[Y^2] = 0$, then $Y=0$ almost surely, and the inequality is clearly true).
+\end{proof}
+
+\subsection{Moment Generating Function}
+
+\begin{definition}{Moment generating function}{}
+Let $X$ be a real valued random variable. The function $M_X: \mathbb{R} \to \mathbb{R}_+ \cup \{+\infty\}$ given by
+\[ M_X(t) = \mathbb{E}[\exp(tX)] \]
+is called the moment generating function of $X$.
+\end{definition}
+
+\begin{example}{Bernoulli random variables}{}
+If $X \sim \text{Be}(p)$, then $M_X(t) = (1 - p) + p \exp(t)$, $\forall t \in \mathbb{R}$.
+\end{example}
+
+\begin{theorem}{Taylor series of MGF}{}
+Let $X$ be a random variable and assume that for some $a > 0$ we have $M_X(t) < +\infty$ for all $t \in (-a, a)$. Then:
+\begin{itemize}
+    \item The random variable $X$ admits moments of all order (i.e., $\mathbb{E}[|X|^k] < +\infty$ for all $k \in \mathbb{N}$) and for all $t \in (-a, a)$, $M_X(t)$ is given by the Taylor series:
+    \[ M_X(t) = \sum_{n=0}^{+\infty} \mathbb{E}[X^n]\frac{t^n}{n!} \]
+    \item $M_X(t)$ is differentiable in $(-a, a)$ infinitely many times. Moreover, $M_X^{(n)}(0) = \mathbb{E}[X^n]$, where $M_X^{(n)}(0)$ is the $n$-th derivative of $M_X$ evaluated at $t=0$.
+\end{itemize}
+\end{theorem}
+
+\begin{example}{MGF of Uniform and Geometric random variables}{}
+\textbf{Uniform Distribution $\mathcal{U}(\{1, \dots, N\})$:}
+$p_X(k) = 1/N$ for $k \in \{1, \dots, N\}$.
+\[ \mathbb{E}[e^{tX}] = \sum_{k=1}^N e^{tk} \frac{1}{N} = \frac{e^t}{N} \sum_{k=0}^{N-1} e^{tk} \]
+For $t \neq 0$, using the geometric sum formula:
+\[ M_X(t) = \frac{e^t}{N} \frac{e^{tN} - 1}{e^t - 1} \]
+As $t \to 0$, $M_X(t) \to 1$.
+
+\textbf{Geometric Distribution $\text{Ge}(p)$:}
+$p_X(k) = (1-p)^{k-1}p$ for $k \ge 1$.
+\[ \mathbb{E}[e^{tX}] = \sum_{k=1}^\infty e^{tk} p(1-p)^{k-1} = e^t p \sum_{k=0}^\infty (e^t(1-p))^k \]
+This geometric series converges if and only if $e^t(1-p) < 1$, which is equivalent to $t < \log\left(\frac{1}{1-p}\right)$.
+\[ M_X(t) = \begin{cases} \frac{p e^t}{1 - (1-p)e^t}, & \text{if } t < \log(\frac{1}{1-p}) \\ +\infty, & \text{if } t \ge \log(\frac{1}{1-p}) \end{cases} \]
+\end{example}
+% Add this inside the Uniform Distribution part of the Example block from the previous output:
+
+To verify the limit as $t \to 0$ for the uniform distribution MGF:
+\[ M_X(t) = \frac{e^t}{N} \cdot \frac{e^{tN} - 1}{t} \cdot \frac{t}{e^t - 1} \]
+As $t \to 0$: $\displaystyle \frac{e^{tN} - 1}{t} \to N$, $\displaystyle \frac{t}{e^t - 1} \to 1$ and $\displaystyle \frac{e^t}{N} \to \frac{1}{N}$.
+Therefore, the limit as $t \to 0$ is $\frac{1}{N} \cdot N \cdot 1 = 1$.
+
+
 
 \end{document}
