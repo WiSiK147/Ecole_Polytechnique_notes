@@ -579,7 +579,7 @@ In this course, a random variable $X: \Omega \rightarrow \mathbb{R}$ will be of 
     \item \textbf{Discrete random variables:} it exists a countable set $E \subset \mathbb{R}$ and $p_X: E \rightarrow \mathbb{R}_+$ s.t. $\forall C \in \mathcal{B}(\mathbb{R})$, $\mu_X(C) = \sum_{x \in C \cap E} p_X(x)$.
     \item \textbf{Absolutely continuous random variables:} it exists $f_X: \mathbb{R} \rightarrow \mathbb{R}_+$ s.t. $\forall a < b \in \mathbb{R}$, $\mu_X([a,b]) = \int_a^b f_X(u) du$.
 \end{itemize}
-Fundamental intuition: $\mathbb{P}(X \in [a-\epsilon, a+\epsilon]) = \mu_X([a-\epsilon, a+\epsilon]) \approx 2\epsilon f_X(a)$. Here, $p_X$ and $f_X$ are respectively called the discrete density and the density of the random variable $X$.
+Fundamental intuition: $\mathbb{P}(X \in [a-\eps, a+\eps]) = \mu_X([a-\eps, a+\eps]) \approx 2\eps f_X(a)$. Here, $p_X$ and $f_X$ are respectively called the discrete density and the density of the random variable $X$.
 \end{remark}
 
 \subsection{Conditional Probability and Independence}
@@ -870,24 +870,24 @@ If $(\Omega, \mathbb{P})$ is a discrete probability space:
 \subsection{Inequalities}
 
 \begin{proposition}{Markov and Chebyshev's inequalities}{}
-Let $X$ be a random variable and $\epsilon > 0$.
+Let $X$ be a random variable and $\eps > 0$.
 \begin{itemize}
     \item \textbf{Markov's inequality:} If $X$ is non negative and in $L^1$:
-    \[ \mathbb{P}[X \ge \epsilon] \le \frac{\mathbb{E}[X]}{\epsilon} \]
+    \[ \mathbb{P}[X \ge \eps] \le \frac{\mathbb{E}[X]}{\eps} \]
     \item \textbf{Chebyshev's inequality:} If $X \in L^2$:
-    \[ \mathbb{P}[|X - \mathbb{E}[X]| \ge \epsilon] \le \frac{\mathbb{V}(X)}{\epsilon^2} \]
+    \[ \mathbb{P}[|X - \mathbb{E}[X]| \ge \eps] \le \frac{\mathbb{V}(X)}{\eps^2} \]
 \end{itemize}
 If $X \sim \text{Ge}(p)$, then Markov's inequality gives $\forall n \ge 0$, $\mathbb{P}[X \ge n] \le \frac{1}{np}$.
 \end{proposition}
 
 \begin{proof}[Proof of Markov and Chebyshev's inequality]
 \textbf{Markov's inequality:}
-\[ \mathbb{P}(X \ge \epsilon) = \mathbb{E}[\mathbbm{1}_{X \ge \epsilon}] \le \mathbb{E}\left[\frac{X}{\epsilon} \mathbbm{1}_{X \ge \epsilon}\right] \le \frac{\mathbb{E}[X]}{\epsilon} \]
-\textit{Remark:} You can apply any non-decreasing function $g(x)$. For example, $\mathbb{P}(X \ge \epsilon) = \mathbb{P}(e^X \ge e^\epsilon) \le \frac{\mathbb{E}[e^X]}{e^\epsilon}$.
+\[ \mathbb{P}(X \ge \eps) = \mathbb{E}[\mathbbm{1}_{X \ge \eps}] \le \mathbb{E}\left[\frac{X}{\eps} \mathbbm{1}_{X \ge \eps}\right] \le \frac{\mathbb{E}[X]}{\eps} \]
+\textit{Remark:} You can apply any non-decreasing function $g(x)$. For example, $\mathbb{P}(X \ge \eps) = \mathbb{P}(e^X \ge e^\eps) \le \frac{\mathbb{E}[e^X]}{e^\eps}$.
 
 \textbf{Chebyshev's inequality:}
 Using Markov's inequality on the random variable $(X - \mathbb{E}[X])^2$:
-\[ \mathbb{P}(|X - \mathbb{E}[X]| \ge \epsilon) = \mathbb{P}(|X - \mathbb{E}[X]|^2 \ge \epsilon^2) \le \frac{\mathbb{V}(X)}{\epsilon^2} \]
+\[ \mathbb{P}(|X - \mathbb{E}[X]| \ge \eps) = \mathbb{P}(|X - \mathbb{E}[X]|^2 \ge \eps^2) \le \frac{\mathbb{V}(X)}{\eps^2} \]
 \end{proof}
 
 \begin{example}{Tails of a Poisson $\text{Po}(\lambda)$}{}
