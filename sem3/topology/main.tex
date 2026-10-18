@@ -879,7 +879,7 @@ By linearity, $N_F\left(\frac{L(x)}{N_E(x)}\right) \le C$, which implies $N_F(L(
 $4 \Leftrightarrow 5$: By (4), the set $\{\frac{N_F(L(x))}{N_E(x)} \mid x \neq 0\}$ is bounded above by $C$, so its supremum is finite. Let this supremum be denoted as $\Vert L \Vert$.
 Then $\Vert L \Vert = \inf\{C \ge 0 \mid \forall x \in E, N_F(L(x)) \le C N_E(x)\}$.
 
-\textbf{($5 \Rightarrow 1$):} Assume $\sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} = C < +\infty$. Then for all $x \in E$, $N_F(L(x)) \le C N_E(x)$. For any $x_0 \in E$ and $x \in E$, by linearity we have $N_F(L(x) - L(x_0)) = N_F(L(x - x_0)) \le C N_E(x - x_0)$. As $x \to x_0$, $N_E(x - x_0) \to 0$, which implies $N_F(L(x) - L(x_0)) \to 0$. Thus, $L$ is continuous at any $x_0 \in E$, meaning $L$ is continuous on $E$. This completes the cycle of equivalences.
+\textbf{($5 \Rightarrow 1$):} Assume $\sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} = |||L||| < +\infty$. Then for all $x \in E$, $N_F(L(x)) \le |||L||| N_E(x)$. For any $x_0 \in E$ and $x \in E$, by linearity we have $N_F(L(x) - L(x_0)) = N_F(L(x - x_0)) \le |||L||| N_E(x - x_0)$. As $x \to x_0$, $N_E(x - x_0) \to 0$, which implies $N_F(L(x) - L(x_0)) \to 0$. Thus, $L$ is continuous at any $x_0 \in E$, meaning $L$ is continuous on $E$. This completes the cycle of equivalences.
 \end{proof}
 
 \begin{proposition}{Characterization of the Triple Norm}{triple_norm_char}
@@ -904,10 +904,10 @@ $\forall x, x' \in \Omega, d_F(\varphi(x), \varphi(x')) \le \alpha d_E(x, x')$.
 \begin{example}{Lipschitz Maps}{lipschitz_ex}
 \begin{enumerate}
     \item By the reverse triangular inequality, $\forall x, x' \in E, |N(x) - N(x')| \le N(x - x')$. Thus, $N: E \to \R$ is 1-Lipschitz.
-    \item Let $L \in \mathcal{L}(E, F)$. Then $\Vert L \Vert = \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} < +\infty$.
+    \item Let $L \in \mathcal{L}(E, F)$. Then $|||L||| = \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} < +\infty$.
     For all $x, x' \in E$:
-    $d_F(L(x), L(x')) = N_F(L(x) - L(x')) = N_F(L(x - x')) \le \Vert L \Vert N_E(x - x')$.
-    Thus, $L$ is $\Vert L \Vert$-Lipschitz.
+    $d_F(L(x), L(x')) = N_F(L(x) - L(x')) = N_F(L(x - x')) \le |||L||| N_E(x - x')$.
+    Thus, $L$ is $|||L|||$-Lipschitz.
 \end{enumerate}
 \end{example}
 
@@ -926,24 +926,24 @@ These implications are strict.
 \subsection{Properties of the Triple Norm}
 \begin{definition}{Triple Norm}{triple_norm_def}
 For $L \in \mathcal{L}(E, F)$, the triple norm (or operator norm) of $L$ induced by $N_E$ and $N_F$ is:
-$\Vert L \Vert = \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} \in [0, +\infty)$.
+$|||L||| = \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} \in [0, +\infty)$.
 \end{definition}
 
 \begin{proposition}{Properties of Triple Norm}{triple_norm_prop}
 \begin{enumerate}
-    \item For $L \in \mathcal{L}(E, F)$ and $\forall x \in E$, $N_F(L(x)) \le \Vert L \Vert N_E(x)$.
-    \item $\Vert \cdot \Vert$ is a norm on $\mathcal{L}(E, F)$.
+    \item For $L \in \mathcal{L}(E, F)$ and $\forall x \in E$, $N_F(L(x)) \le |||L||| N_E(x)$.
+    \item $|||\cdot|||$ is a norm on $\mathcal{L}(E, F)$.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-Let us prove that $\Vert \cdot \Vert$ is a norm on $\mathcal{L}(E, F)$.
+Let us prove that $|||\cdot|||$ is a norm on $\mathcal{L}(E, F)$.
 \begin{itemize}
-    \item \textbf{Positive definiteness:} Assume $\Vert L \Vert = 0$. Then for all $x \in E$, $N_F(L(x)) = 0$, which implies $L(x) = 0_F$. Thus $L = 0_{\mathcal{L}(E, F)}$.
+    \item \textbf{Positive definiteness:} Assume $|||L||| = 0$. Then for all $x \in E$, $N_F(L(x)) = 0$, which implies $L(x) = 0_F$. Thus $L = 0_{\mathcal{L}(E, F)}$.
     \item \textbf{Absolute homogeneity:} Let $L \in \mathcal{L}(E, F)$ and $\lambda \in \mathbb{K}$.
-    $\Vert \lambda L \Vert = \sup_{x \neq 0} \frac{N_F((\lambda L)(x))}{N_E(x)} = \sup_{x \neq 0} \frac{|\lambda| N_F(L(x))}{N_E(x)} = |\lambda| \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} = |\lambda| \Vert L \Vert$.
+    $|||\lambda L||| = \sup_{x \neq 0} \frac{N_F((\lambda L)(x))}{N_E(x)} = \sup_{x \neq 0} \frac{|\lambda| N_F(L(x))}{N_E(x)} = |\lambda| \sup_{x \neq 0} \frac{N_F(L(x))}{N_E(x)} = |\lambda| |||L|||$.
     \item \textbf{Triangular inequality:} Let $x \in E$ and $L, \tilde{L} \in \mathcal{L}(E, F)$.
-    $N_F((L + \tilde{L})(x)) = N_F(L(x) + \tilde{L}(x)) \le N_F(L(x)) + N_F(\tilde{L}(x)) \le \Vert L \Vert N_E(x) + \Vert \tilde{L} \Vert N_E(x) = (\Vert L \Vert + \Vert \tilde{L} \Vert) N_E(x)$.
-    Thus, $\Vert L \Vert + \Vert \tilde{L} \Vert$ is an upper bound for $\frac{N_F((L + \tilde{L})(x))}{N_E(x)}$, which implies $\Vert L + \tilde{L} \Vert \le \Vert L \Vert + \Vert \tilde{L} \Vert$.
+    $N_F((L + \tilde{L})(x)) = N_F(L(x) + \tilde{L}(x)) \le N_F(L(x)) + N_F(\tilde{L}(x)) \le |||L||| N_E(x) + |||\tilde{L}||| N_E(x) = (|||L||| + |||\tilde{L}|||) N_E(x)$.
+    Thus, $|||L||| + |||\tilde{L}|||$ is an upper bound for $\frac{N_F((L + \tilde{L})(x))}{N_E(x)}$, which implies $|||L + \tilde{L}||| \le |||L||| + |||\tilde{L}|||$.
 \end{itemize}
 \end{proof}
 
@@ -957,10 +957,10 @@ Left as an exercise.
 \begin{proposition}{Computing the Operator Norm}{op_norm_compute}
 For $L \in \mathcal{L}(E, F)$ and $C \ge 0$:
 \begin{enumerate}
-    \item If for all $x \in E$, $N_F(L(x)) \le C N_E(x)$, then $\Vert L \Vert \le C$.
-    \item If there exists a sequence $(x_n)_{n \in \N}$ in $E$ such that $N_E(x_n) \to 1$ and $N_F(L(x_n)) \to C$, then $\Vert L \Vert \ge C$.
+    \item If for all $x \in E$, $N_F(L(x)) \le C N_E(x)$, then $|||L||| \le C$.
+    \item If there exists a sequence $(x_n)_{n \in \N}$ in $E$ such that $N_E(x_n) \to 1$ and $N_F(L(x_n)) \to C$, then $|||L||| \ge C$.
 \end{enumerate}
-(If both conditions are satisfied, then $\Vert L \Vert = C$).
+(If both conditions are satisfied, then $|||L||| = C$).
 \end{proposition}
 
 \begin{example}{Operator on $l^1$}{op_l1_ex}
@@ -971,8 +971,8 @@ We have:
 $\Vert \Lambda(\underline{x}) \Vert_{l^1} = \sum_{n \ge 0} |\lambda_n x_n| \le \Vert \lambda \Vert_\infty \sum_{n \ge 0} |x_n| = \Vert \lambda \Vert_\infty \Vert \underline{x} \Vert_{l^1}$.
 This implies $\Lambda(\underline{x}) \in l^1(\N)$, so $\Lambda$ is well-defined.
 $\Lambda$ is clearly $\R$-linear, so $\Lambda \in L(l^1(\N), l^1(\N))$.
-From the inequality above, we get that $\Lambda \in \mathcal{L}(l^1(\N), l^1(\N))$ and $\Vert \Lambda \Vert \le \Vert \lambda \Vert_\infty$.
-(Exercise: prove that $\Vert \Lambda \Vert = \Vert \lambda \Vert_\infty$ using the second fact from the proposition above).
+From the inequality above, we get that $\Lambda \in \mathcal{L}(l^1(\N), l^1(\N))$ and $|||\Lambda||| \le \Vert \lambda \Vert_\infty$.
+(Exercise: prove that $|||\Lambda||| = \Vert \lambda \Vert_\infty$ using the second fact from the proposition above).
 \end{example}
 
 \section{Lecture 4: Compactness}
