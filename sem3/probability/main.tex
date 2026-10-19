@@ -949,6 +949,29 @@ Let $X$ be a random variable and assume that for some $a > 0$ we have $M_X(t) < 
 \end{itemize}
 \end{theorem}
 
+\begin{proof}[Proof of Theorem (Moment Generating Functions)]
+Let $n \in \mathbb{N}_0$ and $t \in (0, a)$. We can bound the positive part by noting that $c_n = \sup_{x \ge 0} x^n e^{-tx} < +\infty$, which implies $\forall x \ge 0, x^n \le c_n e^{tx}$.
+Therefore, $\mathbb{E}[|X|^n \mathbbm{1}_{X \ge 0}] \le c_n \mathbb{E}[e^{tX} \mathbbm{1}_{X \ge 0}] \le c_n M_X(t) < +\infty$.
+Similarly, for the negative part, letting $\tilde{c}_n = \sup_{x \le 0} (-x)^n e^{tx}$, we get $\mathbb{E}[|X|^n \mathbbm{1}_{X \le 0}] = \mathbb{E}[(-X)^n \mathbbm{1}_{X \le 0}] \le \tilde{c}_n M_X(-t) < +\infty$.
+Summing these, we conclude that $\mathbb{E}[|X|^n] = \mathbb{E}[|X|^n \mathbbm{1}_{X \ge 0}] + \mathbb{E}[|X|^n \mathbbm{1}_{X \le 0}] < +\infty$, meaning $X$ admits moments of all orders.
+
+To obtain the Taylor series, we want to use the Fubini-Tonelli theorem to swap the expectation and the sum. This requires verifying that $\mathbb{E}\left[\sum_{n=0}^\infty \frac{|tX|^n}{n!}\right] < +\infty$, which is equivalent to $\mathbb{E}[e^{|tX|}] < +\infty$.
+We check this bound:
+\[ \mathbb{E}[e^{|tX|}] = \mathbb{E}[e^{tX} \mathbbm{1}_{X \ge 0}] + \mathbb{E}[e^{-tX} \mathbbm{1}_{X \le 0}] \le M_X(t) + M_X(-t) \]
+Since $t \in (-a, a)$ implies $-t \in (-a, a)$, both $M_X(t)$ and $M_X(-t)$ are finite, meaning $\mathbb{E}[e^{|tX|}] < +\infty$.
+By Fubini-Tonelli, we can now safely interchange the expectation and the infinite sum:
+\[ M_X(t) = \mathbb{E}[e^{tX}] = \mathbb{E}\left[\sum_{n=0}^\infty \frac{(tX)^n}{n!}\right] = \sum_{n=0}^\infty \frac{t^n}{n!} \mathbb{E}[X^n] \]
+
+Since the moment generating function $M_X(t) = \sum_{n=0}^\infty \frac{\mathbb{E}[X^n]}{n!} t^n$ converges for all $t \in (-a, a)$, it defines a power series with a radius of convergence $R \ge a$. 
+By the standard properties of power series, any power series is infinitely differentiable strictly inside its interval of convergence, and its derivatives can be computed term-by-term. 
+Taking the $k$-th derivative of $M_X(t)$ with respect to $t$ gives:
+\[ M_X^{(k)}(t) = \sum_{n=k}^\infty \frac{\mathbb{E}[X^n]}{(n-k)!} t^{n-k} \]
+Evaluating this expression at $t = 0$, all terms in the sum where $n > k$ vanish because they are multiplied by $0^{n-k}$. The only non-zero term is when $n = k$, which yields:
+\[ M_X^{(k)}(0) = \frac{\mathbb{E}[X^k]}{0!} 0^0 = \mathbb{E}[X^k] \]
+This holds for all $k \in \mathbb{N}$, completing the proof.
+\end{proof}
+
+
 \begin{example}{MGF of Uniform and Geometric random variables}{}
 \textbf{Uniform Distribution $\mathcal{U}(\{1, \dots, N\})$:}
 $p_X(k) = 1/N$ for $k \in \{1, \dots, N\}$.
@@ -963,12 +986,104 @@ $p_X(k) = (1-p)^{k-1}p$ for $k \ge 1$.
 This geometric series converges if and only if $e^t(1-p) < 1$, which is equivalent to $t < \log\left(\frac{1}{1-p}\right)$.
 \[ M_X(t) = \begin{cases} \frac{p e^t}{1 - (1-p)e^t}, & \text{if } t < \log(\frac{1}{1-p}) \\ +\infty, & \text{if } t \ge \log(\frac{1}{1-p}) \end{cases} \]
 \end{example}
-% Add this inside the Uniform Distribution part of the Example block from the previous output:
 
 To verify the limit as $t \to 0$ for the uniform distribution MGF:
 \[ M_X(t) = \frac{e^t}{N} \cdot \frac{e^{tN} - 1}{t} \cdot \frac{t}{e^t - 1} \]
 As $t \to 0$: $\displaystyle \frac{e^{tN} - 1}{t} \to N$, $\displaystyle \frac{t}{e^t - 1} \to 1$ and $\displaystyle \frac{e^t}{N} \to \frac{1}{N}$.
 Therefore, the limit as $t \to 0$ is $\frac{1}{N} \cdot N \cdot 1 = 1$.
+
+
+% Add this at the end of Lecture 4:
+
+\subsection{Cumulative distribution function}
+
+\begin{definition}{Cumulative distribution function}{}
+The cumulative distribution function of a random variable is defined by
+\[ \forall t \in \mathbb{R}, \quad F_X(t) = \mathbb{P}[X \le t] \]
+If $X$ is a discrete r.v.:
+\[ F_X(t) = \sum_{x \le t} p_X(x) \]
+If $X$ is an absolutely continuous r.v.
+\[ F_X(t) = \int_{-\infty}^t f_X(x)dx \]
+In particular, it is continuous and of class $\mathcal{C}^1$ if $f_X$ is continuous.
+\end{definition}
+
+\begin{proposition}{Properties of CDF}{}
+The cumulative distribution function enjoys the following properties:
+\begin{enumerate}
+    \item It is non decreasing
+    \item It is right-continuous $\lim_{y \downarrow x} F_X(y) = F_X(x)$
+    \item $\lim_{x \to +\infty} F_X(x) = 1$
+    \item $\lim_{x \to -\infty} F_X(x) = 0$
+\end{enumerate}
+
+\textbf{Continuity from above:} Let $\mathbb{P}: \mathcal{P}(\Omega) \to [0,1]$ and let $(B_n)_{n \ge 1}$ be a non increasing sequence of events, i.e. $B_{n+1} \subseteq B_n \; \forall n \ge 1$. Then we have
+\[ \mathbb{P}\left[\bigcap_{n \ge 1} B_n\right] = \lim_{n \to +\infty} \mathbb{P}[B_n] \]
+\end{proposition}
+
+\begin{proof}[Proof of CDF Properties]
+\begin{enumerate}
+    \item \textbf{Non decreasing:} If $t \le t'$, then $\{X \le t\} \subset \{X \le t'\}$. Thus, $\mathbb{P}(X \le t) \le \mathbb{P}(X \le t')$, which means $F_X(t) \le F_X(t')$.
+    \item \textbf{Right-continuous:} Take a sequence $(y_n)$ strictly decreasing to $x$. We set $B_n = \{X \le y_n\}$. We have $B_n \supset B_{n+1}$. We claim that $\bigcap_{n \ge 0} B_n = \{X \le x\}$. Let $\omega \in \bigcap_{n \ge 0} B_n$. Then $X(\omega) \le y_n$ for all $n \ge 0$. Taking the limit gives $X(\omega) \le x$, so $\omega \in \{X \le x\}$. Conversely, if $X(\omega) \le x$, since $x < y_n$, we have $X(\omega) \le y_n$ for all $n \ge 0$, so $\omega \in \bigcap_{n \ge 0} B_n$. Applying continuity from above, $\mathbb{P}(X \le y_n) \to \mathbb{P}(X \le x)$, meaning $F_X(y_n) \to F_X(x)$. Because this holds for any such sequence $(y_n)$, the function is right-continuous.
+    \item \textbf{Limit at $+\infty$:} Let $(x_n)_n$ be a sequence strictly increasing to $+\infty$. Let $B_n = \{X \le x_n\}$. We have $\mathbb{P}(X \le x_n) \to \mathbb{P}\left(\bigcup_{n \ge 0} \{X \le x_n\}\right) = \mathbb{P}(X < +\infty) = 1$.
+    \item \textbf{Limit at $-\infty$:} Left as an exercise (similar proof using continuity from below).
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}{CDF for Discrete Random Variables}{}
+Let $X$ be a discrete real valued random variable. Then
+\[ \forall x \in \mathbb{R}, \quad p_X(x) = F_X(x) - F_X(x^-) \]
+where $F_X(x^-)$ denotes the left limit of $F_X$ at $x$:
+\[ F_X(x^-) = \lim_{y \uparrow x} F_X(y) \]
+\end{proposition}
+
+\begin{example}{Bernoulli CDF}{}
+Let $X \sim \text{Be}(p)$. Then
+\[ F_X(x) = \begin{cases} 0, & \text{if } x < 0 \\ 1 - p, & \text{if } 0 \le x < 1 \\ 1, & \text{if } x \ge 1 \end{cases} \]
+\end{example}
+
+\begin{proposition}{Sufficient condition for absolute continuity}{}
+Let $X$ be a real valued random variable. If $F_X$ is piecewise $\mathcal{C}^1$, then $X$ is an absolutely continuous random variable whose density is $f_X(x) = F_X'(x)$.
+\textit{Piecewise $\mathcal{C}^1$ functions:} A function $g: (a, b) \to (-\infty, +\infty)$ is piecewise $\mathcal{C}^1$ if it is continuous on $(a, b)$ and there exist $a = a_0 < a_1 < \dots < a_N = b$ such that $g$ is continuously differentiable on each interval $(a_i, a_{i+1})$, for all $i = 0, \dots, N-1$.
+\end{proposition}
+
+\begin{theorem}{A general existence result}{}
+Let $F: \mathbb{R} \to [0,1]$ be a non decreasing right-continuous function, such that $\lim_{x \to +\infty} F(x) = 1$ and $\lim_{x \to -\infty} F(x) = 0$. Then, there exists a probability space $(\Omega, \mathcal{A}, \mathbb{P})$ and a real valued random variable $X$ defined on it such that $F_X = F$. Moreover, the density $f_X$ of $X$ is given by $f_X(x) = F_X'(x)$.
+\end{theorem}
+
+
+% ============================================================
+%  LECTURE 5
+% ============================================================
+
+\section{Lecture 5}
+
+\subsection{Applications of discrete random variables}
+
+\begin{problem}{The coupon collector problem}{}
+We consider an album with $N$ stickers and identify the album with the set $\{1, \dots, N\}$. A collector can buy a sticker at the price of $1$ Euro. Each sticker she buys is one of the possible $N$ stickers with equal probability, independently from the previous purchases. 
+
+Let $(X_n)_{n \ge 1}$ be the sequence of purchased stickers, modeled as independent random variables all distributed according to the uniform law on $\{1, \dots, N\}$. The random set $A_n := \{X_1, \dots, X_n\}$ represents all the stickers collected in the first $n$ purchases.
+We define $T_0 = 0$ and for $k = 1, 2, \dots$,
+\[ T_k = \inf\{n \ge 1 : \text{Card}(A_n) = k\} \]
+$T_k$ is the time it takes to get $k$ different stickers.
+\end{problem}
+
+\begin{proof}[Solution to the Coupon Collector Problem]
+Let's analyze the time intervals between finding new stickers.
+$T_1 = 1$, since the first sticker is always new.
+The time to get the second new sticker is $T_2 - T_1 \sim \text{Geo}\left(\frac{N-1}{N}\right)$.
+In general, the time to get the $(k+1)$-th new sticker given you have $k$ stickers is $T_{k+1} - T_k \sim \text{Geo}\left(\frac{N-k}{N}\right)$.
+These intervals $T_{k+1} - T_k$ are independent random variables.
+
+We want to find information about $T_N$, the time until the collection is complete.
+\[ \mathbb{E}[T_N] = \mathbb{E}\left[\sum_{k=0}^{N-1} (T_{k+1} - T_k)\right] \]
+By linearity of expectation:
+\[ \mathbb{E}[T_N] = \sum_{k=0}^{N-1} \mathbb{E}[T_{k+1} - T_k] = \sum_{k=0}^{N-1} \frac{N}{N-k} = N \sum_{p=1}^N \frac{1}{p} \]
+As $N \to \infty$, the harmonic sum $\sum_{p=1}^N \frac{1}{p} \sim \log N$, so $\mathbb{E}[T_N] \sim N \log N$.
+
+For the variance, since the intervals are independent, the variance of the sum is the sum of the variances:
+\[ \mathbb{V}(T_N) = \mathbb{V}\left(\sum_{k=0}^{N-1} (T_{k+1} - T_k)\right) = \sum_{k=0}^{N-1} \mathbb{V}(T_{k+1} - T_k) \]
+\end{proof}
 
 
 
