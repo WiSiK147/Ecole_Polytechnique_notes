@@ -1025,4 +1025,163 @@ Therefore, no subsequence of $(e_n)_{n \in \N}$ can be Cauchy, and hence no subs
 In a NVS $(E, N)$, the closed unit ball $\overline{B_E}(0, 1)$ is compact if and only if $\dim E < +\infty$.
 \end{theorem}
 
+\begin{proposition}{Images of Compact Sets}{image_compact}
+If $\varphi: \Omega \to F$ is continuous on $\Omega$ and $K \subset \Omega$ is compact, then $\varphi(K)$ is compact.
+\end{proposition}
+\begin{proof}
+Assume $K \neq \emptyset$. We set $\mathcal{K} = \varphi(K)$.
+Let $(y_n)_{n \in \N} \in \mathcal{K}^\N$. We know that for all $n \in \N$, there exists $x_n \in K$ such that $y_n = \varphi(x_n)$.
+Since $K$ is compact and $(x_n)_{n \in \N} \in K^\N$, there exists a strictly increasing extraction $\psi: \N \to \N$ such that $x_{\psi(n)} \to x_\infty$ for some $x_\infty \in K$.
+Because $\varphi$ is continuous at $x_\infty \in K \subset \Omega$, we have that $\varphi(x_{\psi(n)}) \to \varphi(x_\infty)$.
+This means $y_{\psi(n)} \to y_\infty \in \mathcal{K}$, so $\mathcal{K}$ is compact.
+\end{proof}
+
+\begin{corollary}{Extreme Value Theorem}{extreme_value}
+If $K \subset E$ is compact and $f: K \to \R$ is continuous, then $f$ attains its extrema on $K$.
+\end{corollary}
+\begin{proof}
+By the previous proposition, $\mathcal{K} = f(K) \subset \R$ is compact.
+Therefore, $\mathcal{K}$ is bounded and closed.
+Since $\mathcal{K}$ is bounded from above, $\alpha = \sup \mathcal{K} < +\infty$.
+Since $\mathcal{K}$ is closed, $\alpha \in \mathcal{K}$.
+Thus, there exists $x^* \in K$ such that $f(x^*) = \alpha$.
+For every $x \in K$, we have $f(x) \le \alpha = f(x^*)$, i.e., $f(x^*) = \sup_{x \in K} f(x)$.
+The proof for the infimum is similar.
+\end{proof}
+
+\section{Lecture 5: Compactness II}
+Let $E = \R^d$ (for $d \ge 0$) or $\C^d$. We equip $E$ with the sup norm $\Vert x \Vert_\infty = \max_{i=1, \dots, d} |x^i|$.
+
+\begin{proposition}{Component-wise Convergence}{comp_conv}
+Let $(x_n)_{n \in \N}$ be a sequence in $E$, with $x_n = (x_n^1, \dots, x_n^d)$ for all $n \in \N \cup \{\infty\}$.
+Then $x_n \to x_\infty$ in $(E, \Vert \cdot \Vert_\infty)$ if and only if for all $i = 1, \dots, d$, $x_n^i \to x_\infty^i$ in $\mathbb{K}$.
+\end{proposition}
+
+\begin{proposition}{Heine-Borel Theorem in $\R^d$}{heine_borel}
+For $K \subseteq E = \R^d$, $K$ is compact if and only if $K$ is bounded and closed.
+\end{proposition}
+\begin{proof}
+The fact that compact implies bounded and closed was proved in Lecture 4.
+Now assume $K \neq \emptyset$, bounded, and closed.
+Since $K$ is bounded, there exists $\rho > 0$ such that $K \subseteq B(0, \rho)$ for $\Vert \cdot \Vert_\infty$.
+This means $K \subseteq [-\rho, \rho]^d \subset \R^d$.
+Because closed subsets of a compact set are compact, it is sufficient to prove that $[-\rho, \rho]^d$ is compact.
+We prove this by induction on $d \ge 0$.
+\begin{itemize}
+    \item $d = 0$: Obvious.
+    \item $d = 1$: True by the Bolzano-Weierstrass theorem.
+    \item $d \ge 2$: We have a natural linear isomorphism $\R^d \to \R^{d-1} \times \R$, sending $(x^1, \dots, x^d)$ to $((x^1, \dots, x^{d-1}), x^d)$.
+    Under this isomorphism, the norm corresponds to $\max(\Vert \cdot \Vert_{\R^{d-1}, \infty}, |\cdot|_{\R})$.
+    Then $[-\rho, \rho]^d = [-\rho, \rho]^{d-1} \times [-\rho, \rho]$.
+    The first factor is compact by the induction hypothesis, and the second is compact in $(\R, |\cdot|)$.
+    By the following lemma, the product of two compact sets is compact.
+\end{itemize}
+\end{proof}
+
+\begin{lemma}{Product of Metric Spaces}{prod_metric}
+Let $(X_1, d_1)$ and $(X_2, d_2)$ be two metric spaces.
+Let $X = X_1 \times X_2$, and define $d: X^2 \to \R^+$ by $d((x_1, x_2), (y_1, y_2)) = \max(d_1(x_1, y_1), d_2(x_2, y_2))$.
+\begin{enumerate}
+    \item $d$ is a metric on $X$.
+    \item If $K_i \subset X_i$ are non-empty compact subsets for $i=1,2$, then $K = K_1 \times K_2$ is compact in $X$ for $d$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Left as an exercise.
+\end{proof}
+
+\subsection{Equivalence of Norms}
+Let $\mathbb{K} = \R$ or $\C$, and let $E$ be a NVS over $\mathbb{K}$.
+
+\begin{definition}{Weaker Norm}{weaker_norm_def}
+Let $N_1, N_2$ be two norms on $E$. We say $N_2$ is \textbf{weaker} than $N_1$ if there exists $C > 0$ such that $N_2 \le C N_1$, meaning $\forall x \in E, N_2(x) \le C N_1(x)$.
+\end{definition}
+
+\begin{example}{}{weaker_norm_ex}
+\begin{itemize}
+    \item On $\R^2$, $N_1 = \Vert \cdot \Vert_\infty$ and $N_2 = \Vert \cdot \Vert_2$. For $x, y \in \R^2$, $\Vert (x,y) \Vert_2 = \sqrt{x^2 + y^2} \le \sqrt{2 \max(x^2, y^2)} = \sqrt{2} \Vert (x,y) \Vert_\infty$. Thus, $\Vert \cdot \Vert_2$ is weaker than $\Vert \cdot \Vert_\infty$.
+    \item Let $E = C^1([0,1], \R)$. Consider the norms $N_1(f) = \Vert f \Vert_\infty + \Vert f' \Vert_\infty$ and $N_2(f) = \Vert f \Vert_\infty$.
+    Clearly, $N_2(f) \le 1 \cdot N_1(f)$, so $N_2$ is weaker than $N_1$.
+    However, $N_1$ is not weaker than $N_2$. Consider $f_n(x) = x^n$. We have $\Vert f_n \Vert_\infty = 1$, but $N_1(f_n) = 1 + n$. There is no constant $C \ge 0$ such that $1+n \le C \cdot 1$ for all $n$, so $N_1$ is not weaker than $N_2$.
+\end{itemize}
+\end{example}
+
+\begin{proposition}{Properties of Weaker Norms}{weaker_norm_prop}
+Let $N_1, N_2$ be norms on $E$.
+\begin{enumerate}
+    \item If $N_2$ is weaker than $N_1$, then for any sequence $(x_n)_{n \in \N}$ in $E$:
+    \begin{itemize}
+        \item If $(x_n)_{n \in \N}$ is bounded for $N_1$, it is bounded for $N_2$.
+        \item If $(x_n)_{n \in \N}$ converges for $N_1$, it converges for $N_2$.
+    \end{itemize}
+    \item If $N_2$ is not weaker than $N_1$, then there exists a sequence $(x_n)_{n \in \N}$ in $E$ that is bounded for $N_1$ but not for $N_2$, and similarly for convergence.
+\end{enumerate}
+\end{proposition}
+
+\begin{definition}{Equivalent Norms}{equiv_norms_def}
+$N_1$ and $N_2$ are \textbf{equivalent} (notation: $N_1 \sim N_2$) if $N_1$ is weaker than $N_2$ and $N_2$ is weaker than $N_1$.
+This is equivalent to: $\exists c_1, c_2 > 0$ such that $\forall x \in E$, $c_1 N_1(x) \le N_2(x) \le c_2 N_1(x)$.
+\end{definition}
+
+\begin{proposition}{}{equiv_rel}
+Equivalence $\sim$ is an equivalence relation on the set of all norms on $E$.
+\end{proposition}
+
+\begin{example}{}{equiv_norm_ex}
+On $\R^2$, $\Vert \cdot \Vert_\infty \le \Vert \cdot \Vert_2 \le \sqrt{2} \Vert \cdot \Vert_\infty$, so $\Vert \cdot \Vert_\infty \sim \Vert \cdot \Vert_2$.
+\end{example}
+
+\begin{theorem}{Equivalence of Norms in Finite Dimensions}{equiv_finite_dim}
+On any finite-dimensional vector space $E$, all norms are equivalent.
+\end{theorem}
+
+\begin{lemma}{Reduction to Real Scalars}{complex_to_real}
+Let $E$ be a $\C$-vector space, and $N$ a norm on $E$.
+\begin{enumerate}
+    \item Let $E|_\R$ denote $E$ viewed as an $\R$-vector space (restriction of scalars). Then $N$ is a norm on $E|_\R$.
+    \item If $N_1, N_2$ are norms on $E$, then $N_1 \sim N_2$ as norms on $E$ if and only if $N_1 \sim N_2$ as norms on $E|_\R$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}[Proof of Theorem \ref{thm:equiv_finite_dim} for $E = \R^d$]
+Assume $d > 0$. Let $N$ be a norm on $E$. Let us prove $N \sim \Vert \cdot \Vert_\infty$.
+For $x \in E$, we can write $x = \sum_{i=1}^d x^i e_i$ using the canonical basis $(e_i)_{i=1}^d$.
+By the triangular inequality, $N(x) = N(\sum_{i=1}^d x^i e_i) \le \sum_{i=1}^d |x^i| N(e_i)$.
+Let $C = \sum_{i=1}^d N(e_i) > 0$. Then $N(x) \le \Vert x \Vert_\infty C$, so $N$ is weaker than $\Vert \cdot \Vert_\infty$.
+
+Now we prove the opposite.
+Let $S = \{ x \in \R^d \mid \Vert x \Vert_\infty = 1 \}$.
+Because $\Vert \cdot \Vert_\infty: (\R^d, \Vert \cdot \Vert_\infty) \to \R$ is 1-Lipschitz and therefore continuous, $S = \Vert \cdot \Vert_\infty^{-1}(\{1\})$ is closed.
+Since $S$ is also bounded, $S$ is compact in $(\R^d, \Vert \cdot \Vert_\infty)$.
+Since $N$ is weaker than $\Vert \cdot \Vert_\infty$, we have $|N(x) - N(y)| \le N(x-y) \le C \Vert x-y \Vert_\infty$.
+Thus, $N: (\R^d, \Vert \cdot \Vert_\infty) \to \R$ is Lipschitz, and therefore continuous.
+Since $S$ is compact and $N$ is continuous, $N$ attains its infimum on $S$.
+So there exists $x^* \in S$ such that for all $x \in S$, $N(x^*) \le N(x)$.
+Since $x^* \in S$, $x^* \neq 0$, which implies $\nu = N(x^*) > 0$.
+For any $y \neq 0 \in E$, $\frac{y}{\Vert y \Vert_\infty} \in S$, so $\nu \le N\left(\frac{y}{\Vert y \Vert_\infty}\right)$.
+By linearity, $\Vert y \Vert_\infty \le \frac{1}{\nu} N(y)$, meaning $\Vert \cdot \Vert_\infty$ is weaker than $N$.
+Thus, $N \sim \Vert \cdot \Vert_\infty$.
+\end{proof}
+
+\begin{corollary}{General Finite Dimensional Case}{equiv_finite_gen}
+Let $E$ be a finite-dimensional vector space over $\mathbb{K}$ ($\R$ or $\C$). All norms are equivalent on $E$.
+\end{corollary}
+\begin{proof}
+Let $N_1, N_2$ be norms on $E$, and let $d = \dim E > 0$.
+Choose a basis $(e_i)_{i=1}^d$ for $E$. The map $\psi: \mathbb{K}^d \to E$ defined by $\psi((x_i)_{i=1}^d) = \sum_{i=1}^d x_i e_i$ is a vector space isomorphism.
+Define norms on $\mathbb{K}^d$ by $\tilde{N}_j = N_j \circ \psi$ for $j=1,2$.
+By the previous theorem, $\tilde{N}_1 \sim \tilde{N}_2$ on $\mathbb{K}^d$. Because $\psi$ is an isomorphism, this implies $N_1 \sim N_2$ on $E$.
+\end{proof}
+
+\begin{corollary}{Topological Properties in Finite Dimensions}{top_finite_dim}
+On a finite-dimensional NVS, there is a unique notion of:
+\begin{itemize}
+    \item open / closed / bounded / compact subsets.
+    \item convergence of sequences.
+    \item continuity of maps.
+\end{itemize}
+In finite dimensions, there is no need to specify the norm for these topological properties.
+\end{corollary}
+
+
 \end{document}
