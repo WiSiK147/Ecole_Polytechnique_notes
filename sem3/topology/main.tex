@@ -1005,6 +1005,15 @@ By the sequential criterion for closedness, there exists a sequence $(x_n)_{n \i
 Then any subsequence $(x_{\varphi(n)})_{n \in \N}$ also converges to $x_\infty$. Since $x_\infty \notin K$, the subsequence does not converge in $K$. Thus, $K$ is not compact.
 \end{proof}
 
+\begin{proposition}{Closed Subsets of Compact Sets}{closed_in_compact}
+Every closed subset of a compact set is compact.
+\end{proposition}
+\begin{proof}
+Let $K$ be a compact subset of a normed vector space $(E, N)$, and let $F \subseteq K$ be closed in $E$.
+
+Consider any sequence $(x_n)_{n \in \N}$ in $F$. Since $K$ is compact, there exists a subsequence $(x_{\varphi(n)})_{n \in \N}$ converging to some $l \in K$. As $F$ is closed and $x_{\varphi(n)} \in F$ for every $n$, we have $l \in F$. Thus $F$ is compact.
+\end{proof}
+
 \begin{remark}{}{}
 \textbf{Warning:} The converse (bounded and closed implies compact) is generally false in infinite-dimensional spaces.
 \end{remark}
