@@ -1,0 +1,1182 @@
+% ============================================================
+%   LECTURE NOTES TEMPLATE
+%   Supports: theorems, proofs, code, plots, geometry, figures
+% ============================================================
+
+\documentclass[11pt, a4paper]{article}
+
+% ── Core packages ───────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}                   % Better fonts
+\usepackage[margin=2.5cm]{geometry}    % Page margins
+\usepackage{microtype}                 % Better text justification
+
+% ── Math ────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{thmtools}                  % Extended theorem tools
+\usepackage{bbm}                       % \mathbbm{1} indicator
+\usepackage{bm}                        % Bold math \bm{}
+
+% ── Colors ──────────────────────────────────────────────────
+\usepackage[dvipsnames, svgnames, x11names]{xcolor}
+
+% ── Define Color Palette ────────────────────────────────────
+\definecolor{TheoremBG}    {RGB}{230, 245, 230}   % soft green
+\definecolor{TheoremBorder}{RGB}{ 34, 139,  34}   % forest green
+\definecolor{PropBG}       {RGB}{255, 224, 224}   % soft blue
+\definecolor{PropBorder}   {RGB}{255, 123, 123}   % steel blue
+\definecolor{CorolBG}      {RGB}{255, 245, 220}   % warm cream
+\definecolor{CorolBorder}  {RGB}{205, 133,  63}   % peru
+\definecolor{DefBG}        {RGB}{245, 230, 255}   % lavender
+\definecolor{DefBorder}    {RGB}{128,   0, 128}   % purple
+\definecolor{ExBG}         {RGB}{240, 248, 255}   % alice blue
+\definecolor{ExBorder}     {RGB}{ 70, 130, 180}   % steel blue
+\definecolor{RemBG}        {RGB}{255, 250, 240}   % floral white
+\definecolor{RemBorder}    {RGB}{169, 169, 169}   % dark gray
+\definecolor{LemmaBG}      {RGB}{230, 250, 250}   % light cyan
+\definecolor{LemmaBorder}  {RGB}{ 32, 178, 170}   % light sea green
+\definecolor{ProblemBG}    {RGB}{230, 240, 255}   % same as Prop
+\definecolor{ProblemBorder}{RGB}{30, 90, 200}   % royal blue
+\definecolor{CodeBG}       {RGB}{ 40,  44,  52}   % dark (One Dark)
+\definecolor{CodeKey}      {RGB}{198, 120, 221}   % purple keyword
+\definecolor{CodeStr}      {RGB}{152, 195, 121}   % green string
+\definecolor{CodeCom}      {RGB}{ 92, 100, 112}   % gray comment
+\definecolor{CodeNum}      {RGB}{209, 154, 102}   % orange number
+\definecolor{LinkColor}    {RGB}{ 10,  80, 160}
+
+% ── Theorem Environments (tcolorbox) ────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems, skins, breakable}
+
+%  Macro for colored theorem boxes
+\newcommand{\maketheorbox}[6]{%
+  % #1 = env name, #2 = display name, #3 = BG color, #4 = border color
+  % #5 = title text color, #6 = counter (share with: e.g. theorem)
+  \tcbset{#1style/.style={%
+    enhanced, breakable,
+    colback=#3, colframe=#4,
+    arc=4pt,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+    boxed title style={colback=#4, colframe=#4, sharp corners},
+    sharp corners=south,
+    boxrule=1pt,
+    top=4mm, bottom=4mm,
+  }}%
+}
+
+% ── Theorem / Proposition / etc. counters ───────────────────
+\newcounter{thmcounter}
+\renewcommand{\thethmcounter}{\thesection.\arabic{thmcounter}}
+
+% THEOREM
+\newtcbtheorem[use counter=thmcounter]{theorem}{Theorem}{
+  enhanced, breakable,
+  colback=TheoremBG, colframe=TheoremBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=TheoremBorder, colframe=TheoremBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{thm}
+
+% PROPOSITION
+\newtcbtheorem[use counter=thmcounter]{proposition}{Proposition}{
+  enhanced, breakable,
+  colback=PropBG, colframe=PropBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=PropBorder, colframe=PropBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prop}
+
+% LEMMA
+\newtcbtheorem[use counter=thmcounter]{lemma}{Lemma}{
+  enhanced, breakable,
+  colback=LemmaBG, colframe=LemmaBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=LemmaBorder, colframe=LemmaBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{lem}
+
+% COROLLARY
+\newtcbtheorem[use counter=thmcounter]{corollary}{Corollary}{
+  enhanced, breakable,
+  colback=CorolBG, colframe=CorolBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=CorolBorder, colframe=CorolBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{cor}
+
+% DEFINITION
+\newtcbtheorem[use counter=thmcounter]{definition}{Definition}{
+  enhanced, breakable,
+  colback=DefBG, colframe=DefBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=DefBorder, colframe=DefBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{def}
+
+% EXAMPLE
+\newtcbtheorem{example}{Example}{
+  enhanced, breakable,
+  colback=ExBG, colframe=ExBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ExBorder, colframe=ExBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.8pt,
+  top=5mm, bottom=4mm,
+}{ex}
+
+% REMARK  (lighter, no box title)
+\newtcbtheorem[use counter=thmcounter]{remark}{Remark}{
+  enhanced, breakable,
+  colback=RemBG, colframe=RemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=RemBorder, colframe=RemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=0.6pt,
+  top=5mm, bottom=4mm,
+}{rem}
+
+% PROBLEM
+\newtcbtheorem[use counter=thmcounter]{problem}{Problem}{
+  enhanced, breakable,
+  colback=ProblemBG, colframe=ProblemBorder,
+  arc=4pt,
+  fonttitle=\bfseries\color{white},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=ProblemBorder, colframe=ProblemBorder,
+    sharp corners, fontupper=\color{white}\bfseries},
+  sharp corners=south, boxrule=1pt,
+  top=5mm, bottom=4mm,
+}{prob}
+
+% ── PROOF style (white background, left gray bar, italic) ───
+% Matches the screenshot: "Proof of Theorem X.X" header, plain body
+\tcolorboxenvironment{proof}{
+  blanker, breakable,
+  left=4mm,
+  before skip=6pt, after skip=10pt,
+  borderline west={2pt}{0pt}{gray!60},
+}
+% Override proof header style
+\renewcommand{\proofname}{\normalfont\color{gray}\small\scshape Proof}
+
+% ── Code listings (listings + tcolorbox) ────────────────────
+\usepackage{listings}
+
+\lstdefinestyle{CppStyle}{
+  language=C++,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={auto, nullptr, constexpr, override, final,
+                uint8_t, uint16_t, uint32_t, uint64_t,
+                int8_t, int16_t, int32_t, int64_t},
+  frame=none,
+}
+
+\lstdefinestyle{PythonStyle}{
+  language=Python,
+  backgroundcolor=\color{CodeBG},
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{CodeKey}\bfseries,
+  stringstyle=\color{CodeStr},
+  commentstyle=\color{CodeCom}\itshape,
+  numberstyle=\tiny\color{CodeNum},
+  numbers=left, numbersep=8pt,
+  stepnumber=1,
+  breaklines=true, breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  morekeywords={self, None, True, False, as, with, yield,
+                lambda, import, from, pass, assert, raise,
+                except, finally, elif},
+  frame=none,
+}
+
+% Wrap lstlisting in a tcolorbox for rounded corners + title
+\newtcblisting{cppcode}[1][]{
+  listing only, listing style=CppStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=\faCode\ C++,            % remove \faCode if not using fontawesome
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+\newtcblisting{pycode}[1][]{
+  listing only, listing style=PythonStyle,
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=Python,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% Fallback plain code block (language-agnostic)
+\newtcblisting{code}[2][]{
+  listing only,
+  listing options={
+    style=PythonStyle,
+    language=#2,
+  },
+  colback=CodeBG, colframe=CodeBG!80!black,
+  fonttitle=\ttfamily\small\color{white},
+  title=#2,
+  sharp corners, boxrule=0.5pt,
+  #1
+}
+
+% ── Plots and Geometry (pgfplots + tikz) ────────────────────
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{
+  arrows.meta,         % Better arrow tips
+  calc,                % Coordinate calculations
+  shapes.geometric,    % circles, rectangles, etc.
+  positioning,         % node placement
+  decorations.markings,% marks on paths
+  intersections,       % path intersections
+  patterns,            % hatching
+  angles, quotes,      % angle labeling
+  3d,                  % 3D axes
+}
+
+% Convenience: TikZ picture wrapper with caption
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ── Figures / Images ────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{wrapfig}   % Text-wrapped figures
+
+% Figure box style (tcolorbox)
+\newtcolorbox{figurebox}[2][]{
+  enhanced, breakable,
+  colback=white, colframe=gray!50,
+  title=#2,
+  fonttitle=\bfseries\small,
+  boxed title style={colback=gray!20, colframe=gray!50},
+  attach boxed title to top left={yshift=-\tcboxedtitleheight/2, xshift=8pt},
+  sharp corners, boxrule=0.8pt,
+  #1
+}
+
+% ── Tables ──────────────────────────────────────────────────
+\usepackage{booktabs}   % \toprule, \midrule, \bottomrule
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}  % Tables spanning multiple pages
+
+% ── Hyperlinks & PDF metadata ───────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = LinkColor,
+  citecolor  = LinkColor,
+  urlcolor   = LinkColor,
+  pdftitle   = {Lecture Notes},
+  pdfauthor  = {Your Name},
+}
+
+% ── Table of Contents style ─────────────────────────────────
+\usepackage{titletoc}
+\usepackage{titlesec}
+
+% Section numbering depth
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% Section title styling
+\titleformat{\section}
+  {\large\bfseries}
+  {\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {\thesubsection}{1em}{}
+
+% ── Bibliography ────────────────────────────────────────────
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+% \addbibresource{references.bib}   % uncomment and add your .bib
+
+% ── Miscellaneous Useful Packages ───────────────────────────
+\usepackage{enumitem}          % Customise lists
+\usepackage{todonotes}         % \todo{} margin notes
+\usepackage{cleveref}          % \cref{} smart cross-refs
+\usepackage{siunitx}           % SI units: \SI{9.8}{\metre\per\second}
+\usepackage{physics}           % \dd, \grad, \curl, \laplacian …
+\usepackage{mathrsfs}          % \mathscr{F} script font
+
+% ── Convenience Math Macros ─────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\one}{\mathbbm{1}}          % indicator
+\newcommand{\eps}{\varepsilon}
+% \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+% \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\sgn}{sgn}
+% \DeclareMathOperator{\tr}{tr}
+% \DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\supp}{supp}
+
+% ── Header / Footer ─────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{\CourseName}}
+\fancyhead[R]{\small\textit{\rightmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Metadata Commands (fill these per lecture) ──────────────
+\newcommand{\CourseName}{Introduction to Analysis}
+\newcommand{\CourseCode}{FMA\_1F002\_EP}
+\newcommand{\University}{École Polytechnique}
+\newcommand{\Lecturer}{Prof. Frank Pacard}
+\newcommand{\StudentName}{Nikolay Kharovskiy}
+\newcommand{\Semester}{Fall 2025}
+
+% ============================================================
+%   DOCUMENT BEGIN
+% ============================================================
+\begin{document}
+
+% ── Title Page ──────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\Huge\bfseries \CourseName\par}
+  \vspace{0.5cm}
+  {\large \CourseCode\par}
+
+  \vspace{1.5cm}
+  \hrule height 1pt
+  \vspace{0.4cm}
+  {\Large\bfseries Lecture Notes \par}
+  \vspace{0.4cm}
+  \hrule height 1pt
+
+  \vspace{2cm}
+
+  \begin{tabular}{rl}
+    \textbf{University:} & \University\\[8pt]
+    \textbf{Lecturer:}   & \Lecturer\\[8pt]
+    \textbf{Student:}    & \StudentName\\[8pt]
+    \textbf{Semester:}   & \Semester\\[8pt]
+  \end{tabular}
+
+  \vfill
+
+  {\small These are personal lecture notes and may contain errors.
+         For the official course material consult the lecturer.}
+\end{titlepage}
+
+% ── Table of Contents ───────────────────────────────────────
+\tableofcontents
+\newpage
+
+\section{Number Systems}
+
+\subsection{Natural Numbers, Integers, and Rationals}
+
+\begin{definition}{Natural Numbers}{def:nat_num}
+The set of natural numbers $\mathbb{N}$ is characterized by the following axioms:
+\begin{enumerate}
+    \item $0 \in \mathbb{N}$.
+    \item If $n \in \mathbb{N}$, then $n+1 \in \mathbb{N}$.
+\end{enumerate}
+The Principle of Mathematical Induction states that if a subset $E \subset \mathbb{N}$ satisfies these two properties, then $E = \mathbb{N}$.
+\end{definition}
+
+\begin{definition}{Bounded Subsets of $\mathbb{N}$}{def:bounded_N}
+Let $E \subset \mathbb{N}$. $m \in E$ is the least element of $E$ if $m \le n$ for all $n \in E$. A subset $E \subset \mathbb{N}$ is said to be bounded if there exists $M$ such that for all $m \in E$, $m \le M$. $M \in \mathbb{N}$ is said to be the largest (longest) element of $E \subset \mathbb{N}$ if $M \in E$ and for all $n \in E, n \le M$.
+\end{definition}
+
+\begin{proposition}{Existence of Extrema in $\mathbb{N}$ and $\mathbb{Z}$}{prop:extrema_NZ}
+\begin{itemize}
+    \item Let $E \subset \mathbb{N}$ be non-empty. Then $E$ has a unique least element.
+    \item A bounded non-empty subset $E \subset \mathbb{N}$ has a unique largest element.
+    \item Let $E \subset \mathbb{Z}$ be non-empty and bounded from above (respectively, below). Then $E$ has a largest (respectively, least) element.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+(Uniqueness of the least element): Suppose $m_1$ and $m_2$ are both least elements of $E \subset \mathbb{N}$. Since $m_1$ is a least element and $m_2 \in E$, $m_1 \le m_2$. Symmetrically, since $m_2$ is a least element and $m_1 \in E$, $m_2 \le m_1$. Thus, $m_1 = m_2$. The existence is guaranteed by the Well-Ordering Principle, which is equivalent to the Axiom of Induction.
+\end{proof}
+
+\begin{remark}{Algebraic Structures}{rem:algebraic_structs}
+The integers $(\mathbb{Z}, +, \times, \le)$ form an ordered commutative ring, where $\le$ is a total order compatible with $+$ and $\times$. The rational numbers $(\mathbb{Q}, +, \times, \le)$ form an ordered commutative field.
+\textbf{Important Warning:} $\mathbb{Q}$ does not satisfy the least upper bound property (e.g., the set $\{q \in \mathbb{Q} : q^2 < 2\}$ has no supremum in $\mathbb{Q}$).
+\end{remark}
+
+\begin{theorem}{Properties of the Rationals $\mathbb{Q}$}{thm:props_Q}
+\begin{itemize}
+    \item \textbf{Archimedean Property:} If $q \in \mathbb{Q}$ and $q > 0$, then there exists $m, n \in \mathbb{N}$ such that $\frac{1}{m} \le q \le n$.
+    \item \textbf{Irrationality of $\sqrt{2}$:} For all $q \in \mathbb{Q}$, $q^2 \neq 2$.
+\end{itemize}
+(Note: Two integers $a$ and $b$ are said to be coprime if their greatest common divisor is 1, denoted $a \wedge b = 1 \iff (a,b)=1$).
+\end{theorem}
+\begin{proof}
+(Irrationality of $\sqrt{2}$): Suppose for contradiction that there exists $q \in \mathbb{Q}$ such that $q^2 = 2$.
+We can write $q = \frac{a}{b}$ where $a, b \in \mathbb{Z}$, $b \neq 0$, and $\gcd(a,b) = 1$ (the fraction is in simplest form).
+Then:
+$$ \left(\frac{a}{b}\right)^2 = 2 \implies a^2 = 2b^2 $$
+This implies $a^2$ is even. Since the square of an odd number is odd, $a$ must also be even. We can write $a = 2k$ for some integer $k$.
+Substituting this into the equation gives:
+$$ (2k)^2 = 2b^2 \implies 4k^2 = 2b^2 \implies 2k^2 = b^2 $$
+This implies $b^2$ is even, which means $b$ is also even.
+But if both $a$ and $b$ are even, they share a common factor of 2, which contradicts our initial assumption that $\gcd(a,b) = 1$. Thus, no such $q$ exists.
+\end{proof}
+
+\subsection{Real Numbers and Exponentiation}
+
+\begin{definition}{Bounds and Supremum/Infimum}{def:bounds}
+Let $E \subset \mathbb{R}$. We say that $M$ is an upper bound of $E$ if $x \le M$ for all $x \in E$. We say $M$ is the least upper bound (denoted $\sup E$) if $M$ is an upper bound of $E$ and any upper bound $M'$ of $E$ satisfies $M \le M'$. The infimum ($\inf E$) is defined similarly as the greatest lower bound.
+\end{definition}
+
+\begin{proposition}{Sequential Characterization of Supremum}{prop:seq_sup}
+For $E \subset \mathbb{R}$, $M = \sup E$ if and only if $M$ is an upper bound of $E$ and there exists a sequence $(a_n)_{n \ge 0} \subset E$ such that $\lim_{n \to \infty} a_n = M$.
+\end{proposition}
+
+\begin{theorem}{Properties of Reals $\mathbb{R}$}{thm:props_R}
+$(\mathbb{R}, +, \times, \le)$ is an ordered commutative field that enjoys the ``least upper bound property''. Let $E \subset \mathbb{R}$ be a nonempty subset. $M = \sup E$ if and only if $M$ is an upper bound and for all $\epsilon > 0$, there exists $x \in E$ such that $M - \epsilon < x \le M$.
+\begin{itemize}
+    \item \textbf{Archimedean Property:} For all $x \in \mathbb{R}$ with $x > 0$, there exists $m, n \in \mathbb{N}$ such that $\frac{1}{m} < x < n$.
+    \item \textbf{Integer Part:} Given $x \in \mathbb{R}$, there exists a unique integer $k$ such that $k \le x < k+1$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+(Archimedean Property): Suppose for contradiction that there exists $x > 0$ such that for all $n \in \mathbb{N}$, $nx \le y$ for some fixed $y \in \mathbb{R}$.
+This means the set $A = \{nx : n \in \mathbb{N}\}$ is bounded above by $y$.
+By the least upper bound property of $\mathbb{R}$, $A$ has a supremum, say $M = \sup A$.
+Since $x > 0$, $M - x < M$. Therefore, $M - x$ is not an upper bound for $A$.
+There must exist some element $mx \in A$ (where $m \in \mathbb{N}$) such that $mx > M - x$.
+But then:
+$$ mx + x > M \implies (m+1)x > M $$
+Since $m+1 \in \mathbb{N}$, $(m+1)x \in A$, which contradicts that $M$ is an upper bound for $A$. Thus, $\mathbb{R}$ is Archimedean.
+\end{proof}
+
+\begin{theorem}{Existence of Roots}{thm:roots}
+\begin{itemize}
+    \item $\sqrt{2}$ exists in $\mathbb{R}$. 
+    \item Given $n \ge 2$ and $x \in \mathbb{R}$ with $x > 0$, there exists a unique $\alpha \in \mathbb{R}$ with $\alpha \ge 0$ such that $\alpha^n = x$. We denote this as $\alpha = x^{1/n}$ or $\alpha = \sqrt[n]{x}$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+(Existence of $\sqrt{2}$): Let $E = \{x \in \mathbb{R} : x^2 \le 2, x \ge 0\}$. $E$ is non-empty ($1 \in E$) and bounded above (by $2$).
+By the least upper bound property, $\alpha = \sup E$ exists.
+If $\alpha^2 < 2$: For small $\epsilon > 0$, $(\alpha + \epsilon)^2 = \alpha^2 + 2\alpha\epsilon + \epsilon^2$. We can choose $\epsilon$ small enough such that this is still $< 2$, meaning $\alpha+\epsilon \in E$, contradicting $\alpha$ being an upper bound.
+If $\alpha^2 > 2$: For small $\epsilon > 0$, $(\alpha - \epsilon)^2 = \alpha^2 - 2\alpha\epsilon + \epsilon^2$. We can choose $\epsilon$ such that this is $> 2$. Then $\alpha - \epsilon$ is an upper bound strictly less than $\alpha$, contradicting it being the \textit{least} upper bound.
+Hence, $\alpha^2 = 2$.
+
+(Existence of $n$-th root): Let $x > 0$ and $E = \{y \in \mathbb{R} : y \ge 0, y^n \le x\}$. $E$ is bounded above (by $\max(1, x)$) and non-empty ($0 \in E$). Let $\alpha = \sup E$. By a similar argument using the binomial expansion of $(\alpha \pm \epsilon)^n$, assuming $\alpha^n < x$ allows us to find $\alpha + \epsilon \in E$, and $\alpha^n > x$ allows us to find an upper bound $\alpha - \epsilon$, both leading to contradictions. Thus, $\alpha^n = x$.
+Uniqueness follows because the function $f(y) = y^n$ is strictly increasing on $[0, +\infty)$.
+\end{proof}
+
+\begin{definition}{Exponentiation}{def:exponentiation}
+For $x > 0$, we define $x^0 = 1$ and by induction $x^{n+1} = x \cdot x^n$ and $x^{-n} = \frac{1}{x^n}$ for $n \in \mathbb{N}$. For a rational $r = p/q \in \mathbb{Q}$ ($p \in \mathbb{Z}, q \in \mathbb{N}_{>0}$), we define $x^r = x^{p/q} = \sqrt[q]{x^p} = (\sqrt[q]{x})^p$.
+Main properties for $x, y > 0$ and $r, r' \in \mathbb{Q}$:
+\begin{itemize}
+    \item $x^r \cdot x^{r'} = x^{r+r'}$ and $(x^r)^{r'} = x^{r \cdot r'}$.
+    \item If $0 < x < y$, then $x^r < y^r$ if $r > 0$, and $x^r > y^r$ if $r < 0$.
+    \item If $r < r'$, then $x^r < x^{r'}$ if $x > 1$, and $x^r > x^{r'}$ if $x < 1$.
+\end{itemize}
+\end{definition}
+
+\subsection{Density, Absolute Value, and Intervals}
+
+\begin{definition}{Density}{def:density}
+A subset $E \subset \mathbb{R}$ is said to be dense in $\mathbb{R}$ if for all $x, y \in \mathbb{R}$ with $x < y$, there exists $e \in E$ such that $x < e < y$. Equivalently, $E$ is dense if for all $x \in \mathbb{R}$ and all $\epsilon > 0$, there exists $e \in E$ such that $|e - x| < \epsilon$.
+\end{definition}
+
+\begin{theorem}{Density of $\mathbb{Q}$}{thm:density_Q}
+$\mathbb{Q}$ is dense in $\mathbb{R}$. (The set of irrational numbers is also dense in $\mathbb{R}$).
+\end{theorem}
+\begin{proof}
+Let $x, y \in \mathbb{R}$ with $x < y$. Since $y - x > 0$, by the Archimedean property, there exists an integer $n \in \mathbb{N}$ such that $n(y - x) > 1$, which means $ny - nx > 1$.
+Thus, the interval $(nx, ny)$ has a length strictly greater than $1$. It must contain at least one integer.
+Let $m \in \mathbb{Z}$ be the integer such that $m-1 \le nx < m$.
+Since $nx < m$, and the interval length is $>1$, we also have $m < ny$.
+Dividing the inequalities by $n$ (since $n > 0$) yields:
+$$ x < \frac{m}{n} < y $$
+Since $\frac{m}{n} \in \mathbb{Q}$, we have found a rational number strictly between $x$ and $y$.
+\end{proof}
+
+\begin{problem}{Density of Irrationals}{exc:density_irrat}
+Prove that the set of irrational numbers $\R \setminus \Q$ is dense in $\R$.
+\end{problem}
+
+\begin{definition}{Absolute Value}{def:abs_val}
+For $x \in \mathbb{R}$, $|x| = x$ if $x \ge 0$, and $-x$ if $x < 0$.
+Properties:
+\begin{enumerate}
+    \item $|x| = 0$ if and only if $x = 0$.
+    \item $-|x| \le x \le |x|$.
+    \item \textbf{Triangle inequality:} $|x + y| \le |x| + |y|$.
+    \item $\big| |y| - |x| \big| \le |y - x|$.
+    \item If $-x \le y \le x$, then $|y| \le x$.
+\end{enumerate}
+\end{definition}
+\begin{proof}
+(Triangle Inequality): For any $x, y \in \mathbb{R}$, we have:
+$$ -|x| \le x \le |x| \quad \text{and} \quad -|y| \le y \le |y| $$
+Adding these two inequalities together yields:
+$$ -(|x| + |y|) \le x + y \le |x| + |y| $$
+This is equivalent to $|x + y| \le |x| + |y|$.
+\end{proof}
+
+\begin{definition}{Intervals}{def:intervals}
+A subset $X \subset \mathbb{R}$ is an interval if for all $x, y \in X$ with $x \le y$, then $[x, y] \subset X$. Intervals take the forms: $\emptyset, \mathbb{R}, [a,b], (a,b], (a,b), [a,b), (-\infty,a], (-\infty,a), (a,+\infty), [a,+\infty)$.
+\end{definition}
+
+\begin{remark}{Basic Trigonometric Inequalities}{rem:trig_ineq}
+For $x \in (-\frac{\pi}{2}, \frac{\pi}{2})$, $|\sin x| \le |x| \le |\tan x|$.
+\end{remark}
+
+\subsection{Complex Numbers}
+
+\begin{definition}{Complex Plane}{def:complex_plane}
+The set of complex numbers is $\mathbb{C} = \{x + iy : x, y \in \mathbb{R}\}$ where $i^2 = -1$. $(\mathbb{C}, +, \times)$ is a commutative field.
+For $z = x + iy \in \mathbb{C}$:
+\begin{itemize}
+    \item \textbf{Complex conjugate:} $\overline{z} = x - iy$.
+    \item $z \cdot \overline{z} = x^2 + y^2$.
+    \item \textbf{Real and Imaginary parts:} $x = \text{Re}(z) = \frac{z+\overline{z}}{2}$, $y = \text{Im}(z) = \frac{z-\overline{z}}{2i}$.
+    \item \textbf{Modulus:} $|z| = \sqrt{z\overline{z}}$. Properties: $|z|=0 \iff z=0$, $|z| = |\overline{z}|$, $|z_1 z_2| = |z_1||z_2|$, and $|z_1 + z_2| \le |z_1| + |z_2|$ (Triangle Inequality).
+\end{itemize}
+\end{definition}
+
+\begin{theorem}{Euler's and de Moivre's Formulas}{thm:euler_demoivre}
+Any non-zero complex number can be written as $z = |z|(\cos\theta + i\sin\theta)$ where $\theta \in (-\pi, \pi]$ is the principal argument.
+\begin{itemize}
+    \item \textbf{Euler's Formula:} $e^{i\theta} = \cos\theta + i\sin\theta$. Thus, $e^{i\theta} \cdot e^{i\varphi} = e^{i(\varphi+\theta)}$.
+    \item \textbf{de Moivre's formula:} Let $z = \rho e^{i\theta}$ ($\rho \ge 0, \theta \in \mathbb{R}$). For $n \in \mathbb{Z}$, $z^n = \rho^n e^{in\theta}$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+(de Moivre's Formula for $n \in \mathbb{N}$): Proceed by induction. For $n=1$, it is trivially true.
+Assume it holds for $n = k$: $(\cos\theta + i\sin\theta)^k = \cos(k\theta) + i\sin(k\theta)$.
+For $n = k+1$:
+\begin{align*}
+(\cos\theta + i\sin\theta)^{k+1} &= (\cos(k\theta) + i\sin(k\theta))(\cos\theta + i\sin\theta) \\
+&= (\cos(k\theta)\cos\theta - \sin(k\theta)\sin\theta) + i(\sin(k\theta)\cos\theta + \cos(k\theta)\sin\theta) \\
+&= \cos((k+1)\theta) + i\sin((k+1)\theta)
+\end{align*}
+The property extends to negative integers via inverse multiplication.
+\end{proof}
+
+\begin{theorem}{$n$-th Roots of Unity}{thm:roots_unity}
+For $n \ge 1$, the solutions to $z^n = 1$ in $\mathbb{C}$ are given by $1, \omega, \omega^2, \dots, \omega^{n-1}$ where $\omega = e^{i \frac{2\pi}{n}}$. 
+More generally, the solutions to $z^n = u$ (where $u = \rho e^{i\theta}$) are $z_k = \sqrt[n]{\rho} e^{i\frac{\theta}{n}} e^{i\frac{2\pi}{n}k}$ for $k=0,1,\dots,n-1$.
+\end{theorem}
+\begin{proof}
+To solve $z^n = 1$, we express $z$ in polar form: $z = r e^{i\theta}$ where $r \ge 0$.
+Then $z^n = r^n e^{in\theta}$. We also express $1 = 1 e^{i(0 + 2\pi k)}$ for $k \in \mathbb{Z}$.
+Equating the moduli and arguments:
+1) $r^n = 1 \implies r = 1$ (since $r$ is a non-negative real number).
+2) $n\theta = 2\pi k \implies \theta = \frac{2\pi k}{n}$.
+The distinct values of $e^{i\frac{2\pi k}{n}}$ occur for $k = 0, 1, 2, \dots, n-1$. Letting $\omega = e^{i\frac{2\pi}{n}}$, the roots are $1, \omega, \omega^2, \dots, \omega^{n-1}$.
+For $z^n = u = \rho e^{i\theta}$, we have $r^n e^{in\phi} = \rho e^{i(\theta + 2\pi k)}$.
+Thus $r = \sqrt[n]{\rho}$ and $\phi = \frac{\theta}{n} + \frac{2\pi k}{n}$ for $k = 0, \dots, n-1$.
+\end{proof}
+
+\begin{remark}{Principal Square Root}{rem:principal_sqrt}
+The principal square root of $z = \rho e^{i\theta}$ ($\theta \in (-\pi, \pi]$) is $\sqrt{z} = \sqrt{\rho} e^{i\frac{\theta}{2}}$.
+\textbf{Mystery / Fallacy of Complex Roots:}
+Consider $\sqrt{-1} = i$ and $\sqrt{1} = 1$.
+Notice that $\sqrt{(-1)(-1)} = \sqrt{1} = 1$.
+However, if we split the root, $\sqrt{-1}\sqrt{-1} = i \cdot i = -1$.
+Thus $1 \neq -1$. This step-by-step counterexample shows that the property $\sqrt{ab} = \sqrt{a}\sqrt{b}$ fails for complex numbers.
+\end{remark}
+
+\section{Sequences}
+
+\begin{definition}{Sequences}{def:seq}
+A sequence with values in $\mathbb{K}$ ($\mathbb{R}$ or $\mathbb{C}$) and indexes in $I \subset \mathbb{N}$ is a function $I \to \mathbb{K}$, denoted by $(a_n)_{n \in I}$. Sequences can be described explicitly (e.g., $u_n = \frac{n+(-1)^n}{n-(-1)^n}$) or inductively (e.g., $u_0 = 1, u_{n+1} = \frac{1}{2}(u_n + \frac{2}{u_n})$). A sequence is bounded if there exists $M > 0$ such that $|a_n| \le M$ for all $n$. Real sequences can be bounded from above ($a_n \le M$) or below ($a_n \ge M$).
+\end{definition}
+
+\begin{remark}{Sequence vs. Set of Values Warning}{rem:seq_vs_set}
+A sequence $(a_n)_{n \ge 0}$ must not be confused with its range/set of values $\{a_n : n \in \mathbb{N}\}$. For example, if $a_n = (-1)^n$, the sequence is $(1, -1, 1, -1, \dots)$, but its set of values is simply $\{-1, 1\}$.
+\end{remark}
+
+\begin{definition}{Limits of Sequences}{def:seq_limit}
+A $\mathbb{K}$-valued sequence $(a_n)_{n \ge 0}$ converges to a limit $l \in \mathbb{K}$ as $n \to +\infty$ if:
+$$ \forall \epsilon > 0, \exists N \in \mathbb{N} \text{ such that } \forall n \ge N, |a_n - l| < \epsilon $$
+We write $l = \lim_{n \to \infty} a_n$. Otherwise, the sequence diverges.
+\textbf{Negation of limit definition:} The formal logical negation of sequence convergence to $l$ is:
+$$ \exists \epsilon > 0, \forall N \in \mathbb{N}, \exists n \ge N : |a_n - l| \ge \epsilon $$
+\end{definition}
+
+\begin{example}{Limit Example}{ex:limit}
+Prove $a_n = \frac{(-1)^n}{n+1} \to 0$. Given $\epsilon > 0$, we want:
+$$ \left| \frac{(-1)^n}{n+1} - 0 \right| < \epsilon \iff \frac{1}{n+1} < \epsilon \iff n+1 > \frac{1}{\epsilon} \iff n > \frac{1}{\epsilon} - 1 $$
+By the Archimedean property, we can choose an integer $N > \frac{1}{\epsilon} - 1$. Then for all $n \ge N$, $|a_n - 0| < \epsilon$.
+\end{example}
+
+\begin{lemma}{Properties of Convergent Sequences}{lem:conv_props}
+If a sequence converges, its limit is unique. If a sequence converges, it is bounded.
+\end{lemma}
+\begin{proof}
+(Uniqueness): Suppose $(a_n)$ converges to two limits, $l_1$ and $l_2$, with $l_1 \neq l_2$.
+Let $\epsilon = \frac{|l_1 - l_2|}{2} > 0$.
+There exists $N_1$ such that $\forall n \ge N_1, |a_n - l_1| < \epsilon$.
+There exists $N_2$ such that $\forall n \ge N_2, |a_n - l_2| < \epsilon$.
+For $n \ge \max(N_1, N_2)$, by the triangle inequality:
+$$ |l_1 - l_2| = |(l_1 - a_n) + (a_n - l_2)| \le |a_n - l_1| + |a_n - l_2| < \epsilon + \epsilon = |l_1 - l_2| $$
+This yields $|l_1 - l_2| < |l_1 - l_2|$, a contradiction. Thus $l_1 = l_2$.
+
+(Boundedness): Let $\lim a_n = l$. Choosing $\epsilon = 1$, there exists $N \in \mathbb{N}$ such that $\forall n \ge N$, $|a_n - l| < 1$.
+By the triangle inequality, $|a_n| = |(a_n - l) + l| \le |a_n - l| + |l| < 1 + |l|$ for all $n \ge N$.
+Let $M = \max(|a_0|, |a_1|, \dots, |a_{N-1}|, 1 + |l|)$. Then for all $n \in \mathbb{N}$, $|a_n| \le M$. Hence, the sequence is bounded.
+\end{proof}
+
+\begin{theorem}{Algebra of Limits}{thm:algebra_limits}
+Assume $(a_n)$ and $(b_n)$ converge to $a$ and $b$ respectively. Then $(a_n + b_n)$ converges to $a + b$, and $(a_n b_n)$ converges to $ab$. If $b \neq 0$ and $b_n \neq 0$, then $(a_n / b_n)$ converges to $a/b$.
+Furthermore, a complex sequence $(a_n)$ converges if and only if $(\text{Re } a_n)$ and $(\text{Im } a_n)$ both converge.
+\end{theorem}
+\begin{proof}
+(Sum): Let $\epsilon > 0$. There exists $N_1$ such that $\forall n \ge N_1, |a_n - a| < \epsilon/2$. There exists $N_2$ such that $\forall n \ge N_2, |b_n - b| < \epsilon/2$. For $n \ge \max(N_1, N_2)$:
+$$ |(a_n + b_n) - (a + b)| \le |a_n - a| + |b_n - b| < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon $$
+Thus $\lim (a_n + b_n) = a + b$.
+
+(Product): We write $a_n b_n - ab = a_n b_n - a_n b + a_n b - ab = a_n(b_n - b) + b(a_n - a)$.
+Since $(a_n)$ converges, it is bounded by some $M > 0$. Let $\epsilon > 0$.
+Choose $N$ large enough such that for $n \ge N$, $|a_n - a| < \frac{\epsilon}{2(|b|+1)}$ and $|b_n - b| < \frac{\epsilon}{2M}$.
+Then:
+$$ |a_n b_n - ab| \le |a_n||b_n - b| + |b||a_n - a| < M \frac{\epsilon}{2M} + |b| \frac{\epsilon}{2(|b|+1)} < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon $$
+Thus $\lim (a_n b_n) = ab$.
+\end{proof}
+
+\begin{theorem}{Squeeze Theorem and Inequalities}{thm:squeeze}
+If $(a_n)$ and $(b_n)$ are real-valued convergent sequences with $a_n \le b_n$, then $\lim a_n \le \lim b_n$. 
+\textbf{Squeeze theorem:} Let $(a_n), (b_n), (c_n)$ be real-valued such that $a_n \le b_n \le c_n$. If $(a_n)$ and $(c_n)$ converge to $l$, then $(b_n)$ converges to $l$.
+\end{theorem}
+\begin{proof}
+(Squeeze Theorem): Let $\epsilon > 0$. Since $\lim a_n = l$, there exists $N_1$ such that $\forall n \ge N_1$, $l - \epsilon < a_n$.
+Since $\lim c_n = l$, there exists $N_2$ such that $\forall n \ge N_2$, $c_n < l + \epsilon$.
+Let $N = \max(N_1, N_2)$. For all $n \ge N$:
+$$ l - \epsilon < a_n \le b_n \le c_n < l + \epsilon $$
+This implies $l - \epsilon < b_n < l + \epsilon$, meaning $|b_n - l| < \epsilon$. Thus, $\lim b_n = l$.
+\end{proof}
+
+\begin{definition}{Infinite Limits}{def:inf_limits}
+A sequence $(a_n)$ tends to $+\infty$ if $\forall A > 0, \exists N \in \mathbb{N}$ such that $\forall n \ge N$, $a_n > A$. If $a_n \le b_n$ and $\lim a_n = +\infty$, then $\lim b_n = +\infty$.
+\end{definition}
+
+\begin{theorem}{Monotone Sequences}{thm:monotone_seq}
+A real-valued sequence $(a_n)$ is increasing if $a_{n+1} \ge a_n$, strictly increasing if $a_{n+1} > a_n$, and decreasing if $a_{n+1} \le a_n$. 
+If $(a_n)$ is increasing and bounded from above, then $(a_n)$ converges.
+\end{theorem}
+\begin{proof}
+Let $E = \{a_n : n \in \mathbb{N}\}$. Since the sequence is bounded from above, $E$ has a supremum $l = \sup E$.
+Let $\epsilon > 0$. Since $l$ is the least upper bound, $l - \epsilon$ is not an upper bound for $E$.
+There exists some $N \in \mathbb{N}$ such that $a_N > l - \epsilon$.
+Because $(a_n)$ is increasing, for all $n \ge N$, we have $a_n \ge a_N > l - \epsilon$.
+Because $l$ is an upper bound, $a_n \le l < l + \epsilon$ for all $n$.
+Combining these, $l - \epsilon < a_n < l + \epsilon$ for all $n \ge N$, which means $|a_n - l| < \epsilon$. Hence, $\lim a_n = l$.
+\end{proof}
+
+\begin{theorem}{Adjacent Sequences}{thm:adjacent_seq}
+Two sequences $(a_n)$ and $(b_n)$ are adjacent if $(a_n)$ is increasing, $(b_n)$ is decreasing, and $\lim (b_n - a_n) = 0$. If $(a_n)$ and $(b_n)$ are adjacent, both converge to the same limit.
+\end{theorem}
+\begin{proof}
+Consider the sequence $d_n = b_n - a_n$. $d_{n+1} - d_n = (b_{n+1} - b_n) - (a_{n+1} - a_n)$.
+Since $b_{n+1} \le b_n$ and $a_{n+1} \ge a_n$, both parenthetical terms are non-positive, so $d_{n+1} \le d_n$.
+Since $d_n \to 0$ and is decreasing, we must have $d_n \ge 0$ for all $n$, meaning $a_n \le b_n$.
+Therefore, $(a_n)$ is increasing and bounded above by $b_0$ (since $a_n \le b_n \le b_0$), so it converges to some limit $l_1$.
+Similarly, $(b_n)$ is decreasing and bounded below by $a_0$, so it converges to some limit $l_2$.
+By the algebra of limits, $\lim (b_n - a_n) = l_2 - l_1$. But we are given this limit is $0$. Thus $l_1 = l_2$.
+\end{proof}
+
+\begin{definition}{Limit Superior and Inferior}{def:lim_sup_inf}
+Let $(a_n)$ be a bounded real sequence. Define $b_n = \inf\{a_k : k \ge n\}$ and $c_n = \sup\{a_k : k \ge n\}$. Then $b_n \le a_n \le c_n$.
+The limit superior is $\limsup a_n = \lim_{n \to \infty} c_n$. The limit inferior is $\liminf a_n = \lim_{n \to \infty} b_n$.
+$(a_n)$ converges if and only if $\limsup a_n = \liminf a_n$.
+\end{definition}
+
+\begin{definition}{Subsequences and Accumulation Points}{def:subseq}
+Given a strictly increasing function $\phi: \mathbb{N} \to \mathbb{N}$ (thus $\phi(n) \ge n$), $(a_{\phi(n)})_{n \ge 0}$ is a subsequence of $(a_n)_{n \ge 0}$.
+$l \in \mathbb{K}$ is an accumulation point of $(a_n)$ if there exists a subsequence converging to $l$. Equivalently, $l$ is an accumulation point if $\forall \epsilon > 0, \forall N \in \mathbb{N}, \exists n \ge N$ such that $|a_n - l| < \epsilon$.
+\end{definition}
+
+\begin{remark}{Properties of Accumulation Points}{rem:acc_points}
+For $a_n = (-1)^n$, the set of values is $\{-1, 1\}$. The accumulation points are $-1$ and $1$. A convergent sequence has its limit as its unique accumulation point.
+\end{remark}
+
+\begin{theorem}{Bolzano-Weierstrass Theorem}{thm:bw}
+Let $(a_n)_{n \ge 0}$ be a bounded real or complex-valued sequence. Then $(a_n)_{n \ge 0}$ has at least one accumulation point. For a real sequence, $\limsup a_n$ is the greatest accumulation point, and $\liminf a_n$ is the lowest accumulation point.
+\end{theorem}
+\begin{proof}
+We prove this for $\mathbb{R}$ using the property that every sequence has a monotonic subsequence.
+We call an index $n$ a "peak" if $a_n > a_m$ for all $m > n$.
+Case 1: There are infinitely many peaks. Let $n_1 < n_2 < n_3 < \dots$ be the indices of the peaks. By definition, $a_{n_1} > a_{n_2} > a_{n_3} > \dots$, so we have constructed a strictly decreasing subsequence.
+Case 2: There are finitely many peaks. Let $N$ be the index of the last peak (or $N=0$ if there are none). Choose $n_1 > N$. Since $n_1$ is not a peak, there exists $n_2 > n_1$ such that $a_{n_2} \ge a_{n_1}$. Since $n_2$ is not a peak, there exists $n_3 > n_2$ such that $a_{n_3} \ge a_{n_2}$. Continuing this process yields an increasing subsequence.
+In either case, $(a_n)$ has a monotonic subsequence. Since the original sequence is bounded, the monotonic subsequence is also bounded.
+By the Monotone Convergence Theorem, this subsequence converges to some limit $l$. Thus, $l$ is an accumulation point of $(a_n)$.
+\end{proof}
+
+\section{Infinite Series}
+
+\begin{definition}{Infinite Series}{def:inf_series}
+For a sequence $a_k \in \mathbb{K}$, the partial sum of order $n$ is defined as $S_n = \sum_{k=0}^n a_k$. The infinite series $\sum_{n=0}^{\infty} a_n$ is said to converge if the sequence of partial sums $(S_n)_{n \ge 0}$ converges to a limit as $n \to \infty$. Its sum is denoted $\sum_{k=0}^{\infty} a_k = \lim_{n \to \infty} S_n$. If $\sum a_n$ and $\sum b_n$ converge, then $\sum (a_n + b_n) = \sum a_n + \sum b_n$.
+\end{definition}
+
+\begin{remark}{Index Manipulation Rules}{rem:index_rules}
+For finite sums: 
+\begin{itemize}
+    \item Index reversal: $\sum_{i=m}^n a_i = \sum_{i=m}^n a_{n+m-i}$
+    \item Index shifting: $\sum_{j=m}^n a_j = \sum_{j=m+p}^{n+p} a_{j-p}$
+    \item Index permutations: $\sum_{k=m}^n a_k = \sum_{k=m}^n a_{\sigma(k)}$ for any bijection $\sigma$.
+\end{itemize}
+\end{remark}
+
+\begin{lemma}{Cauchy-Schwarz Inequality}{lem:cauchy_schwarz}
+For all real numbers $x_1, \dots, x_n$ and $y_1, \dots, y_n$:
+$$ \left(\sum_{k=1}^n x_k y_k\right)^2 \le \left(\sum_{i=1}^n x_i^2\right) \left(\sum_{j=1}^n y_j^2\right) $$
+Geometric vector interpretation: $|\vec{x} \cdot \vec{y}| \le \|\vec{x}\| \|\vec{y}\|$.
+Equality holds if and only if there exists a real number $\mu$ such that $x_k = \mu y_k$ for all $k=1,\dots,n$ (or $y_k = 0$).
+\end{lemma}
+\begin{proof}
+Consider the polynomial in a real variable $t$:
+$$ P(t) = \sum_{k=1}^n (x_k + t y_k)^2 $$
+Since it is a sum of squares, $P(t) \ge 0$ for all $t \in \mathbb{R}$. Expanding the expression:
+$$ P(t) = \sum_{k=1}^n (x_k^2 + 2t x_k y_k + t^2 y_k^2) = \left(\sum_{k=1}^n y_k^2\right)t^2 + 2\left(\sum_{k=1}^n x_k y_k\right)t + \left(\sum_{k=1}^n x_k^2\right) $$
+This is a quadratic polynomial $At^2 + Bt + C \ge 0$. Because it is non-negative everywhere, its discriminant must be less than or equal to zero: $\Delta = B^2 - 4AC \le 0$.
+$$ 4\left(\sum_{k=1}^n x_k y_k\right)^2 - 4\left(\sum_{k=1}^n y_k^2\right)\left(\sum_{k=1}^n x_k^2\right) \le 0 $$
+Dividing by 4 and rearranging yields the Cauchy-Schwarz inequality. Equality holds if and only if $\Delta = 0$, which means $P(t) = 0$ has a root, so $x_k + t y_k = 0$ for all $k$.
+\end{proof}
+
+\begin{proposition}{Non-Negative Series Convergence Criterion}{prop:nonneg_series}
+If $u_n \ge 0$ for all $n$, then the series $\sum u_n$ converges if and only if its sequence of partial sums $(S_n)_{n \ge 0}$ is bounded from above.
+\end{proposition}
+
+\begin{theorem}{Convergence Tests}{thm:series_tests}
+\begin{itemize}
+    \item \textbf{Comparison Test:} If $0 \le u_n \le v_n$ and $\sum v_n$ converges, then $\sum u_n$ converges. If $\sum u_n$ diverges, then $\sum v_n$ diverges.
+    \item \textbf{Geometric Series:} For $a \in \mathbb{C}$, the series $\sum_{n=0}^\infty a^n$ converges if and only if $|a| < 1$.
+    \item \textbf{Zero Test:} If $\sum a_n$ converges, then $\lim_{n \to \infty} a_n = 0$.
+    \item \textbf{Telescoping Series:} $\sum_{n=0}^\infty (a_{n+1} - a_n)$ converges if and only if $(a_n)$ converges, and its sum is $\lim_{n \to \infty} a_n - a_0$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+(Comparison Test): Let $S_n = \sum_{k=0}^n u_k$ and $T_n = \sum_{k=0}^n v_k$. Since $u_n \ge 0$ and $v_n \ge 0$, both $(S_n)$ and $(T_n)$ are increasing sequences. If $\sum v_n$ converges to $L$, then $T_n \le L$ for all $n$. Thus $S_n \le T_n \le L$. Since $(S_n)$ is increasing and bounded above by $L$, it converges.
+
+(Geometric Series): Let $S_n = \sum_{k=0}^n a^k$. For $a \neq 1$, $S_n = \frac{1 - a^{n+1}}{1 - a}$. If $|a| < 1$, $a^{n+1} \to 0$, so $S_n \to \frac{1}{1-a}$. If $|a| \ge 1$, the terms do not tend to zero, so it diverges by the Zero Test.
+
+(Zero Test): Let $S_n = \sum_{k=0}^n a_k$. Since the series converges, $S_n \to L$. Notice that $a_n = S_n - S_{n-1}$. Taking the limit as $n \to \infty$, $\lim a_n = \lim S_n - \lim S_{n-1} = L - L = 0$.
+
+(Telescoping): Let $S_n = \sum_{k=0}^n (a_{k+1} - a_k) = (a_1 - a_0) + (a_2 - a_1) + \dots + (a_{n+1} - a_n) = a_{n+1} - a_0$. The limit $\lim S_n$ exists if and only if $\lim a_{n+1}$ exists, giving the sum $\lim a_n - a_0$.
+\end{proof}
+
+\begin{example}{Telescoping Example}{ex:telescoping}
+Evaluate $\sum_{n=1}^\infty \frac{1}{n(n+1)}$. By partial fractions, $\frac{1}{n(n+1)} = \frac{1}{n} - \frac{1}{n+1}$.
+This is a telescoping series, so $\sum_{n=1}^\infty \left( \frac{1}{n} - \frac{1}{n+1} \right) = 1$.
+\end{example}
+
+\begin{theorem}{Riemann's Series and Integral Test}{thm:integral_test}
+Let $f: [x_0, +\infty) \to (0, +\infty)$ be decreasing with $\lim_{x \to \infty} f(x) = 0$. Then:
+$$ \int_m^{n+1} f(x) dx \le \sum_{k=m}^n f(k) \le f(m) + \int_m^n f(x) dx $$
+Using this on $f(x) = \frac{1}{x^s}$, we find that Riemann's Series $\sum_{n=1}^\infty \frac{1}{n^s}$ converges if and only if $s > 1$. The Riemann Zeta Function is denoted $\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$.
+\end{theorem}
+\begin{proof}
+Because $f$ is decreasing, for any $x \in [k, k+1]$, we have $f(k+1) \le f(x) \le f(k)$.
+Integrating this over the interval $[k, k+1]$ gives:
+$$ f(k+1) \le \int_k^{k+1} f(x) dx \le f(k) $$
+Summing these inequalities from $k=m$ to $k=n$ gives:
+$$ \sum_{k=m}^n f(k+1) \le \int_m^{n+1} f(x) dx \le \sum_{k=m}^n f(k) $$
+The right side gives $\int_m^{n+1} f(x) dx \le \sum_{k=m}^n f(k)$. The left side gives $\sum_{k=m+1}^{n+1} f(k) \le \int_m^{n+1} f(x) dx$, which implies $\sum_{k=m}^n f(k) \le f(m) + \int_m^n f(x) dx$.
+For $f(x) = x^{-s}$, the integral $\int_1^n x^{-s} dx = \frac{n^{1-s} - 1}{1-s}$ (for $s \neq 1$) converges as $n \to \infty$ if and only if $s > 1$. The sum converges iff the integral converges.
+
+\textbf{Explicit proof for divergence of Harmonic Series $\sum_{n=1}^\infty \frac{1}{n}$:}
+Consider the difference of partial sums:
+$$ S_{2n} - S_n = \frac{1}{n+1} + \dots + \frac{1}{2n} $$
+There are $n$ terms, and each term is $\ge \frac{1}{2n}$. Thus:
+$$ S_{2n} - S_n \ge n \cdot \frac{1}{2n} = \frac{1}{2} $$
+Since the sequence of partial sums does not satisfy the Cauchy criterion (the difference between $S_{2n}$ and $S_n$ does not go to 0), the sequence of partial sums diverges. Thus, the harmonic series diverges.
+\end{proof}
+
+\begin{theorem}{Absolute vs. Alternating Series}{thm:abs_conv}
+The series $\sum a_n$ converges absolutely if $\sum |a_n|$ converges. If a series converges absolutely, then it converges.
+\begin{itemize}
+    \item \textbf{Alternating Series (Leibniz Test):} If $(b_n)$ is a decreasing sequence of positive terms with $\lim b_n = 0$, then the series $\sum_{n=0}^\infty (-1)^n b_n$ converges.
+    \item \textbf{Riemann's Rearrangement Theorem:} Let $a_n \in \mathbb{R}$. If $\sum a_n$ converges but $\sum |a_n|$ diverges (conditionally convergent), then for any $x \in \mathbb{R}$, there exists a permutation $\sigma: \mathbb{N} \to \mathbb{N}$ such that $\sum_{n=0}^\infty a_{\sigma(n)}$ converges to $x$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+(Absolute convergence implies convergence): Note that $0 \le a_n + |a_n| \le 2|a_n|$. Since $\sum |a_n|$ converges, $\sum 2|a_n|$ converges. By the Comparison Test, $\sum (a_n + |a_n|)$ converges. 
+Since $a_n = (a_n + |a_n|) - |a_n|$, and both sums on the right converge, $\sum a_n$ must also converge.
+
+(Alternating Series): Let $S_n = \sum_{k=0}^n (-1)^k b_k$. $S_{2n+2} - S_{2n} = -b_{2n+1} + b_{2n+2} \le 0$, so $S_{2n}$ is decreasing. $S_{2n+3} - S_{2n+1} = b_{2n+2} - b_{2n+3} \ge 0$, so $S_{2n+1}$ is increasing. $S_{2n} - S_{2n+1} = b_{2n+1} \to 0$. By the Adjacent Sequences Theorem, they converge to the same limit, so $(S_n)$ converges.
+
+(Riemann's Rearrangement): Let $p_n = \max(a_n, 0)$ and $q_n = -\min(a_n, 0)$. Both $p_n \ge 0$ and $q_n \ge 0$, and $a_n = p_n - q_n$, $|a_n| = p_n + q_n$.
+Because $\sum a_n$ converges but $\sum |a_n|$ diverges, both $\sum p_n$ and $\sum q_n$ must diverge to $+\infty$. (If one converged, the other would have to converge for their sum/difference to converge). Because $\sum a_n$ converges, $a_n \to 0$, so $p_n \to 0$ and $q_n \to 0$.
+To rearrange to converge to $x$: take positive terms $p_n$ sequentially just until the partial sum strictly exceeds $x$. (Possible because $\sum p_n = +\infty$). Then subtract negative terms $q_n$ sequentially just until the partial sum falls strictly below $x$. Repeat this process indefinitely. Because $p_n \to 0$ and $q_n \to 0$, the "overshoot" amount tends to 0, meaning the sequence of rearranged partial sums converges exactly to $x$.
+\end{proof}
+
+\section{Continuity}
+
+\begin{definition}{Closure and Function Limits}{def:limits_func}
+The closure of $A \subset \mathbb{R}$, denoted $\overline{A}$, is the set of all limits of sequences of elements of $A$. Equivalently (Neighborhood Characterization), $x \in \overline{A} \iff \forall \epsilon > 0, A \cap (x-\epsilon, x+\epsilon) \neq \emptyset$.
+
+Let $f: A \to \mathbb{R}$ and $x_0 \in \overline{A}$. $l \in \mathbb{R}$ is the limit of $f$ as $x$ tends to $x_0$ if:
+$$ \forall \epsilon > 0, \exists \delta > 0 \text{ such that } \forall x \in A, \text{if } 0 < |x - x_0| < \delta \text{ then } |f(x) - l| < \epsilon $$
+We write $l = \lim_{x \to x_0} f(x)$. The limit is unique if it exists.
+Equivalently (Sequential Criterion), $f$ has a limit $l$ as $x \to x_0$ iff for all sequences $(a_n)$ in $A$ converging to $x_0$, the sequence $(f(a_n))$ converges to $l$.
+\end{definition}
+
+\begin{definition}{Infinite Limits for Functions}{def:func_inf_limits}
+\begin{itemize}
+    \item $\lim_{x \to x_0} f(x) = +\infty \iff \forall M > 0, \exists \delta > 0$ such that $0 < |x - x_0| < \delta \implies f(x) > M$.
+    \item $\lim_{x \to +\infty} f(x) = l \iff \forall \epsilon > 0, \exists M > 0$ such that $x > M \implies |f(x) - l| < \epsilon$.
+\end{itemize}
+\end{definition}
+
+\begin{definition}{Continuity at a Point}{def:continuity}
+A function $f: A \to \mathbb{R}$ is continuous at $x_0 \in A$ if $\lim_{x \to x_0} f(x)$ exists and is equal to $f(x_0)$. This means $\forall \epsilon > 0, \exists \delta > 0$ such that $\forall x \in A$, if $|x - x_0| < \delta$ then $|f(x) - f(x_0)| < \epsilon$.
+\end{definition}
+
+\begin{remark}{Fixed Point Property}{rem:fixed_point}
+If a sequence is defined by a recurrence relation $x_{n+1} = f(x_n)$ and converges to a limit $a$, and $f$ is continuous at $a$, then $a = f(a)$ (so $a$ is a fixed point of $f$).
+\end{remark}
+
+\begin{remark}{Properties of Continuous Functions}{rem:cont_props}
+If $f$ and $g$ are continuous at $x_0$, then $f+g$, $f-g$, $f \cdot g$, and $f/g$ (if $g(x_0) \neq 0$) are continuous at $x_0$. Compositions ($g \circ f$), $|f|$, $\max(f,g)$, and $\min(f,g)$ are also continuous. A function is continuous on an interval if it is both left and right continuous everywhere on that interval.
+(Key Example: The Dirichlet function $I_{\mathbb{Q}}(x)$ which is $1$ if $x \in \mathbb{Q}$ and $0$ if $x \notin \mathbb{Q}$ is discontinuous everywhere.)
+\end{remark}
+
+\begin{theorem}{Set of Periods}{thm:periods}
+The set of periods of a continuous periodic function is either of the form $T\mathbb{Z}$ for some minimal period $T > 0$, or it is dense in $\mathbb{R}$ (e.g., constant functions).
+\end{theorem}
+
+\begin{theorem}{Global Properties of Continuous Functions}{thm:global_cont}
+\begin{itemize}
+    \item \textbf{Intermediate Value Theorem (IVT):} If $f: [a,b] \to \mathbb{R}$ is continuous, then for every $z$ strictly between $f(a)$ and $f(b)$, there exists $c \in (a,b)$ such that $f(c) = z$.
+    \item \textbf{Extreme Value Theorem (EVT):} If $f: [a,b] \to \mathbb{R}$ is continuous, then $f([a,b]) = [m, M]$ where $m = \min f$ and $M = \max f$. That is, $f$ is bounded and attains its bounds.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+(Intermediate Value Theorem): Assume without loss of generality that $f(a) < z < f(b)$.
+Let $S = \{ x \in [a,b] : f(x) \le z \}$.
+The set $S$ is non-empty (since $a \in S$) and bounded above by $b$. By the least upper bound property, $c = \sup S$ exists, and $c \in [a,b]$.
+We claim that $f(c) = z$. We prove this using the sequential criterion for continuity.
+First, by definition of the supremum, there exists a sequence $(x_n)$ in $S$ such that $x_n \to c$.
+Since $x_n \in S$, we know $f(x_n) \le z$ for all $n$.
+By continuity of $f$, $\lim_{n \to \infty} f(x_n) = f(c)$. Thus, $f(c) \le z$.
+Second, consider a sequence $(y_n)$ defined by $y_n = c + \frac{1}{n}$. For sufficiently large $n$, $y_n \in (c, b]$.
+Since $y_n > c = \sup S$, $y_n \notin S$, which means $f(y_n) > z$.
+As $n \to \infty$, $y_n \to c$. By continuity of $f$, $\lim_{n \to \infty} f(y_n) = f(c)$. Thus, $f(c) \ge z$.
+Since $f(c) \le z$ and $f(c) \ge z$, it must be that $f(c) = z$.
+
+(Extreme Value Theorem): 
+Step 1 (Boundedness): Suppose $f$ is not bounded on $[a,b]$. Then for each $n \in \mathbb{N}$, there exists $x_n \in [a,b]$ such that $|f(x_n)| > n$.
+Since $(x_n)$ is a bounded sequence in $[a,b]$, the Bolzano-Weierstrass theorem guarantees a convergent subsequence $(x_{n_k})$ that converges to some limit $c \in [a,b]$.
+Since $f$ is continuous at $c$, $\lim_{k \to \infty} f(x_{n_k}) = f(c)$. However, $|f(x_{n_k})| > n_k \to \infty$, which contradicts that the sequence of function values converges to a finite real number $f(c)$. Thus, $f$ is bounded.
+
+Step 2 (Attaining the bounds): Since $f([a,b])$ is bounded, it has a supremum, say $M = \sup f([a,b])$.
+By the definition of supremum, for any $n \in \mathbb{N}$, $M - \frac{1}{n}$ is not an upper bound, so there exists $x_n \in [a,b]$ such that $M - \frac{1}{n} < f(x_n) \le M$.
+By the Squeeze Theorem, $\lim_{n \to \infty} f(x_n) = M$.
+By Bolzano-Weierstrass, the sequence $(x_n)$ has a convergent subsequence $(x_{n_k})$ converging to some $c \in [a,b]$.
+Since $f$ is continuous at $c$, $f(c) = \lim_{k \to \infty} f(x_{n_k}) = M$.
+Therefore, $f$ attains its maximum at $c$. The proof for the minimum $m$ follows identically by taking the infimum.
+\end{proof}
+
+\begin{definition}{Uniform Continuity}{def:uniform_cont}
+A function $f: I \to \mathbb{R}$ is uniformly continuous on the interval $I$ if:
+$$ \forall \epsilon > 0, \exists \delta > 0 \text{ such that } \forall x,y \in I, \text{ if } |x - y| < \delta \text{ then } |f(x) - f(y)| < \epsilon $$
+(Note: Unlike standard continuity where $\delta$ depends on both $\epsilon$ and the specific point $x_0$, in uniform continuity, a single $\delta$ works for all points $x,y$ simultaneously).
+\end{definition}
+
+\section{Differentiability}
+
+\begin{definition}{Derivative and $C^n$ Functions}{def:derivative}
+Let $I = (a,b)$ be an open interval, $f: (a,b) \to \mathbb{R}$, and $x_0 \in (a,b)$. $f$ is differentiable at $x_0$ if the quotient $\frac{f(x) - f(x_0)}{x - x_0}$ has a limit as $x \to x_0$. This limit is the derivative, denoted $f'(x_0)$. 
+Equivalently, there exists a function $\epsilon(h)$ with $\lim_{h \to 0} \epsilon(h) = 0$ such that $f(x_0 + h) = f(x_0) + f'(x_0)h + h\epsilon(h)$.
+\textbf{$C^n$ Functions:} A function is of class $C^n$ on an interval if it is $n$-times differentiable and its $n$-th derivative is continuous.
+\end{definition}
+
+\begin{proposition}{Differentiability Properties}{prop:diff_props}
+\begin{itemize}
+    \item If $f$ is differentiable at $x_0$, then $f$ is continuous at $x_0$.
+    \item $f$ is differentiable at $x_0$ iff it is left and right differentiable at $x_0$ and $f'_+(x_0) = f'_-(x_0)$.
+    \item $(f+g)' = f' + g'$, $(fg)' = f'g + fg'$, and $(1/g)' = -g'/g^2$ (where $g \neq 0$).
+    \item \textbf{Chain Rule:} If $f$ is differentiable at $x_0$ and $g$ is differentiable at $f(x_0)$, then $g \circ f$ is differentiable at $x_0$ and $(g \circ f)'(x_0) = g'(f(x_0)) \cdot f'(x_0)$.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+(Diff $\implies$ Cont): $\lim_{x \to x_0} (f(x) - f(x_0)) = \lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0} (x - x_0) = f'(x_0) \cdot 0 = 0$.
+
+(Product Rule): $\lim_{x \to x_0} \frac{f(x)g(x) - f(x_0)g(x_0)}{x - x_0} = \lim_{x \to x_0} \left[ g(x) \frac{f(x) - f(x_0)}{x - x_0} + f(x_0) \frac{g(x) - g(x_0)}{x - x_0} \right] = g(x_0)f'(x_0) + f(x_0)g'(x_0)$.
+
+(Quotient Rule for $1/g$):
+$$ \lim_{x \to x_0} \frac{\frac{1}{g(x)} - \frac{1}{g(x_0)}}{x - x_0} = \lim_{x \to x_0} \frac{g(x_0) - g(x)}{g(x)g(x_0)(x - x_0)} = \lim_{x \to x_0} \frac{-1}{g(x)g(x_0)} \cdot \frac{g(x) - g(x_0)}{x - x_0} = \frac{-g'(x_0)}{g(x_0)^2} $$
+
+(Chain Rule): Define a function $h(y) = \frac{g(y) - g(y_0)}{y - y_0}$ for $y \neq y_0$, and $h(y_0) = g'(y_0)$. Since $g$ is differentiable at $y_0$, $h$ is continuous at $y_0$.
+For all $y$, $g(y) - g(y_0) = h(y)(y - y_0)$. Substitute $y = f(x)$ and $y_0 = f(x_0)$:
+$$ \frac{g(f(x)) - g(f(x_0))}{x - x_0} = h(f(x)) \frac{f(x) - f(x_0)}{x - x_0} $$
+Taking the limit as $x \to x_0$. Because $f$ is continuous, $f(x) \to f(x_0)$, so $h(f(x)) \to h(f(x_0)) = g'(f(x_0))$. The result is $g'(f(x_0))f'(x_0)$.
+\end{proof}
+
+\begin{theorem}{Inverse Function Theorem}{thm:inverse_func}
+Let $I$ be an open interval and $f: I \to J$ (where $J = f(I)$) be continuous and strictly monotone. Then $f$ is bijective and $f^{-1}: J \to I$ is strictly monotone and continuous. 
+Furthermore, if $f$ is differentiable at $x_0 \in I$ and $f'(x_0) \neq 0$, then $f^{-1}$ is differentiable at $y_0 = f(x_0)$ and $(f^{-1})'(y_0) = \frac{1}{f'(x_0)}$.
+\end{theorem}
+\begin{proof}
+(Bijectivity and Continuity): Since $f$ is strictly monotone, it is injective. By the Intermediate Value Theorem, since $f$ is continuous on the interval $I$, its image $J = f(I)$ is also an interval. Thus, $f: I \to J$ is surjective, making it a bijection.
+Let $f^{-1}: J \to I$. Because $f$ is strictly monotone, $f^{-1}$ preserves this monotonicity. A monotone function that maps an interval onto an interval must be continuous; if it had a jump discontinuity, its image would miss values, contradicting that its image is the interval $I$. Thus $f^{-1}$ is continuous.
+
+(Derivative): Let $y \in J$ with $y \neq y_0 = f(x_0)$. Since $f$ is bijective, $\exists! x \in I$ such that $f(x) = y$. As $y \to y_0$, by continuity of $f^{-1}$, $x \to x_0$.
+$$ \lim_{y \to y_0} \frac{f^{-1}(y) - f^{-1}(y_0)}{y - y_0} = \lim_{x \to x_0} \frac{x - x_0}{f(x) - f(x_0)} = \frac{1}{\lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0}} = \frac{1}{f'(x_0)} $$
+\end{proof}
+
+\begin{theorem}{Extrema and Mean Value Theorems}{thm:extrema_mvt}
+An extremum is a point where $f$ achieves a local max or min. If $f$ has an extremum at $x_0 \in I$ (an open interval) and is differentiable there, then $f'(x_0) = 0$ (Fermat's Theorem).
+\begin{itemize}
+    \item \textbf{Rolle's Theorem:} If $f: [a,b] \to \mathbb{R}$ is continuous on $[a,b]$, differentiable on $(a,b)$, and $f(a) = f(b)$, then there exists $c \in (a,b)$ such that $f'(c) = 0$.
+    \item \textbf{Mean Value Theorem (MVT):} If $f: [a,b] \to \mathbb{R}$ is continuous on $[a,b]$ and differentiable on $(a,b)$, then there exists $c \in (a,b)$ such that $f(b) - f(a) = f'(c)(b-a)$.
+    \item \textbf{Lipschitz Corollary:} $|f(b) - f(a)| \le \left(\sup_{(a,b)} |f'|\right) |b - a|$.
+\end{itemize}
+A differentiable function $f$ on an open interval $I$ is increasing if and only if $f'(x) \ge 0$ for all $x \in I$.
+\end{theorem}
+\begin{proof}
+(Fermat's Theorem): Suppose $f$ has a local maximum at $x_0$. For small $h > 0$, $f(x_0 + h) \le f(x_0)$, so $\frac{f(x_0 + h) - f(x_0)}{h} \le 0$. Taking the limit as $h \to 0^+$ gives $f'(x_0) \le 0$.
+For small $h < 0$, $f(x_0 + h) \le f(x_0)$, but $h$ is negative, so $\frac{f(x_0 + h) - f(x_0)}{h} \ge 0$. Taking the limit as $h \to 0^-$ gives $f'(x_0) \ge 0$.
+Since $f$ is differentiable at $x_0$, the left and right limits must be equal. Thus, $f'(x_0) = 0$.
+
+(Rolle's Theorem): By the Extreme Value Theorem, $f$ attains a global maximum $M$ and minimum $m$ on $[a,b]$.
+If $M = m$, $f$ is constant, so $f'(x) = 0$ for all $x \in (a,b)$.
+If $M > m$, since $f(a) = f(b)$, $f$ must attain an extremum at some point $c$ strictly inside $(a,b)$. By Fermat's Theorem, $f'(c) = 0$.
+
+(Mean Value Theorem): Define $g(x) = f(x) - \left( f(a) + \frac{f(b) - f(a)}{b - a}(x - a) \right)$. 
+$g$ satisfies the hypotheses of Rolle's Theorem because $g(a) = g(b) = 0$. Thus, there exists $c \in (a,b)$ where $g'(c) = 0$.
+Since $g'(x) = f'(x) - \frac{f(b) - f(a)}{b - a}$, setting $g'(c) = 0$ yields $f'(c) = \frac{f(b) - f(a)}{b - a}$.
+
+(Monotonicity via MVT): If $f'(x) \ge 0$ for all $x \in I$, pick any $x_1 < x_2$ in $I$. By MVT, there is $c \in (x_1, x_2)$ such that $f(x_2) - f(x_1) = f'(c)(x_2 - x_1)$. Since $f'(c) \ge 0$ and $x_2 - x_1 > 0$, we have $f(x_2) - f(x_1) \ge 0$, so $f$ is increasing.
+\end{proof}
+
+\begin{example}{Sine Lipschitz Example}{ex:sine_lipschitz}
+For $f(x) = \sin x$, $f'(x) = \cos x$. Since $|\cos x| \le 1$, we can apply the Lipschitz corollary of the MVT to get $|\sin y - \sin x| \le |y - x|$ for all $x, y \in \mathbb{R}$.
+\end{example}
+
+\section{Transcendental and Convex Functions}
+
+\begin{remark}{Trigonometric Functions}{rem:trig}
+Sine and cosine are $n$-times differentiable for all $n \in \mathbb{N}$. Complex exponential expressions: $\cos x = \frac{e^{ix} + e^{-ix}}{2}$ and $\sin x = \frac{e^{ix} - e^{-ix}}{2i}$.
+\begin{itemize}
+    \item $\cos(x+y) = \cos x \cos y - \sin x \sin y$ and $\sin(x+y) = \sin x \cos y + \sin y \cos x$.
+    \item $\arcsin: (-1, 1) \to (-\frac{\pi}{2}, \frac{\pi}{2})$ has derivative $\frac{1}{\sqrt{1-x^2}}$.
+    \item $\arccos: (-1, 1) \to (0, \pi)$ has derivative $\frac{-1}{\sqrt{1-x^2}}$.
+    \item $\tan x = \frac{\sin x}{\cos x}$ has derivative $\frac{1}{\cos^2 x} = 1 + \tan^2 x$. $\arctan: \mathbb{R} \to (-\frac{\pi}{2}, \frac{\pi}{2})$ has derivative $\frac{1}{1+x^2}$.
+\end{itemize}
+\end{remark}
+\begin{proof}
+(Derivative of $\arcsin$): Let $y = \arcsin x$ for $x \in (-1, 1)$. Then $x = \sin y$ where $y \in (-\frac{\pi}{2}, \frac{\pi}{2})$.
+By the Inverse Function Theorem: $\arcsin'(x) = \frac{1}{\sin' y} = \frac{1}{\cos y}$.
+Since $y \in (-\frac{\pi}{2}, \frac{\pi}{2})$, $\cos y > 0$, so $\cos y = \sqrt{1 - \sin^2 y} = \sqrt{1 - x^2}$. Thus, $\arcsin'(x) = \frac{1}{\sqrt{1 - x^2}}$.
+
+(Derivative of $\arccos$): Similarly, let $y = \arccos x \in (0, \pi)$. Then $x = \cos y$.
+$\arccos'(x) = \frac{1}{\cos' y} = \frac{-1}{\sin y}$. Since $\sin y > 0$ on $(0, \pi)$, $\sin y = \sqrt{1-\cos^2 y} = \sqrt{1-x^2}$. Thus $\arccos'(x) = \frac{-1}{\sqrt{1-x^2}}$.
+
+(Derivative of $\tan$): By the quotient rule: 
+$\tan' x = \left(\frac{\sin x}{\cos x}\right)' = \frac{\cos x \cos x - \sin x (-\sin x)}{\cos^2 x} = \frac{\cos^2 x + \sin^2 x}{\cos^2 x} = \frac{1}{\cos^2 x} = 1 + \tan^2 x$.
+
+(Derivative of $\arctan$): Let $y = \arctan x$. Then $x = \tan y$.
+By the Inverse Function Theorem: $\arctan'(x) = \frac{1}{\tan' y} = \frac{1}{1 + \tan^2 y} = \frac{1}{1 + x^2}$.
+\end{proof}
+
+\begin{definition}{Natural Log and Exponential}{def:ln_exp}
+For $x > 0$, the natural logarithm is defined via the integral:
+$$ \ln x = \int_1^x \frac{1}{t} dt $$
+The inverse function is the exponential function $\exp: \mathbb{R} \to (0, +\infty)$. Euler's number is defined as $e = \exp(1)$.
+General power functions are defined as $x^a = \exp(a \ln x)$ for $x > 0$, with derivative $(x^a)' = a x^{a-1}$.
+General exponential functions are $a^x = \exp(x \ln a)$, with derivative $(a^x)' = (\ln a) a^x$.
+\end{definition}
+
+\begin{theorem}{Properties of Log and Exp}{thm:log_exp_props}
+\begin{itemize}
+    \item $\ln: (0, +\infty) \to \mathbb{R}$ is strictly increasing, and $\ln(xy) = \ln x + \ln y$.
+    \item $\exp'(x) = \exp(x)$ and $\exp(x+y) = \exp(x)\exp(y)$.
+    \item $\lim_{x \to +\infty} \ln x = +\infty$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+(Properties of $\ln$): By the Fundamental Theorem of Calculus, $\ln'(x) = \frac{1}{x}$. Since $\frac{1}{x} > 0$ for $x > 0$, the function $\ln x$ is strictly increasing.
+For the product rule, let $f(x) = \ln(ax)$ for a fixed $a > 0$. By the chain rule, $f'(x) = \frac{1}{ax} \cdot a = \frac{1}{x} = \ln'(x)$.
+Since their derivatives are equal on an interval, they differ by a constant: $f(x) = \ln x + C$. 
+To find $C$, evaluate at $x = 1$: $f(1) = \ln(a) = \ln(1) + C = 0 + C$, so $C = \ln a$.
+Thus, $\ln(ax) = \ln x + \ln a$.
+
+(Derivative of $\exp$): Let $y = \exp(x)$, which means $x = \ln y$. By the Inverse Function Theorem:
+$$ \exp'(x) = \frac{1}{\ln'(y)} = \frac{1}{\frac{1}{y}} = y = \exp(x) $$
+
+(Limit of $\ln$ at $+\infty$): We use a harmonic sum lower bound. For an integer $n > 1$:
+$$ \ln n = \int_1^n \frac{1}{t} dt = \sum_{k=1}^{n-1} \int_k^{k+1} \frac{1}{t} dt \ge \sum_{k=1}^{n-1} \frac{1}{k+1} = \frac{1}{2} + \frac{1}{3} + \dots + \frac{1}{n} $$
+As this is the tail of the harmonic series which diverges to $+\infty$, the sequence $\ln n \to +\infty$. Since $\ln$ is strictly increasing, $\lim_{x \to +\infty} \ln x = +\infty$.
+\end{proof}
+
+\begin{lemma}{Hierarchy of Infinities (Growth Comparison)}{lem:infinities}
+For any $a > 0$, $\lim_{x \to +\infty} \frac{e^x}{x^a} = +\infty$ and $\lim_{x \to +\infty} \frac{\ln x}{x^a} = 0$.
+\end{lemma}
+
+\begin{remark}{Hyperbolic Functions}{rem:hyperbolic}
+The hyperbolic sine and cosine are defined as $\cosh x = \frac{e^x + e^{-x}}{2}$ and $\sinh x = \frac{e^x - e^{-x}}{2}$. 
+They satisfy the fundamental identity $\cosh^2 x - \sinh^2 x = 1$. 
+\textbf{Addition formulas:} $\cosh(a+b) = \cosh a \cosh b + \sinh a \sinh b$, and $\sinh(a+b) = \sinh a \cosh b + \cosh a \sinh b$.
+\textbf{Derivative of tanh:} $\tanh' x = \frac{1}{\cosh^2 x} = 1 - \tanh^2 x$.
+Their inverses include $\text{arcosh } x = \ln(x + \sqrt{x^2 - 1})$ (for $x \ge 1$) and $\text{arsinh } x = \ln(x + \sqrt{x^2 + 1})$.
+\end{remark}
+
+\begin{theorem}{Convex Functions}{thm:convex}
+A function $f: (a,b) \to \mathbb{R}$ is convex if for all $x, y \in (a,b)$ and $t \in [0,1]$, 
+$$ f(tx + (1-t)y) \le tf(x) + (1-t)f(y) $$
+If $f$ is differentiable on $(a,b)$, $f$ is convex if and only if $f'$ is increasing on $(a,b)$. 
+If $f$ is twice differentiable, $f$ is convex if and only if $f''(x) \ge 0$ for all $x \in (a,b)$.
+\end{theorem}
+\begin{proof}
+(Twice differentiable case): Suppose $f'' \ge 0$. This implies $f'$ is an increasing function. We want to show $f$ is convex.
+Let $x < y$ in $(a,b)$ and let $t \in (0,1)$. Define $z = tx + (1-t)y$. Notice that $x < z < y$.
+By the Mean Value Theorem applied to the intervals $[x, z]$ and $[z, y]$, there exist points $c_1 \in (x, z)$ and $c_2 \in (z, y)$ such that:
+$$ \frac{f(z) - f(x)}{z - x} = f'(c_1) \quad \text{and} \quad \frac{f(y) - f(z)}{y - z} = f'(c_2) $$
+Since $c_1 < z < c_2$ and $f'$ is increasing, we have $f'(c_1) \le f'(c_2)$. Therefore:
+$$ \frac{f(z) - f(x)}{z - x} \le \frac{f(y) - f(z)}{y - z} $$
+Substitute $z - x = (1-t)(y - x)$ and $y - z = t(y - x)$ into the denominators:
+$$ \frac{f(z) - f(x)}{(1-t)(y-x)} \le \frac{f(y) - f(z)}{t(y-x)} $$
+Since $t \in (0,1)$ and $y > x$, we can multiply both sides by $t(1-t)(y-x) > 0$ to get:
+$$ t(f(z) - f(x)) \le (1-t)(f(y) - f(z)) $$
+Expanding and rearranging terms:
+$$ tf(z) - tf(x) \le f(y) - f(z) - tf(y) + tf(z) $$
+$$ f(z) \le tf(x) + (1-t)f(y) $$
+Substituting back $z = tx + (1-t)y$, we recover exactly the definition of convexity:
+$$ f(tx + (1-t)y) \le tf(x) + (1-t)f(y) $$
+The reverse implication (convex $\implies f'' \ge 0$) follows by reversing these steps using limits.
+\end{proof}
+
+\section{Taylor Expansions}
+
+\begin{definition}{Taylor Expansion}{def:taylor}
+Let $f: (a,b) \to \mathbb{R}$ and $x_0 \in (a,b)$. $f$ admits at $x_0$ a Taylor expansion (or Taylor polynomial with Peano remainder) of order $n$ if there exists a polynomial $P \in \mathbb{R}[X]$ with $\deg P \le n$ and a function $\Theta: (a,b) \to \mathbb{R}$ such that:
+$$ f(x) = P(x-x_0) + (x-x_0)^n \Theta(x) \quad \text{and} \quad \lim_{x \to x_0} \Theta(x) = 0 $$
+If a Taylor expansion exists, it is unique, and its coefficients are given by $c_k = \frac{f^{(k)}(x_0)}{k!}$.
+\textbf{Note on Orders:} An order 0 Taylor expansion at $x_0$ is equivalent to continuity at $x_0$. An order 1 Taylor expansion is equivalent to differentiability at $x_0$.
+\end{definition}
+\begin{proof}
+(Uniqueness of the Taylor Expansion): Suppose $f$ has two Taylor expansions of order $n$ at $x_0$:
+$f(x) = P_1(x-x_0) + (x-x_0)^n \Theta_1(x)$ and $f(x) = P_2(x-x_0) + (x-x_0)^n \Theta_2(x)$, where $\lim_{x \to x_0} \Theta_1(x) = \lim_{x \to x_0} \Theta_2(x) = 0$.
+Let $Q(h) = P_1(h) - P_2(h) = c_0 + c_1 h + \dots + c_n h^n$. 
+Subtracting the two expansions gives:
+$$ 0 = Q(x-x_0) + (x-x_0)^n (\Theta_1(x) - \Theta_2(x)) $$
+Taking the limit as $x \to x_0$, we get $Q(0) = 0$, so $c_0 = 0$.
+Dividing by $x-x_0$ and taking the limit gives $c_1 = 0$, and iterating this process yields $c_k = 0$ for all $0 \le k \le n$. Thus $P_1 = P_2$, proving uniqueness.
+\end{proof}
+
+\begin{remark}{Cautionary Counterexample}{rem:taylor_counter}
+Having a Taylor expansion of order $n$ at $x_0$ does not imply that $f$ is $n$-times differentiable at $x_0$. For example, $f(x) = |x|^{\alpha+2} \cos(1/x)$ (with $f(0)=0$) for $\alpha > 0$ admits a Taylor expansion at 0, but may not be twice differentiable at 0.
+\end{remark}
+
+\begin{theorem}{Taylor-Lagrange Theorem}{thm:taylor_lagrange}
+Assume $f$ is $n$-times continuously differentiable on $(a,b)$, and $n+1$ times differentiable on $(a,b)$. Fix $x_0 \in (a,b)$. For all $x \in (a,b)$ with $x \neq x_0$, there exists $c$ strictly between $x_0$ and $x$ such that:
+$$ f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!} (x-x_0)^k + \frac{f^{(n+1)}(c)}{(n+1)!} (x-x_0)^{n+1} $$
+\textbf{Second Derivative Test:} If $f'(x_0) = 0$ and $f''(x_0) > 0$, then $x_0$ is a point where $f$ achieves a local minimum.
+\end{theorem}
+\begin{proof}
+(Taylor-Lagrange Formula): Fix $x \in (a,b)$. Let $M$ be the unique real number such that:
+$$ f(x) = \sum_{k=0}^n \frac{f^{(k)}(x_0)}{k!}(x-x_0)^k + M(x-x_0)^{n+1} $$
+We want to show that $M = \frac{f^{(n+1)}(c)}{(n+1)!}$ for some $c$ between $x_0$ and $x$.
+Define an auxiliary function $g(t)$ for $t$ between $x_0$ and $x$:
+$$ g(t) = f(x) - \left( \sum_{k=0}^n \frac{f^{(k)}(t)}{k!}(x-t)^k + M(x-t)^{n+1} \right) $$
+Notice that $g(x) = f(x) - f(x) - 0 = 0$, and $g(x_0) = 0$ by our choice of $M$.
+Since $g(x) = g(x_0) = 0$, by Rolle's Theorem, there exists $c$ strictly between $x_0$ and $x$ such that $g'(c) = 0$.
+Let's compute $g'(t)$. The sum telescopes when differentiated:
+$$ \frac{d}{dt} \left( \sum_{k=0}^n \frac{f^{(k)}(t)}{k!}(x-t)^k \right) = \sum_{k=0}^n \left( \frac{f^{(k+1)}(t)}{k!}(x-t)^k - \frac{f^{(k)}(t)}{(k-1)!}(x-t)^{k-1} \right) = \frac{f^{(n+1)}(t)}{n!}(x-t)^n $$
+So, differentiating $g(t)$ yields:
+$$ g'(t) = - \frac{f^{(n+1)}(t)}{n!}(x-t)^n + (n+1)M(x-t)^n $$
+Setting $g'(c) = 0$ gives:
+$$ \frac{f^{(n+1)}(c)}{n!}(x-c)^n = (n+1)M(x-c)^n $$
+Since $c \neq x$, we can divide by $(n+1)(x-c)^n$ to get $M = \frac{f^{(n+1)}(c)}{(n+1)!}$.
+
+(Second Derivative Test): Using the Taylor expansion of order 2 with the Peano remainder around $x_0$:
+$$ f(x) = f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2}(x-x_0)^2 + (x-x_0)^2 \Theta(x) $$
+Since $f'(x_0) = 0$, this simplifies to:
+$$ f(x) - f(x_0) = (x-x_0)^2 \left( \frac{f''(x_0)}{2} + \Theta(x) \right) $$
+Since $\lim_{x \to x_0} \Theta(x) = 0$ and $f''(x_0) > 0$, for $x$ sufficiently close to $x_0$, the term in the parentheses is strictly positive.
+Because $(x-x_0)^2 \ge 0$, it follows that $f(x) - f(x_0) \ge 0 \implies f(x) \ge f(x_0)$ in a neighborhood of $x_0$. Thus, $f$ has a local minimum at $x_0$.
+\end{proof}
+
+\begin{example}{Applications of Taylor-Lagrange}{ex:taylor_lagrange_apps}
+\textbf{Cosine Bound:} Applying Taylor-Lagrange to $\cos x$ at $x_0 = 0$ to order 1: $\cos x = 1 - \frac{\cos c}{2} x^2$ for some $c$ between 0 and $x$. Since $|\cos c| \le 1$, we get $|\cos x - 1| \le \frac{x^2}{2}$.
+\textbf{Limit Evaluation:} By the bound above, $\frac{-x^2}{2} \le \cos x - 1 \le \frac{x^2}{2}$. For $x \neq 0$, dividing by $x^2$ and taking limits gives $\lim_{x \to 0} \frac{\cos x - 1}{x^2} = -\frac{1}{2}$.
+\end{example}
+
+\begin{example}{Common Taylor Series}{ex:taylor_series}
+\begin{itemize}
+    \item \textbf{Geometric:} $\frac{1}{1-x} = \sum_{k=0}^\infty x^k$ for $|x| < 1$.
+    \item \textbf{Alternating Geometric:} $\frac{1}{1+x} = \sum_{k=0}^\infty (-1)^k x^k$ for $|x| < 1$.
+    \item \textbf{Squared Geometric:} $\frac{1}{1-x^2} = \sum_{k=0}^\infty x^{2k}$ for $|x| < 1$.
+    \item \textbf{Exponential:} $\exp(x) = \sum_{k=0}^{+\infty} \frac{x^k}{k!}$, implying $e = \sum_{k=0}^\infty \frac{1}{k!}$.
+    \item \textbf{Sine:} $\sin x = \frac{x}{1!} - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \dots$
+\end{itemize}
+\end{example}
+\begin{proof}
+(Geometric Series): The Taylor expansion of $f(x) = (1-x)^{-1}$ at $x_0 = 0$ yields $f^{(k)}(0) = k!$.
+Thus the Taylor series is $\sum x^k$. We already know from the formula for finite geometric sums that $S_n = \frac{1 - x^{n+1}}{1 - x}$.
+For $|x| < 1$, $\lim_{n \to \infty} x^{n+1} = 0$, so the series converges exactly to $\frac{1}{1-x}$.
+
+(Exponential Series): $f^{(k)}(0) = 1$ for all $k$. By Taylor-Lagrange: $\exp(x) = \sum_{k=0}^n \frac{x^k}{k!} + \frac{\exp(c)}{(n+1)!} x^{n+1}$.
+For fixed $x$, as $n \to \infty$, the remainder $\left| \frac{\exp(c) x^{n+1}}{(n+1)!} \right| \le \frac{\max(1, e^x) |x|^{n+1}}{(n+1)!} \to 0$. So it converges to $\exp(x)$ everywhere.
+
+(Sine Series): Let $f(x) = \sin x$. The derivatives cycle: $\cos x, -\sin x, -\cos x, \sin x$.
+At $x_0 = 0$, the values are $1, 0, -1, 0$. This gives the odd-power series.
+By Taylor-Lagrange, the remainder is $\frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}$.
+Since all derivatives of sine are bounded by $1$ in absolute value ($|\sin c| \le 1, |\cos c| \le 1$), the remainder is bounded by $\frac{|x|^{n+1}}{(n+1)!}$.
+For any fixed $x \in \mathbb{R}$, $\frac{|x|^{n+1}}{(n+1)!} \to 0$ as $n \to \infty$. Thus the Taylor series converges to $\sin x$ for all $x$.
+\end{proof}
+
+
+\end{document}
