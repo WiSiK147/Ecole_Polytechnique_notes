@@ -1192,5 +1192,125 @@ On a finite-dimensional NVS, there is a unique notion of:
 In finite dimensions, there is no need to specify the norm for these topological properties.
 \end{corollary}
 
+\begin{corollary}{Continuity in Finite Dimensions}{finite_dim_cont}
+Let $E$ be a finite-dimensional normed vector space and $F$ be any normed vector space. Then every linear map from $E$ to $F$ is continuous, i.e., $L(E,F) = \mathcal{L}(E,F)$.
+\end{corollary}
+\begin{proof}
+Assume $d = \dim_K E > 0$ (the $d=0$ case is trivial). Let $(e_i)_{i=1}^d$ be a $K$-basis of $E$.
+For any $x \in E$, we can write $x = \sum_{i=1}^d x_i e_i$, where $x_i \in K$ for all $i$.
+For a linear map $L \in L(E, F)$, we have:
+$N_F(L(x)) = N_F\left(L\left(\sum_{i=1}^d x_i e_i\right)\right) = N_F\left(\sum_{i=1}^d x_i L(e_i)\right)$.
+By the triangular inequality and absolute homogeneity:
+$N_F(L(x)) \le \sum_{i=1}^d N_F(x_i L(e_i)) = \sum_{i=1}^d |x_i| N_F(L(e_i))$.
+Let $||x||_\infty = \max_i |x_i|$ and $C = \sum_{i=1}^d N_F(L(e_i))$. Then $N_F(L(x)) \le ||x||_\infty \cdot C$.
+Thus, $L$ is bounded with respect to the $||\cdot||_\infty$ norm. Since all norms are equivalent in finite dimensions, $L$ is continuous, meaning $L(E, F) = \mathcal{L}(E, F)$.
+\end{proof}
+
+\begin{theorem}{Heine-Cantor Theorem}{heine_cantor}
+Let $K$ be a compact subset of a normed vector space $E$, and let $f: K \to F$ be a continuous function. Then $f$ is uniformly continuous on $K$.
+\end{theorem}
+\begin{proof}
+Assume for contradiction that $f|_K$ is not uniformly continuous.
+Then there exists $\epsilon > 0$ such that for all $\delta > 0$, there exist points $(\tilde{x}_\delta, \tilde{y}_\delta) \in K^2$ satisfying $d_E(\tilde{x}_\delta, \tilde{y}_\delta) < \delta$ but $d_F(f(\tilde{x}_\delta), f(\tilde{y}_\delta)) \ge \epsilon$.
+For each $n \in \N$, we set $\delta = \frac{1}{n+1}$, and define $x_n = \tilde{x}_{1/(n+1)} \in K$ and $y_n = \tilde{y}_{1/(n+1)} \in K$.
+Since $K$ is compact, the sequence $(x_n)_{n \in \N}$ has a convergent subsequence. Thus, there exists a strictly increasing function $\varphi: \N \to \N$ such that $x_{\varphi(n)} \to x_\infty \in K$.
+We know $d_E(x_{\varphi(n)}, y_{\varphi(n)}) \le \frac{1}{\varphi(n)+1} \le \frac{1}{n+1} \to 0$. Thus, $y_{\varphi(n)}$ also converges to $x_\infty$.
+Because $f$ is continuous at $x_\infty$, we have $f(x_{\varphi(n)}) \to f(x_\infty)$ and $f(y_{\varphi(n)}) \to f(x_\infty)$.
+This implies that $d_F(f(x_{\varphi(n)}), f(y_{\varphi(n)})) \to 0$ as $n \to \infty$. This contradicts our assumption that the distance is always $\ge \epsilon$.
+\end{proof}
+
+% ── Lecture 6 ───────────────────────────────────────────────
+\section{Lecture 6: Completeness}
+Let $(E, N)$ be a NVS over $K$ (where $K = \R$ or $\C$).
+
+\subsection{Series and Banach Spaces}
+\begin{remark}{}{}
+A series $\sum_{n} x_n$ in $E$ is formally a pair of sequences $\left((x_n)_{n \in \N}, (S_N)_{N \in \N}\right)$, where $S_N = \sum_{k=0}^N x_k$ is the sequence of partial sums.
+\end{remark}
+
+\begin{definition}{Convergence of Series}{series_conv}
+\begin{itemize}
+    \item A series $\sum x_n$ in $E$ \textbf{converges} if the sequence of partial sums $(S_N)_{N \in \N}$ converges in $E$. In this case, $\sum_{n=0}^\infty x_n = \lim_{N \to \infty} S_N$ is the sum of the series.
+    \item A series $\sum x_n$ \textbf{normally converges} if the real series $\sum_{k=0}^\infty N(x_k)$ converges in $\R$.
+\end{itemize}
+\end{definition}
+
+\begin{definition}{Completeness (Banach Space)}{banach_def}
+A normed vector space $(E, N)$ is \textbf{complete} (or is a \textbf{Banach space}) if for every series $\sum x_n$ in $E$, normal convergence implies convergence.
+\end{definition}
+
+\begin{example}{Incomplete Space}{incomplete_ex}
+Let $E = \{\underline{x} = (x_n)_{n \in \N} \in \R^\N \mid \supp(x) \text{ is finite}\} \simeq \bigoplus_{n \in \N} \R$, equipped with the sup norm $\Vert \underline{x} \Vert_\infty = \sup_{n \in \N} |x_n| < \infty$.
+For $n \ge 1$, define $x_n = (0, \dots, \frac{1}{n^2}, 0, \dots)$ where the non-zero entry is at index $n$.
+Then $\Vert x_n \Vert_\infty = \frac{1}{n^2}$. The series $\sum x_n$ normally converges because $\sum_{n=1}^\infty \frac{1}{n^2} < +\infty$.
+However, the partial sum $S_N = \sum_{k=1}^N x_k = (1, \frac{1}{4}, \frac{1}{9}, \dots, \frac{1}{N^2}, 0, \dots)$.
+Assume for contradiction that $S_N \to x_\infty \in E$. Since $x_\infty$ has finite support, there exists $n_0$ such that for all $n > n_0$, the $n$-th coordinate of $x_\infty$ is 0.
+For every $n > n_0 \ge 1$, the $n$-th coordinate of $S_N$ (for $N \ge n$) is $\frac{1}{n^2}$, meaning $\Vert x_\infty - S_N \Vert_\infty \ge \frac{1}{n^2}$. Thus, $(S_N)_{N \in \N}$ does not converge in $E$, meaning $E$ is not complete.
+\end{example}
+
+\begin{example}{Complete Space}{complete_ex}
+$E = C^0([0,1], K)$ endowed with $\Vert \cdot \Vert_\infty$ is complete.
+Let $\sum f_n$ normally converge in $E$. Let $f = \sum_{n=0}^\infty \Vert f_n \Vert_\infty < +\infty$.
+For any fixed $x \in [0,1]$, $\sum_{k=0}^N |f_k(x)| \le \sum_{k=0}^N \Vert f_k \Vert_\infty \le f < +\infty$.
+Thus, the real series $\sum f_n(x)$ normally converges in $\R$ (or $\C$). Since $\R$ is complete, we can define a point-wise limit function $g: [0,1] \to \R$ as $g(x) = \sum_{n=0}^\infty f_n(x)$.
+We have $|g(x) - \sum_{k=0}^N f_k(x)| = \left|\sum_{n=N+1}^\infty f_n(x)\right| \le \sum_{n=N+1}^\infty \Vert f_n \Vert_\infty$.
+Taking the supremum over $x \in [0,1]$, we obtain $\Vert g - S_N \Vert_\infty \le \sum_{n=N+1}^\infty \Vert f_n \Vert_\infty \to 0$ as $N \to \infty$.
+This shows $S_N \to g$ uniformly on $[0,1]$. Because each $S_N$ is continuous, the uniform limit $g$ is also continuous, so $g \in E$ and $g = \sum_{n=0}^\infty f_n$.
+\end{example}
+
+\begin{theorem}{Completeness of Finite-Dimensional Spaces}{finite_dim_complete}
+For $d \ge 0$, $E = K^d$ is complete for any norm.
+\end{theorem}
+\begin{corollary}{}{finite_dim_coro}
+Any finite-dimensional normed vector space is complete.
+\end{corollary}
+\begin{lemma}{Equivalence and Completeness}{equiv_complete}
+\begin{enumerate}
+    \item Let $N$ and $\tilde{N}$ be equivalent norms on $E$. A series normally converges for $N$ if and only if it normally converges for $\tilde{N}$. Thus, $(E, N)$ is complete if and only if $(E, \tilde{N})$ is complete.
+    \item When $K = \C$, $E$ is a $\C$-vector space. $(E, N)$ is complete over $\C$ if and only if it is complete over $\R$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}[Proof of Theorem \ref{thm:finite_dim_complete}]
+From the facts above, it is sufficient to prove the theorem for $(\R^d, \Vert \cdot \Vert_\infty)$.
+For $d = 1$, $(\R, |\cdot|)$ is complete (known from Semester 1 analysis).
+For $d \ge 2$, let $\sum x_n$ normally converge in $\R^d$, where $x_n = (x_n^1, \dots, x_n^d) \in \R^d$.
+Since $|x_n^i| \le \Vert x_n \Vert_\infty$ for all $1 \le i \le d$, the series $\sum x_n^i$ normally converges in $\R$.
+Because $\R$ is complete, each coordinate sequence converges, which implies $\sum x_n$ converges in $\R^d$.
+\end{proof}
+
+\subsection{Cauchy Completeness}
+\begin{definition}{Cauchy Sequence}{cauchy_def}
+Let $(X, d)$ be a metric space. A sequence $(x_n)_{n \in \N}$ is \textbf{Cauchy} if for all $\epsilon > 0$, there exists $N \in \N$ such that for all $m, n \ge N$, $d(x_n, x_m) < \epsilon$.
+\end{definition}
+
+\begin{definition}{Cauchy Complete Metric Space}{cauchy_complete}
+A metric space $(X, d)$ is \textbf{Cauchy complete} if every Cauchy sequence $(x_n)_{n \in \N} \in X^\N$ converges.
+\end{definition}
+
+\begin{theorem}{Equivalence of Completeness Definitions}{equiv_complete_def}
+Let $(E, N)$ be a normed vector space, and $d_N$ be the induced distance. Then $(E, N)$ is complete (using the series definition) if and only if $(E, d_N)$ is Cauchy complete.
+\end{theorem}
+
+\subsection{Fixed Point Theorems}
+\begin{theorem}{Banach-Picard Fixed Point Theorem}{banach_picard}
+Let $(E, N)$ be a complete NVS, and let $C \subset E$ be a non-empty closed subset. Let $f: C \to C$ be a contracting map, meaning there exists $k \in [0, 1)$ such that for all $x, y \in C$, $d(f(x), f(y)) \le k d(x, y)$.
+Then there exists a unique $x \in C$ that is a fixed point for $f$ (i.e., $f(x) = x$).
+\end{theorem}
+\begin{proof}
+\textbf{Uniqueness:} Assume there are two fixed points $x_1, x_2 \in C$. Then $d(x_1, x_2) = d(f(x_1), f(x_2)) \le k d(x_1, x_2)$. Since $k < 1$, this implies $d(x_1, x_2) = 0$, so $x_1 = x_2$. Thus, the fixed point is at most a singleton.
+
+\textbf{Existence:} Pick an arbitrary $x_0 \in C$. We define a sequence inductively by $x_{n+1} = f(x_n) \in C$ for all $n \in \N$.
+Let $u_n = x_{n+1} - x_n$. For $n \ge 1$, we have:
+$N(u_n) = N(x_{n+1} - x_n) = N(f(x_n) - f(x_{n-1})) = d(f(x_n), f(x_{n-1}))$.
+Since $f$ is a contraction, $N(u_n) \le k d(x_n, x_{n-1}) = k N(x_n - x_{n-1}) = k N(u_{n-1})$.
+By induction, $N(u_n) \le k^n N(u_0)$.
+Then $\sum_{n=0}^N N(u_n) \le \sum_{n=0}^N k^n N(u_0) \le \frac{N(u_0)}{1-k} < +\infty$.
+Therefore, the series $\sum u_n$ normally converges in $E$. Because $E$ is complete, the series converges in $E$.
+Since $\sum_{n=0}^N u_n = x_{N+1} - x_0$, the sequence $x_n = x_0 + \sum_{k=0}^{n-1} u_k$ converges to some $x_\infty \in E$.
+Because $C$ is closed and $x_n \in C$ for all $n$, we have $x_\infty \in C$.
+Finally, since $f$ is Lipschitz, it is continuous on $C$. Because $x_n \to x_\infty$, we get $f(x_n) \to f(x_\infty)$.
+But $f(x_n) = x_{n+1}$, and $x_{n+1} \to x_\infty$, so $f(x_\infty) = x_\infty$.
+\end{proof}
+
 
 \end{document}
