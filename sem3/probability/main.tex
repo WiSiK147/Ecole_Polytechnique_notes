@@ -1085,6 +1085,134 @@ For the variance, since the intervals are independent, the variance of the sum i
 \[ \mathbb{V}(T_N) = \mathbb{V}\left(\sum_{k=0}^{N-1} (T_{k+1} - T_k)\right) = \sum_{k=0}^{N-1} \mathbb{V}(T_{k+1} - T_k) \]
 \end{proof}
 
+% Add this right after the proof of the Coupon Collector Problem at the end of Lecture 5:
+
+\begin{lemma}{Coupon Collector increments}{} %
+For all $k \ge 1$, define $Y_k := T_k - T_{k-1}$. $Y_k$ is the number of stickers the collector has to buy to see its collection increase from $k-1$ to $k$. %
+The random variables $Y_1, Y_2, \dots, Y_N$ are independent. Moreover, $Y_k \sim \text{Ge}\left(1 - \frac{k-1}{N}\right)$. %
+\end{lemma}
+
+\begin{proof} %
+Once we have found $k-1$ different stickers, each new sticker we buy has a probability $1 - \frac{k-1}{N}$ to be a sticker which is not already in the collection, independently from anything else that happened in the past. %
+Because each purchase is an independent Bernoulli trial with success probability $p = 1 - \frac{k-1}{N}$, the number of trials $Y_k$ until the next success follows a Geometric distribution $\text{Ge}(p)$.
+\end{proof}
+
+\begin{theorem}{Time to complete the album}{} %
+We have
+\[ \mathbb{E}[T_N] = N \log N + \gamma N + \frac{1}{2} + o(1) \] %
+and
+\[ \mathbb{V}(T_N) = \frac{\pi^2}{6}N^2 - N \log N - \gamma N + o(1), \] %
+where $\gamma$ is the Euler-Mascheroni constant ($\gamma \approx 0.577$). %
+\end{theorem}
+
+\begin{proof} %
+The theorem is a direct consequence of the above Lemma and the asymptotic expansions of the harmonic series: %
+\[ \sum_{k=1}^N \frac{1}{k} = \log(N) + \gamma + \frac{1}{2N} + o\left(\frac{1}{N}\right) \] %
+\[ \sum_{k=1}^N \frac{1}{k^2} = \frac{\pi^2}{6} + \frac{1}{2N^2} + o\left(\frac{1}{N^2}\right) \] %
+Since $\mathbb{E}[T_N] = \sum_{k=1}^N \mathbb{E}[Y_k]$ and $\mathbb{V}(T_N) = \sum_{k=1}^N \mathbb{V}(Y_k)$, substituting the harmonic series expansions yields the result.
+\end{proof}
+
+\subsection{Gaussian random variables} %
+
+\begin{definition}{Standard Gaussian random variable}{} %
+An absolutely continuous random variable $X$ is a standard Gaussian (or normal), and we write $X \sim \mathcal{N}(0,1)$, if its density is given by %
+\[ f_X(x) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right). \] %
+\end{definition}
+
+\begin{proposition}{Moments of the standard Gaussian}{} %
+If $X \sim \mathcal{N}(0,1)$, then $\mathbb{E}[X] = 0$ and $\mathbb{V}(X) = 1$. %
+\end{proposition}
+
+\begin{proof} %
+The function $|x|\exp(-x^2/2)$ is integrable on $\mathbb{R}$, so $\mathbb{E}[X] < +\infty$. % 
+Since $x \exp(-x^2/2)$ is an odd function, its integral over $\mathbb{R}$ evaluates to $0$, meaning $\mathbb{E}[X] = 0$. %
+We recall the Gauss integral formula: %
+\[ \int_{-\infty}^{+\infty} \exp\left(-\frac{x^2}{2}\right) dx = \sqrt{2\pi} \] %
+Integrating by parts, we obtain the variance: %
+\begin{align*}
+    \mathbb{V}(X) &= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} x^2 \exp\left(-\frac{x^2}{2}\right) dx \\
+    &= \frac{1}{\sqrt{2\pi}} \left[ -x \exp\left(-\frac{x^2}{2}\right) \right]_{-\infty}^{+\infty} + \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} \exp\left(-\frac{x^2}{2}\right) dx = 1.
+\end{align*} %
+To obtain the last equality we used the Gauss integral formula. %
+\end{proof}
+
+\begin{definition}{General Gaussian random variable}{} %
+Fix $\mu \in \mathbb{R}$ and $\sigma > 0$. % An absolutely continuous random variable $X$ is a Gaussian (or normal) of mean $\mu$ and variance $\sigma^2$, and we write $X \sim \mathcal{N}(\mu, \sigma^2)$, if its density is given by %
+\[ f_X(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right). \] %
+It is easy to verify that indeed we have $\mathbb{E}[X] = \mu$ and $\mathbb{V}(X) = \sigma^2$. %
+\end{definition}
+
+\begin{proposition}{Linear transformation of Gaussian random variables}{} %
+If $X \sim \mathcal{N}(\mu, \sigma^2)$, then $Z \sim \mathcal{N}(0,1)$, where $Z = \frac{X - \mu}{\sigma}$. %
+\end{proposition}
+
+\begin{proof} %
+Observe that after an easy calculation: %
+\[ F_Z(x) = \mathbb{P}[Z \le x] = \mathbb{P}\left[\frac{X - \mu}{\sigma} \le x\right] = \mathbb{P}[X \le \sigma x + \mu] = F_X(\sigma x + \mu) \] %
+Since $F_X$ is of class $\mathcal{C}^1$, so is $F_Z$. % Therefore, $Z$ is absolutely continuous with density: %
+\[ f_Z(x) = \frac{d}{dx} F_X(\sigma x + \mu) = \sigma f_X(\sigma x + \mu) = \sigma \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(\sigma x + \mu - \mu)^2}{2\sigma^2}\right) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right), \] %
+which is the desired conclusion. %
+\end{proof}
+
+\begin{proposition}{Sum of Gaussian random variables}{} %
+Let $X, Y$ be two independent random variables with $X \sim \mathcal{N}(\mu_X, \sigma_X^2)$ and $Y \sim \mathcal{N}(\mu_Y, \sigma_Y^2)$. % Then %
+\[ X + Y \sim \mathcal{N}(\mu_X + \mu_Y, \sigma_X^2 + \sigma_Y^2). \] %
+\end{proposition}
+
+\begin{proof}
+Using Moment Generating Functions (MGFs), recall that for $V \sim \mathcal{N}(\mu, \sigma^2)$, $M_V(t) = \exp\left(\mu t + \frac{\sigma^2 t^2}{2}\right)$.
+Since $X$ and $Y$ are independent, the MGF of $X+Y$ is the product of their MGFs:
+\begin{align*}
+    M_{X+Y}(t) &= M_X(t) M_Y(t) \\
+    &= \exp\left(\mu_X t + \frac{\sigma_X^2 t^2}{2}\right) \exp\left(\mu_Y t + \frac{\sigma_Y^2 t^2}{2}\right) \\
+    &= \exp\left((\mu_X + \mu_Y)t + \frac{(\sigma_X^2 + \sigma_Y^2)t^2}{2}\right)
+\end{align*}
+This is exactly the MGF of a $\mathcal{N}(\mu_X + \mu_Y, \sigma_X^2 + \sigma_Y^2)$ random variable. By the uniqueness of the MGF, the result holds.
+\end{proof}
+
+\subsection{Beta distributions} %
+
+\begin{definition}{Beta distribution}{} %
+Let $X$ be an absolutely continuous random variable. % We say that $X$ is a Beta random variable of parameters $a, b \in (0, +\infty)$ if %
+\[ f_X(x) = \frac{1}{\beta(a,b)} x^{a-1} (1-x)^{b-1} \mathbbm{1}_{(0,1)}(x), \] %
+where %
+\[ \beta(a,b) = \int_0^1 x^{a-1} (1-x)^{b-1} dx. \] %
+In this case we write $X \sim \text{Beta}(a,b)$. % We have: %
+\[ \mathbb{E}[X] = \frac{a}{a+b}, \quad \mathbb{V}(X) = \frac{ab}{(a+b)^2(a+b+1)}. \] %
+\end{definition}
+
+\subsection{Order statistics} %
+
+We consider $X_1, \dots, X_n$ independent random variables following the uniform distribution on $[0,1]$. % We define %
+\[ Y_k = \text{$k$-th smallest value in } \{X_1, \dots, X_n\}. \] %
+That is to say, $Y_1 \le Y_2 \le \dots \le Y_n$, and $\{X_1, \dots, X_n\} = \{Y_1, \dots, Y_n\}$. %
+
+\begin{lemma}{Counting variables below a threshold}{} %
+For any $x \in [0, 1]$, define $Z_x = \text{Card}\{i : X_i \le x\} = \sum_{i=1}^n \mathbbm{1}_{\{X_i \le x\}}$. %
+Then $Z_x \sim \text{Bin}(n, x)$. %
+\end{lemma}
+
+\begin{proof} %
+Since $X_i \sim \mathcal{U}([0,1])$, we have $\mathbb{P}(X_i \le x) = x$ for $x \in [0,1]$.
+The indicator random variables $(\mathbbm{1}_{\{X_i \le x\}})_{1 \le i \le n}$ are independent Bernoulli random variables of parameter $x$. %
+Because $Z_x$ is the sum of $n$ i.i.d. Bernoulli$(x)$ variables, $Z_x \sim \text{Bin}(n, x)$. %
+\end{proof}
+
+\begin{proposition}{Distribution of $Y_k$}{} %
+For all $1 \le k \le n$, $Y_k \sim \text{Beta}(k, n - k + 1)$, i.e. %
+\[ f_{Y_k}(x) = \binom{n}{k} k x^{k-1} (1-x)^{n-k}. \] %
+\end{proposition}
+
+\begin{proof}
+The event $\{Y_k \le x\}$ occurs if and only if at least $k$ of the variables $X_1, \dots, X_n$ are less than or equal to $x$. 
+Thus, $\{Y_k \le x\} = \{Z_x \ge k\}$. The CDF of $Y_k$ is:
+\[ F_{Y_k}(x) = \mathbb{P}(Z_x \ge k) = \sum_{j=k}^n \binom{n}{j} x^j (1-x)^{n-j}. \]
+To find the density $f_{Y_k}(x)$, we differentiate $F_{Y_k}(x)$ with respect to $x$:
+\[ f_{Y_k}(x) = \sum_{j=k}^n \binom{n}{j} \left[ j x^{j-1} (1-x)^{n-j} - (n-j) x^j (1-x)^{n-j-1} \right]. \]
+This is a telescoping sum. The negative part of the $j$-th term exactly cancels the positive part of the $(j+1)$-th term. All that remains is the positive part of the $j=k$ term (the negative part of the $j=n$ term is 0).
+\[ f_{Y_k}(x) = \binom{n}{k} k x^{k-1} (1-x)^{n-k}. \]
+Noting that $\binom{n}{k}k = \frac{n!}{(k-1)!(n-k)!} = \frac{\Gamma(n+1)}{\Gamma(k)\Gamma(n-k+1)} = \frac{1}{\beta(k, n-k+1)}$, we see this is exactly the density of a $\text{Beta}(k, n-k+1)$ distribution.
+\end{proof}
 
 
 \end{document}
