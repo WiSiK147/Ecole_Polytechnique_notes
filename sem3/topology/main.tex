@@ -1312,5 +1312,128 @@ Finally, since $f$ is Lipschitz, it is continuous on $C$. Because $x_n \to x_\in
 But $f(x_n) = x_{n+1}$, and $x_{n+1} \to x_\infty$, so $f(x_\infty) = x_\infty$.
 \end{proof}
 
+% ── Lecture 6 ───────────────────────────────────────────────
+\section{Lecture 6: Differentiability}
+Let $(E, N_E), (F, N_F), (G, N_G)$ be normed vector spaces over $\R$.
+Let $\Omega \subset E$ be a non-empty open subset, and let $x_0 \in \Omega$.
+Let $f, g: \Omega \to F$ be maps.
+
+\subsection{Landau Notations}
+\begin{definition}{Landau Notations}{landau_def}
+\begin{enumerate}
+    \item $f$ is \textbf{negligible} with respect to $g$ in the neighborhood of $x_0$ (at $x_0$) if for all $\eps > 0$, there exists $\delta > 0$ such that $N_F(f(x)) \le \eps N_G(g(x))$ on $\Omega \cap B(x_0, \delta)$.
+    In this case, we say "$f$ is a little $o$ of $g$ at $x_0$" and write $f = o_{x_0}(g)$ or $f(x) = o_{x_0}(g(x))$.
+    \item $f$ is of the \textbf{same magnitude} as $g$ at $x_0$ if there exists $C \ge 0$ such that $N_F(f(x)) \le C N_G(g(x))$ on $\Omega \cap B(x_0, \delta)$ for some $\delta > 0$.
+    In this case, we say "$f$ is a big $O$ of $g$ at $x_0$" and write $f = O_{x_0}(g)$.
+    \item $f$ is \textbf{equivalent} to $g$ at $x_0$ (when $F=G$ and $N_F = N_G$) if $f - g = o_{x_0}(g)$. We denote this as $f \sim_{x_0} g$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}{Properties of Landau Notations}{landau_prop}
+\begin{enumerate}
+    \item If $f = o_{x_0}(g)$, then $f = O_{x_0}(g)$.
+    \item $f = o_{x_0}(1)$ if and only if $f(x) \to 0_F$ as $x \to x_0$.
+    \item $f = o_{x_0}(g)$ implies $N_F(f) = o_{x_0}(N_G(g))$.
+    \item If $g$ is a scalar-valued function ($G=\R$), then $f = o_{x_0}(g)$ implies $N_F(f(x)) \le \eps |g(x)|$, so $\frac{N_F(f(x))}{|g(x)|} \to 0$ as $x \to x_0$ (for $g(x) \neq 0$).
+    \item If there exists $\delta > 0$ such that $g(x) \neq 0_G$ for all $x \in B^*(x_0, \delta)$, then $f = o_{x_0}(g)$ if and only if $\frac{N_F(f(x))}{N_G(g(x))} \to 0$ as $x \to x_0$ ($x \neq x_0$).
+    \item Similarly, $f = O_{x_0}(g)$ if and only if $\frac{N_F(f(x))}{N_G(g(x))}$ stays bounded near $x_0$ ($x \neq x_0$).
+    \item When $F=G$, $f \sim_{x_0} g$ implies $\frac{N_F(f(x) - g(x))}{N_G(g(x))} \to 0$ as $x \to x_0$ ($x \neq x_0$).
+\end{enumerate}
+\end{remark}
+
+\begin{lemma}{Uniqueness of the Differential Form}{unique_diff_form}
+Let $(E, N_E)$ and $(F, N_F)$ be NVS. Let $L \in \mathcal{L}(E, F)$ be a continuous linear map.
+If $L(h) = o_0(h)$, then $L = 0$.
+\end{lemma}
+\begin{proof}
+Assume $L(h) = o_0(h)$. Let $\eps > 0$. Then there exists $\delta > 0$ such that for all $h \in B(0, \delta)$, $N_F(L(h)) \le \eps N_E(h)$.
+Let $x \in E \setminus \{0\}$. Then $\tilde{x} = \frac{\delta}{2} \frac{x}{N_E(x)} \in B(0, \delta)$.
+By linearity, $N_F\left(L\left(\frac{\delta}{2} \frac{x}{N_E(x)}\right)\right) \le \eps N_E\left(\frac{\delta}{2} \frac{x}{N_E(x)}\right)$.
+This simplifies to $\frac{\delta}{2 N_E(x)} N_F(L(x)) \le \eps \frac{\delta}{2}$, which implies $N_F(L(x)) \le \eps N_E(x)$.
+Since this holds for any $\eps > 0$, we must have $N_F(L(x)) = 0$ for all $x$, so $L = 0$.
+\end{proof}
+
+\subsection{Differentiability and the Differential}
+\begin{definition}{Differentiability}{diff_def}
+Let $\Omega \subset E$ be a non-empty open subset and $x_0 \in \Omega$.
+A function $f: \Omega \to F$ is \textbf{differentiable} at $x_0$ if there exists $L_{x_0} \in \mathcal{L}(E, F)$ (a continuous linear map) such that for all $h \in E$ (small enough so $x_0+h \in \Omega$):
+$f(x_0 + h) = f(x_0) + L_{x_0}(h) + o_{x_0}(h)$.
+Equivalently, this means $\lim_{h \to 0} \frac{N_F(f(x_0 + h) - f(x_0) - L_{x_0}(h))}{N_E(h)} = 0$.
+\end{definition}
+
+\begin{proposition}{Uniqueness of the Differential}{diff_unique}
+If $f$ is differentiable at $x_0$, the continuous linear map $L_{x_0}$ is unique.
+By definition, it is the \textbf{differential} of $f$ at $x_0$ and is denoted by $df_{x_0} \in \mathcal{L}(E, F)$.
+\end{proposition}
+\begin{proof}
+Assume there are two such maps $L_1, L_2 \in \mathcal{L}(E, F)$.
+Then $f(x_0 + h) - f(x_0) = L_1(h) + o_0(h) = L_2(h) + o_0(h)$.
+This implies $(L_1 - L_2)(h) = o_0(h)$.
+By the previous lemma, we conclude that $L_1 - L_2 = 0$, so $L_1 = L_2$.
+\end{proof}
+
+\begin{remark}{}{approx_insight}
+\textbf{Insight:} The map $h \mapsto f(x_0) + df_{x_0}(h)$ is the first-order affine approximation of $f$ at $x_0$.
+\end{remark}
+
+\begin{remark}{Norm Dependence of Differentiability}{diff_norm_dep}
+\begin{itemize}
+    \item Since $C^0(\Omega, F)$ depends on the choice of norms $N_E$ and $N_F$, the differentiability of $f$ also depends on the norms.
+    \item However, differentiability is stable up to the equivalence of norms.
+    \item When both $E$ and $F$ are finite-dimensional, differentiability is independent of the choice of norms (since all norms are equivalent).
+\end{itemize}
+\end{remark}
+
+\begin{proposition}{Differentiability Implies Continuity}{diff_implies_cont}
+If $f$ is differentiable at $x_0 \in \Omega$, then $f$ is continuous at $x_0$.
+\end{proposition}
+
+\begin{proposition}{Linearity of the Differential}{diff_linear}
+Let $f, g: \Omega \to F$ be differentiable at $x_0$, and let $\lambda \in \R$. Then $f + \lambda g$ is differentiable at $x_0$, and $d(f + \lambda g)_{x_0} = df_{x_0} + \lambda dg_{x_0}$.
+\end{proposition}
+
+\subsection{Examples of Differentials}
+\begin{example}{Continuous Linear Map}{diff_linear_ex}
+Let $E, F$ be NVS and let $L \in \mathcal{L}(E, F)$.
+For any $x_0 \in E$ and $h \in E$, by linearity we have $L(x_0 + h) = L(x_0) + L(h) = L(x_0) + L(h) + 0$.
+Since $0 = o(h)$ and $L \in \mathcal{L}(E, F)$, $L$ is differentiable at any $x_0$, and its differential is constant: $dL_{x_0} = L$.
+\end{example}
+
+\begin{example}{Integral Operator}{diff_integral_ex}
+Let $E = C^0([0,1], \R)$ equipped with $\Vert \cdot \Vert_\infty$.
+Define $\varphi: E \to \R$ by $\varphi(f) = \int_0^1 (f(u))^2 du$.
+Let $f_0 \in E$ and $h \in E$. We want to compute $\varphi(f_0 + h)$.
+$\varphi(f_0 + h) = \int_0^1 (f_0(u) + h(u))^2 du = \int_0^1 (f_0^2(u) + 2f_0(u)h(u) + h^2(u)) du$.
+By linearity of the integral, $\varphi(f_0 + h) = \int_0^1 f_0^2(u)du + \int_0^1 2f_0(u)h(u)du + \int_0^1 h^2(u)du$.
+This is equal to $\varphi(f_0) + L_{f_0}(h) + r(h)$, where:
+$L_{f_0}(h) = \int_0^1 2f_0(u)h(u)du \in \R$ and $r(h) = \int_0^1 h^2(u)du$.
+We first show $L_{f_0} \in \mathcal{L}(E, \R)$. It is clearly linear. To show it is continuous:
+$|L_{f_0}(h)| \le \int_0^1 2|f_0(u)||h(u)|du \le \int_0^1 2\Vert f_0 \Vert_\infty \Vert h \Vert_\infty du = 2\Vert f_0 \Vert_\infty \Vert h \Vert_\infty$.
+Thus, $L_{f_0}$ is bounded and therefore continuous.
+Now we show $r(h) = o_0(h)$. We have $|r(h)| \le \int_0^1 |h^2(u)|du \le \int_0^1 \Vert h \Vert_\infty^2 du = \Vert h \Vert_\infty^2$.
+Thus, $\frac{|r(h)|}{\Vert h \Vert_\infty} \le \Vert h \Vert_\infty \to 0$ as $h \to 0$ (meaning $\Vert h \Vert_\infty \to 0$). So $r(h) = o_0(h)$.
+Therefore, $\varphi$ is differentiable at $f_0$, and $d\varphi_{f_0}(h) = \int_0^1 2f_0(u)h(u)du$.
+\end{example}
+
+\begin{example}{Matrix Exponential}{diff_exp_ex}
+Let $E = M_n(\R)$ ($n \ge 0$). Let $\Vert \cdot \Vert$ be a submultiplicative norm on $E$, meaning for all $M, N \in E$, $\Vert MN \Vert \le \Vert M \Vert \Vert N \Vert$. (For example, any operator norm induced by a vector norm on $\R^n$ is submultiplicative).
+For $M \in M_n(\R)$, we define the matrix exponential $\exp(M) = \sum_{k=0}^\infty \frac{M^k}{k!}$.
+This series normally converges because $\Vert \frac{M^k}{k!} \Vert \le \frac{\Vert M \Vert^k}{k!}$ and $\sum_{k=0}^\infty \frac{\Vert M \Vert^k}{k!} = e^{\Vert M \Vert} < +\infty$.
+Since $E$ is finite-dimensional ($n^2$), it is complete, so the series converges in $M_n(\R)$. Thus, $\exp: M_n(\R) \to M_n(\R)$ is well-defined.
+We will compute the differential of $\exp$ at $0 \in M_n(\R)$. Let $H \in M_n(\R)$.
+$\exp(H) = I_n + H + \sum_{k=2}^\infty \frac{H^k}{k!} = \exp(0) + I_E(H) + r(H)$.
+Here $I_E(H) = H$, which is trivially linear and continuous (since it is the identity map).
+We need to prove that $r(H) = o_0(H)$.
+$\Vert r(H) \Vert \le \sum_{k=2}^\infty \frac{\Vert H \Vert^k}{k!} = \Vert H \Vert^2 \sum_{k=2}^\infty \frac{\Vert H \Vert^{k-2}}{k!} \le \Vert H \Vert^2 \sum_{j=0}^\infty \frac{\Vert H \Vert^j}{(j+2)!} \le \Vert H \Vert^2 \sum_{j=0}^\infty \frac{\Vert H \Vert^j}{j!} = \Vert H \Vert^2 \exp(\Vert H \Vert)$.
+Since the map $t \mapsto \exp(t)$ is continuous on $\R$, it is bounded on the compact set $[-1, 1]$. So for $H \in B_E(0, 1)$, $\exp(\Vert H \Vert) \le C$ for some constant $C$.
+Therefore, for $H \in B_E(0, 1)$, $\Vert r(H) \Vert \le C \Vert H \Vert^2$, which implies $\frac{\Vert r(H) \Vert}{\Vert H \Vert} \le C \Vert H \Vert \to 0$ as $H \to 0$.
+Thus, $r(H) = o_0(H)$.
+So $\exp$ is differentiable at $0$, and $d\exp_0(H) = H$ (meaning $d\exp_0 = I_E$).
+\end{example}
+
+\begin{problem}{}{diff_prob_1}
+Let $f: \R^2 \to \R$ be defined by $(x,y) \mapsto \sqrt{x^2+y^2}$. Study the differentiability of $f$ at $(0,0)$.
+\end{problem}
+
 
 \end{document}
