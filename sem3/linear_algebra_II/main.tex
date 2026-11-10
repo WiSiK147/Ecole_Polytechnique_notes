@@ -1099,5 +1099,116 @@ The spectrum of the zero endomorphism is simply $\{0\}$.
 Therefore, $P_u(\lambda) = 0$. 
 \end{proof}
 
+% ============================================================
+%  LECTURE 7
+% ============================================================
+\section{Lecture 7: Diagonalizability}
+
+Let $K$ be a field and $E$ be a vector space over $K$ of finite dimension $N$. 
+Let $\mathcal{E} = \{e_1, \dots, e_N\}$ be a basis of $E$, and let $u \in \mathcal{L}(E)$ be an endomorphism with matrix $M = \text{Mat}_{\mathcal{E}}(u)$. 
+
+\begin{theorem}{Spectrum and Minimal Polynomial}{}
+The spectrum of $u$ is exactly the set of roots of its minimal polynomial:
+$$ \text{Sp}(u) = \{ \lambda \in K \mid P_u(\lambda) = 0 \} $$ 
+\end{theorem}
+\begin{proof}
+We have already proven the forward inclusion ($\lambda \in \text{Sp}(u) \implies P_u(\lambda) = 0$) in the previous lecture. 
+To prove the reverse, let $\lambda$ be a root of $P_u$. 
+This means we can factor the minimal polynomial as $P_u(X) = (X - \lambda)Q(X)$. 
+
+Evaluating at the endomorphism $u$, we get the zero endomorphism:
+$$ 0_{\mathcal{L}(E)} = P_u(u) = (u - \lambda \text{Id}) \circ Q(u) $$ 
+Because $P_u$ is the polynomial of \textit{minimal} degree that cancels $u$, and $\deg(Q) < \deg(P_u)$, it must be that $Q(u) \neq 0_{\mathcal{L}(E)}$. 
+Thus, there exists some vector $x \in E$ such that $y = Q(u)(x) \neq 0_E$. 
+
+Applying $(u - \lambda \text{Id})$ to $y$, we get:
+$$ (u - \lambda \text{Id})(y) = (u - \lambda \text{Id})(Q(u)(x)) = P_u(u)(x) = 0_E $$ 
+This shows that $y \in \ker(u - \lambda \text{Id})$ with $y \neq 0$, which by definition means $\lambda$ is an eigenvalue of $u$. 
+\end{proof}
+
+\begin{theorem}{Direct Sum of Eigenspaces}{}
+If $\lambda_1, \dots, \lambda_k$ are distinct eigenvalues of $u$, then their corresponding eigenspaces $E_{\lambda_1}, \dots, E_{\lambda_k}$ are in direct sum. 
+\end{theorem}
+\begin{proof}
+Suppose for the sake of contradiction they are not in direct sum. 
+Then there exist vectors $x_i \in E_{\lambda_i}$ (not all zero) such that $x_1 + x_2 + \dots + x_k = 0$. 
+We can assume without loss of generality that all $x_i$ in this sum are non-zero. 
+
+If we apply $u$ to this sum, we get $0 = \sum_{i=1}^k u(x_i) = \sum_{i=1}^k \lambda_i x_i$. 
+Applying $u$ repeatedly $l$ times yields:
+$$ \sum_{i=1}^k u^l(x_i) = \sum_{i=1}^k \lambda_i^l x_i = 0 $$ 
+We can write the system of equations for $l = 0, \dots, k-1$ in matrix form:
+$$ \begin{pmatrix} 
+1 & 1 & \dots & 1 \\ 
+\lambda_1 & \lambda_2 & \dots & \lambda_k \\ 
+\vdots & \vdots & \ddots & \vdots \\ 
+\lambda_1^{k-1} & \lambda_2^{k-1} & \dots & \lambda_k^{k-1} 
+\end{pmatrix} 
+\begin{pmatrix} x_1 \\ x_2 \\ \vdots \\ x_k \end{pmatrix} = 
+\begin{pmatrix} 0 \\ 0 \\ \vdots \\ 0 \end{pmatrix} $$ 
+The matrix on the left is the Vandermonde matrix. Its determinant is $\prod_{1 \le i < j \le k} (\lambda_j - \lambda_i)$. 
+Since the eigenvalues $\lambda_i$ are distinct, this determinant is non-zero, meaning the matrix is invertible. 
+Multiplying by the inverse yields $x_1 = x_2 = \dots = x_k = 0$, which contradicts our assumption that the vectors were non-zero. 
+\end{proof}
+
+\begin{theorem}{Vandermonde Determinant}{}
+For any scalars $\lambda_1, \dots, \lambda_k \in K$, the Vandermonde determinant is:
+$$ V(\lambda_1, \dots, \lambda_k) = \prod_{1 \le i < j \le k} (\lambda_j - \lambda_i) $$ 
+\end{theorem}
+\begin{proof}
+We proceed by induction on $k$. 
+For $k=2$, the determinant is $\begin{vmatrix} 1 & 1 \\ \lambda_1 & \lambda_2 \end{vmatrix} = \lambda_2 - \lambda_1$, which matches the formula. 
+
+Assume the formula holds for $k-1$. We want to prove it for $k$. 
+Consider the determinant as a polynomial $P(X)$ by replacing $\lambda_k$ with a variable $X$:
+$$ P(X) = \begin{vmatrix} 
+1 & \dots & 1 & 1 \\ 
+\lambda_1 & \dots & \lambda_{k-1} & X \\ 
+\vdots & \ddots & \vdots & \vdots \\ 
+\lambda_1^{k-1} & \dots & \lambda_{k-1}^{k-1} & X^{k-1} 
+\end{vmatrix} $$ 
+Expanding along the last column, we see that $P(X)$ is a polynomial of degree at most $k-1$. 
+If we evaluate $P(X)$ at any $X = \lambda_i$ (for $1 \le i \le k-1$), two columns of the matrix become identical, so the determinant is zero. 
+Thus, $\lambda_1, \dots, \lambda_{k-1}$ are the roots of $P(X)$, so we can factor it as:
+$$ P(X) = c (X - \lambda_1)(X - \lambda_2)\dots(X - \lambda_{k-1}) $$ 
+The leading coefficient $c$ corresponds to the $X^{k-1}$ term. Expanding the determinant, this coefficient is exactly the $(k-1) \times (k-1)$ Vandermonde determinant $V(\lambda_1, \dots, \lambda_{k-1})$. 
+By the induction hypothesis, $c = \prod_{1 \le i < j \le k-1} (\lambda_j - \lambda_i)$. 
+Evaluating $P(\lambda_k)$ completes the product for $k$, proving the formula. 
+\end{proof}
+
+\subsection{Diagonalizability}
+
+\begin{example}{Eigenspaces and Direct Sums}{}
+\begin{enumerate}
+    \item \textbf{Projection Matrix:} Let $M = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$. 
+    The spectrum is $\text{Sp}(M) = \{0, 1\}$. 
+    The minimal polynomial is $P_M(X) = X(X-1)$. 
+    The eigenspaces are $E_0 = \langle e_3 \rangle$ and $E_1 = \langle e_1, e_2 \rangle$. 
+    We see that $E_0 \oplus E_1 = \R^3$. 
+    
+    \item \textbf{Distinct Eigenvalues:} Let $M = \begin{pmatrix} \alpha & 0 & 0 \\ 0 & \beta & 0 \\ 0 & 0 & 1 \end{pmatrix}$ with $0 < \beta < \alpha < 1$. 
+    The spectrum is $\text{Sp}(M) = \{\alpha, \beta, 1\}$. 
+    The minimal polynomial is $P_M(X) = (X-\alpha)(X-\beta)(X-1)$. 
+    The eigenspaces are $E_\alpha = \langle e_1 \rangle$, $E_\beta = \langle e_2 \rangle$, and $E_1 = \langle e_3 \rangle$. 
+    Their direct sum is $E_\alpha \oplus E_\beta \oplus E_1 = \R^3$. 
+\end{enumerate}
+\end{example}
+
+\begin{theorem}{Equivalent Conditions for Diagonalizability}{}
+For an endomorphism $u \in \mathcal{L}(E)$, the following four conditions are equivalent:
+\begin{enumerate}
+    \item $P_u(X)$ is a product of distinct factors of degree 1. 
+    \item The direct sum of the eigenspaces spans the entire space $E$, i.e., $E = E_{\lambda_1} \oplus \dots \oplus E_{\lambda_k}$. 
+    \item There exists a basis $\mathcal{E}$ such that the matrix $\text{Mat}_{\mathcal{E}}(u)$ is diagonal. 
+    \item $u$ is said to be \textbf{diagonalizable} (or "Dz"). 
+\end{enumerate}
+\end{theorem}
+
+\begin{definition}{Diagonalizable Matrix}{}
+A matrix $M \in \mathcal{M}_N(K)$ is diagonalizable if it represents a diagonalizable endomorphism in some basis. 
+Equivalently, it is diagonalizable if there exists an invertible change of basis matrix $P \in GL_N(K)$ such that $P^{-1} M P$ is a diagonal matrix. 
+\end{definition}
+
+
 
 \end{document}
