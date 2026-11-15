@@ -426,6 +426,8 @@
 %  LECTURE 1
 % ============================================================
 
+\part{Probability}
+
 \section{Lecture 1}
 
 \begin{theorem}{Fubini positive}{}
@@ -1213,6 +1215,92 @@ This is a telescoping sum. The negative part of the $j$-th term exactly cancels 
 \[ f_{Y_k}(x) = \binom{n}{k} k x^{k-1} (1-x)^{n-k}. \]
 Noting that $\binom{n}{k}k = \frac{n!}{(k-1)!(n-k)!} = \frac{\Gamma(n+1)}{\Gamma(k)\Gamma(n-k+1)} = \frac{1}{\beta(k, n-k+1)}$, we see this is exactly the density of a $\text{Beta}(k, n-k+1)$ distribution.
 \end{proof}
+
+% ============================================================
+%  FINAL PROBABILITY LECTURE (Placeholder / Review)
+% ============================================================
+
+\section{Lecture X: Advanced Probability Topics (Final Probability Lecture)}
+\begin{remark}{Placeholder}{}
+[Leave space here for the final probability lecture notes bridging probability and statistics.]
+\end{remark}
+
+\newpage
+
+% ============================================================
+%  PART II: STATISTICS - INTRODUCTION TO DESCRIPTIVE STATISTICS
+% ============================================================
+
+\part{Statistics}
+
+\section{Introduction to Statistics}
+
+\subsection{Overview and Objectives}
+Statistics deals with the collection, analysis, interpretation, and presentation of data. It bridges a priori probability models with a posteriori empirical observations, branching into:
+\begin{itemize}
+    \item \textbf{Descriptive statistics:} Describing, summarizing, and extracting information from data sets.
+    \item \textbf{Inferential statistics:} Estimating, classifying, forecasting, and making decisions based on data.
+\end{itemize}
+Modern applications span econometrics, data mining, machine learning, deep learning, and artificial intelligence (e.g., scoring systems, recommendation engines, and large language models).
+
+\section{One-Dimensional Descriptive Statistics}
+
+\subsection{Variables and Frequencies}
+
+\begin{definition}{Variable Types}{}
+A \textbf{variable $X$} is a characteristic of individuals that takes values $X_i$ for individual $i$.
+\begin{itemize}
+    \item \textbf{Quantitative variable:} Possesses an order relation between its values. It is \textbf{discrete} if it takes a finite or countable number of values, and \textbf{continuous} otherwise.
+    \item \textbf{Qualitative (categorical) variable:} Values are numeric or alphanumeric with no mathematical order relation. The different values are termed \textbf{modalities} (categories).
+\end{itemize}
+\end{definition}
+
+\begin{definition}{Classes and Frequencies}{}
+Given a population of $n$ observations $(X_1, \dots, X_n)$:
+\begin{itemize}
+    \item \textbf{Classes $C_1, \dots, C_k$:} A partitioning of values into ranges or categories.
+    \item \textbf{Absolute frequency $n_j$:} The count of observations in class $C_j$: $n_j = \text{Card}\{X_i \in C_j, i = 1, \dots, n\}$.
+    \item \textbf{Relative frequency (proportion) $f_j$:} $f_j = \frac{n_j}{n}$.
+\end{itemize}
+\end{definition}
+
+\begin{definition}{Histogram}{}
+For a quantitative variable with classes $C_j$ of the form $[x_j, x_{j+1}[$ (continuous) or $\{x_j\}$ (discrete), the frequency density is defined as $d_j = \frac{1}{x_{j+1} - x_j} f_j$. The histogram is the graph of the step function $f(x) = \sum_{j=1}^k d_j \mathbbm{1}_{x \in C_j}$.
+\end{definition}
+
+\subsection{Empirical Characteristics and Quantiles}
+
+\begin{definition}{Empirical Median and Quantiles}{}
+Let $X_{(1)} \le X_{(2)} \le \dots \le X_{(n)}$ denote the sorted observations.
+\begin{itemize}
+    \item \textbf{Empirical median $\bar{m}$:} $\bar{m} = X_{(\frac{n+1}{2})}$ if $n$ is odd, and $\bar{m} = \frac{1}{2}\left(X_{(\frac{n}{2})} + X_{(\frac{n}{2}+1)}\right)$ if $n$ is even.
+    \item \textbf{Empirical quantile $\hat{q}_n(p)$ of order $p \in (0,1)$:} Defined by $\hat{q}_n(p) = X_{([pn]+1)}$ if $pn \notin \mathbb{N}$ and $\hat{q}_n(p) = \frac{1}{2}(X_{(pn)} + X_{(pn+1)})$ if $pn \in \mathbb{N}$. Quartiles correspond to $p = 1/4, 3/4$ and deciles to $p = k/10$.
+\end{itemize}
+\end{definition}
+
+\begin{definition}{Empirical Moments}{}
+\begin{itemize}
+    \item \textbf{Empirical mean:} $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$.
+    \item \textbf{Empirical variance:} $\bar{\sigma}_X^2 = \frac{1}{n}\sum_{i=1}^n X_i^2 - (\bar{X})^2$.
+    \item \textbf{Empirical standard deviation:} $\bar{\sigma}_X = \sqrt{\bar{\sigma}_X^2}$.
+\end{itemize}
+\end{definition}
+
+\begin{problem}{Equivalence of Variance Formulas}{}
+Prove that:
+\[ \bar{\sigma}_X^2 = \frac{1}{n}\sum_{i=1}^n X_i^2 - (\bar{X})^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2 \]
+\end{problem}
+
+\begin{proof}[Proof]
+Expanding the sum of squared deviations from the mean:
+\begin{align*}
+    \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2 &= \frac{1}{n}\sum_{i=1}^n (X_i^2 - 2X_i\bar{X} + \bar{X}^2) \\
+    &= \frac{1}{n}\sum_{i=1}^n X_i^2 - 2\bar{X}\left(\frac{1}{n}\sum_{i=1}^n X_i\right) + \bar{X}^2\left(\frac{1}{n}\sum_{i=1}^n 1\right) \\
+    &= \frac{1}{n}\sum_{i=1}^n X_i^2 - 2\bar{X}(\bar{X}) + \bar{X}^2(1) \\
+    &= \frac{1}{n}\sum_{i=1}^n X_i^2 - (\bar{X})^2.
+\end{align*}%
+\end{proof}
+
 
 
 \end{document}
