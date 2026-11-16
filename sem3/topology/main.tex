@@ -1435,5 +1435,161 @@ So $\exp$ is differentiable at $0$, and $d\exp_0(H) = H$ (meaning $d\exp_0 = I_E
 Let $f: \R^2 \to \R$ be defined by $(x,y) \mapsto \sqrt{x^2+y^2}$. Study the differentiability of $f$ at $(0,0)$.
 \end{problem}
 
+% ── Lecture 7 ───────────────────────────────────────────────
+\section{Lecture 7: Mean Value Inequalities, $C^1$ Maps, and Operations on Differentials}
+Let $(E, N_E)$ and $(F, N_F)$ be normed vector spaces over $\R$. Let $\Omega \subset E$ be a non-empty open subset, $f: \Omega \to F$ a map, and $x_0 \in \Omega$.
+
+\subsection{Further Properties of Landau Notations}
+\begin{proposition}{Properties of Big-$O$ and Little-$o$}{landau_facts}
+\begin{enumerate}
+    \item $f = O_{x_0}(1)$ if and only if $f$ is bounded in a neighborhood of $x_0$, i.e., there exists an open neighborhood $U \subset \Omega$ of $x_0$ such that $\sup_{u \in U} N_F(f(u)) < +\infty$.
+    \item If $f = O_{x_0}(1)$ and $g = o_{x_0}(1)$ (where one map is scalar-valued and the other takes values in $F$, or both are scalar-valued), then $fg = o_{x_0}(1)$.
+    \item If $f$ is continuous at $x_0$, then $f$ is bounded near $x_0$, i.e., $f = O_{x_0}(1)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}{Landau Characterization for Linear Maps}{lin_landau}
+Let $L \in L(E, F)$ be a linear map. Then:
+\begin{enumerate}
+    \item $L(h) = O_0(h) \iff L \in \mathcal{L}(E, F)$ ($L$ is continuous).
+    \item $L(h) = o_0(h) \iff L = 0$.
+\end{enumerate}
+\end{proposition}
+
+\subsection{Mean Value Theorem and Mean Value Inequalities}
+Recall that for $x, y \in E$, the closed segment is $[x, y] = \{x + t(y - x) \mid t \in [0, 1]\}$ and the open segment is $(x, y) = [x, y] \setminus \{x, y\}$.
+
+\begin{proposition}{Mean Value Theorem for Scalar-Valued Functions}{mvt_scalar}
+Let $f: \Omega \to \R$ (so $F = \R$) and let $x, y \in \Omega$ with $x \neq y$ such that $[x, y] \subset \Omega$. Assume that $f$ is continuous on $[x, y]$ and differentiable at every point of $(x, y)$ (as a map on $\Omega$). Then there exists $z \in (x, y)$ such that:
+\[
+f(y) - f(x) = df_z(y - x).
+\]
+\end{proposition}
+\begin{proof}
+Define $\varphi: [0, 1] \to \R$ by $\varphi(t) = f(x + t(y - x))$. As a composition of continuous maps, $\varphi$ is continuous on $[0, 1]$.
+
+We claim that $\varphi$ is differentiable on $(0, 1)$. Let $t_0 \in (0, 1)$ and set $z_0 = x + t_0(y - x) \in (x, y)$. By assumption, $f$ is differentiable at $z_0$. For $h \in \R$ small enough so that $t_0 + h \in (0, 1)$, we have:
+\[
+\varphi(t_0 + h) = f(x + (t_0 + h)(y - x)) = f(z_0 + h(y - x)).
+\]
+Using the differentiability of $f$ at $z_0$ and the linearity of $df_{z_0}$:
+\[
+\varphi(t_0 + h) = f(z_0) + df_{z_0}(h(y - x)) + o_0(h(y - x)) = \varphi(t_0) + h \cdot df_{z_0}(y - x) + o_0(h),
+\]
+where $o_0(h(y - x)) = o_0(h)$ because $N_E(h(y - x)) = |h| N_E(y - x) = O_0(h)$ as $h \to 0$. Hence, $\varphi$ is differentiable at $t_0$ with $\varphi'(t_0) = df_{z_0}(y - x)$.
+
+Applying the 1D Mean Value Theorem to $\varphi$ on $[0, 1]$, there exists $\tau \in (0, 1)$ such that $\varphi(1) - \varphi(0) = \varphi'(\tau)$. Setting $z = x + \tau(y - x) \in (x, y)$, we obtain $f(y) - f(x) = df_z(y - x)$.
+\end{proof}
+
+\begin{corollary}{Mean Value Inequality in $\R^d$}{mvi_rd}
+Let $f: \Omega \to \R^d$, where $\R^d$ is endowed with the sup norm $\|\cdot\|_\infty$. Let $x, y \in \Omega$ with $[x, y] \subset \Omega$. Assume $f$ is continuous on $[x, y]$ and differentiable on $(x, y)$. Then:
+\[
+\|f(y) - f(x)\|_\infty \le \left(\sup_{z \in (x, y)} |||df_z|||\right) N_E(y - x),
+\]
+where $|||df_z|||$ denotes the triple norm induced by $N_E$ and $\|\cdot\|_\infty$.
+\end{corollary}
+\begin{proof}
+Write $f = (f_1, \dots, f_d)$ with coordinate functions $f_i: \Omega \to \R$. For each $i \in \{1, \dots, d\}$, $f_i$ satisfies the hypotheses of Proposition \ref{prop:mvt_scalar}, so there exists $z_i \in (x, y)$ such that $f_i(y) - f_i(x) = df_{i, z_i}(y - x)$. Therefore:
+\[
+|f_i(y) - f_i(x)| = |df_{i, z_i}(y - x)| \le \sup_{z \in (x, y)} |df_{i, z}(y - x)|.
+\]
+Taking the maximum over $i \in \{1, \dots, d\}$ and noting that $df_z = (df_{1, z}, \dots, df_{d, z})$ gives:
+\begin{align*}
+\|f(y) - f(x)\|_\infty &= \max_{1 \le i \le d} |f_i(y) - f_i(x)| \\
+&\le \max_{1 \le i \le d} \sup_{z \in (x, y)} |df_{i, z}(y - x)| \\
+&= \sup_{z \in (x, y)} \max_{1 \le i \le d} |df_{i, z}(y - x)| = \sup_{z \in (x, y)} \|df_z(y - x)\|_\infty.
+\end{align*}
+Since $\|df_z(y - x)\|_\infty \le |||df_z||| N_E(y - x)$ for every $z \in (x, y)$, we conclude that:
+\[
+\|f(y) - f(x)\|_\infty \le \left(\sup_{z \in (x, y)} |||df_z|||\right) N_E(y - x).
+\]
+\end{proof}
+
+\begin{remark}{}{}
+Note that the inequality holds in $[0, +\infty]$, as we do not a priori know whether $\sup_{z \in (x, y)} |||df_z|||$ is finite.
+\end{remark}
+
+\begin{corollary}{Lipschitz Criterion on Convex Open Sets}{lipschitz_convex_cor}
+Let $\Omega \subset E$ be a convex open subset (i.e., $\forall x, y \in \Omega, [x, y] \subset \Omega$), and let $f: \Omega \to \R^d$ be differentiable on $\Omega$. If $M = \sup_{w \in \Omega} |||df_w||| < +\infty$, then $f$ is $M$-Lipschitz on $\Omega$ (with respect to $N_E$ and $\|\cdot\|_\infty$).
+\end{corollary}
+
+\subsection{Continuously Differentiable ($C^1$) Maps}
+Assume $f: \Omega \to F$ is differentiable on $\Omega$. For every $w \in \Omega$, $df_w \in \mathcal{L}(E, F)$. Since $(E, N_E)$ and $(F, N_F)$ are normed vector spaces, $(\mathcal{L}(E, F), |||\cdot|||)$ is also a normed vector space. We can therefore define the differential map:
+\[
+df: \Omega \to \mathcal{L}(E, F), \quad w \mapsto df_w.
+\]
+
+\begin{definition}{$C^1$ Maps}{c1_def}
+\begin{itemize}
+    \item $f$ is \textbf{continuously differentiable} (or $C^1$) on $\Omega$ if $f$ is differentiable on $\Omega$ and the map $df: \Omega \to \mathcal{L}(E, F)$ is continuous (with respect to $N_E$ and $|||\cdot|||$).
+    \item $f$ is \textbf{$C^1$ at $x_0 \in \Omega$} if there exists an open neighborhood $U \subset \Omega$ of $x_0$ such that $f|_U$ is $C^1$ on $U$.
+\end{itemize}
+\end{definition}
+
+\subsection{Operations on Differentiable Functions}
+Let $(E, N_E), (F, N_F), (G, N_G), (H, N_H)$ be normed vector spaces over $\R$, $\Omega \subset E$ be an open subset, and $x_0 \in \Omega$.
+
+\begin{lemma}{Continuity of Bilinear Maps in Finite Dimensions}{bilinear_cont_lemma}
+Assume $F$ and $G$ are finite-dimensional, and let $B: F \times G \to H$ be a bilinear map. Then there exists a constant $M > 0$ such that for all $(u, v) \in F \times G$:
+\[
+N_H(B(u, v)) \le M N_F(u) N_G(v).
+\]
+\end{lemma}
+\begin{proof}
+Let $(e_i)_{i=1}^{d_F}$ be a basis of $F$ and $(\varepsilon_j)_{j=1}^{d_G}$ be a basis of $G$. For any $u = \sum_{i=1}^{d_F} u_i e_i \in F$ and $v = \sum_{j=1}^{d_G} v_j \varepsilon_j \in G$, bilinearity gives:
+\[
+B(u, v) = \sum_{i=1}^{d_F} \sum_{j=1}^{d_G} u_i v_j B(e_i, \varepsilon_j).
+\]
+Taking norms and applying the triangular inequality:
+\[
+N_H(B(u, v)) \le \sum_{i=1}^{d_F} \sum_{j=1}^{d_G} |u_i| |v_j| N_H(B(e_i, \varepsilon_j)) \le \left(\sum_{i=1}^{d_F} \sum_{j=1}^{d_G} N_H(B(e_i, \varepsilon_j))\right) \|u\|_\infty^F \|v\|_\infty^G.
+\]
+Since $F$ and $G$ are finite-dimensional, all norms on them are equivalent, so there exist constants $c_F, c_G > 0$ such that $\|u\|_\infty^F \le c_F N_F(u)$ and $\|v\|_\infty^G \le c_G N_G(v)$. Setting $M = c_F c_G \sum_{i=1}^{d_F} \sum_{j=1}^{d_G} N_H(B(e_i, \varepsilon_j))$ yields $N_H(B(u, v)) \le M N_F(u) N_G(v)$.
+\end{proof}
+
+\begin{proposition}{Differentiability of a Bilinear Product}{bilinear_diff}
+Assume $F$ and $G$ are finite-dimensional. Let $B: F \times G \to H$ be a bilinear map, and let $f: \Omega \to F$ and $g: \Omega \to G$ be maps. Define $P = B(f, g): \Omega \to H$ by $P(x) = B(f(x), g(x))$ for all $x \in \Omega$.
+If $f$ and $g$ are differentiable at $x_0 \in \Omega$, then $P$ is differentiable at $x_0$, and for all $h \in E$:
+\[
+dP_{x_0}(h) = B(df_{x_0}(h), g(x_0)) + B(f(x_0), dg_{x_0}(h)).
+\]
+\end{proposition}
+\begin{proof}
+For $h \in E$ small enough so that $x_0 + h \in \Omega$, we expand $P(x_0 + h)$ using the differentiability of $f$ and $g$ at $x_0$ and the bilinearity of $B$:
+\begin{align*}
+P(x_0 + h) &= B(f(x_0 + h), g(x_0 + h)) \\
+&= B\big(f(x_0) + df_{x_0}(h) + o_0^F(h), \; g(x_0) + dg_{x_0}(h) + o_0^G(h)\big) \\
+&= B(f(x_0), g(x_0)) + L(h) + R_F(h) + R_G(h) + R_{\text{mix}}(h),
+\end{align*}
+where:
+\begin{itemize}
+    \item $L(h) = B(df_{x_0}(h), g(x_0)) + B(f(x_0), dg_{x_0}(h))$,
+    \item $R_F(h) = B(o_0^F(h), g(x_0))$,
+    \item $R_G(h) = B(f(x_0), o_0^G(h))$,
+    \item $R_{\text{mix}}(h) = B\big(f(x_0 + h) - f(x_0), \; g(x_0 + h) - g(x_0)\big)$.
+\end{itemize}
+Clearly, $L: E \to H$ is linear. Using Lemma \ref{lem:bilinear_cont_lemma}, we check that $L$ is continuous:
+\begin{align*}
+N_H(L(h)) &\le N_H\big(B(df_{x_0}(h), g(x_0))\big) + N_H\big(B(f(x_0), dg_{x_0}(h))\big) \\
+&\le M N_F(df_{x_0}(h)) N_G(g(x_0)) + M N_F(f(x_0)) N_G(dg_{x_0}(h)) \\
+&\le M \big( |||df_{x_0}||| N_G(g(x_0)) + |||dg_{x_0}||| N_F(f(x_0)) \big) N_E(h).
+\end{align*}
+Thus, $L$ is bounded and hence $L \in \mathcal{L}(E, H)$.
+Finally, proving that $R_F(h) = o_0(h)$, $R_G(h) = o_0(h)$, and $R_{\text{mix}}(h) = o_0(h)$ follows directly from Lemma \ref{lem:bilinear_cont_lemma} and the continuity of $f$ and $g$ at $x_0$ (left as an exercise). Hence $P$ is differentiable at $x_0$ with $dP_{x_0} = L$.
+\end{proof}
+
+\subsection{The Chain Rule}
+Let $E, F, G$ be normed vector spaces, $\Omega \subset E$ be open, and $\Omega' \subset F$ be open. Consider maps $f: \Omega \to F$ and $g: \Omega' \to G$, and let $x_0 \in \Omega$ be such that $f(x_0) \in \Omega'$.
+
+If $f$ is continuous at $x_0$, then since $\Omega'$ is open and $f(x_0) \in \Omega'$, there exists $\eps > 0$ such that $f(B_E(x_0, \eps) \cap \Omega) \subset \Omega'$. Consequently, the composition $g \circ f: B_E(x_0, \eps) \cap \Omega \to G$, $x \mapsto g(f(x))$, is well-defined on a neighborhood of $x_0$.
+
+\begin{proposition}{Chain Rule}{chain_rule}
+If $f$ is differentiable at $x_0 \in \Omega$ with $f(x_0) \in \Omega'$, and $g$ is differentiable at $f(x_0)$, then $g \circ f$ is differentiable at $x_0$ and:
+\[
+d(g \circ f)_{x_0} = dg_{f(x_0)} \circ df_{x_0}.
+\]
+\end{proposition}
+
+
 
 \end{document}
