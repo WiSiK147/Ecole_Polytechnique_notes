@@ -1209,6 +1209,92 @@ A matrix $M \in \mathcal{M}_N(K)$ is diagonalizable if it represents a diagonali
 Equivalently, it is diagonalizable if there exists an invertible change of basis matrix $P \in GL_N(K)$ such that $P^{-1} M P$ is a diagonal matrix. 
 \end{definition}
 
+% ============================================================
+%  LECTURE 8
+% ============================================================
+\section{Lecture 8: Characteristic Polynomial}
+
+\begin{definition}{Characteristic Polynomial}{}
+Let $u \in \mathcal{L}(E)$ be an endomorphism, and let $M = \text{Mat}_{\mathcal{E}}(u) \in \mathcal{M}_N(\mathbb{K})$ be its matrix in a given basis $\mathcal{E}$.
+The \textbf{characteristic polynomial} of $u$ (or $M$) is defined as:
+$$ \chi_u(X) = \det(X\text{Id} - u) \quad \text{or} \quad \chi_M(X) = \det(X\text{Id}_N - M) $$ %
+\end{definition}
+
+\begin{proposition}{Degree and Monotonicity of $\chi_M$}{}
+For any $N \times N$ matrix $M$, the characteristic polynomial $\chi_M(X)$ has degree $N$ and is monic.
+\end{proposition}
+\begin{proof}
+The determinant expansion $\det(X\text{Id}_N - M) = \sum_{\sigma \in S_N} \varepsilon(\sigma) \prod_{i=1}^N (X\text{Id}_N - M)_{i, \sigma(i)}$ has degree $N$.
+The highest degree term $X^N$ comes exclusively from the permutation $\sigma = \text{Id}$, giving the product $\prod_{i=1}^N (X - M_{ii})$, which is a monic polynomial of degree $N$.
+\end{proof}
+
+\begin{proposition}{Roots of the Characteristic Polynomial}{}
+The roots of the characteristic polynomial $\chi_M(X)$ are precisely the eigenvalues of $M$, so:
+$$ \text{Sp}(M) = \{ \lambda \in \mathbb{K} \mid \chi_M(\lambda) = 0 \} $$ %
+\end{proposition}
+\begin{proof}
+$\lambda$ is a root of $\chi_M$ $\iff \det(\lambda\text{Id} - M) = 0 \iff (\lambda\text{Id} - M)$ is singular $\iff$ it has a non-trivial kernel $\iff E_\lambda = \ker(\lambda\text{Id} - M) \neq \{0\}$.
+\end{proof}
+
+\subsection{Examples and Multiplicities}
+
+\begin{example}{Examples of Characteristic Polynomials}{}
+\begin{enumerate}
+    \item Let $M = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \alpha & 0 \\ 0 & 0 & \beta \end{pmatrix}$ with $1 > \alpha > \beta$.
+    Then $P_M(X) = (X-1)(X-\alpha)(X-\beta) = \chi_M(X)$.
+    
+    \item Let $M = \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & -1 \end{pmatrix}$.
+    The characteristic polynomial is $\chi_M(X) = (X-1)(X+1)^2$ and the spectrum is $\text{Sp}(M) = \{-1, 1\}$.
+    However, the minimal polynomial is $P_M(X) = (X-1)(X+1)$.
+    \textit{Remark:} This shows that the roots of the minimal polynomial and the characteristic polynomial are the same (the spectrum), but their multiplicities may differ.
+
+    \item Let $M = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & -1 \\ 0 & 1 & 0 \end{pmatrix}$.
+    The characteristic polynomial is $\chi_M(X) = \det \begin{pmatrix} X-1 & 0 & 0 \\ 0 & X & 1 \\ 0 & -1 & X \end{pmatrix} = (X-1)(X^2+1)$.
+    \begin{itemize}
+        \item Over $\mathbb{R}$, $\text{Sp}(M) = \{1\}$.
+        \item Over $\mathbb{C}$, $\text{Sp}(M) = \{1, i, -i\}$ and $\chi_M(X) = (X-1)(X-i)(X+i)$.
+    \end{itemize}
+    Note that the minimal polynomial does not depend on the chosen underlying field $\mathbb{K}$.
+\end{enumerate}
+\end{example}
+
+\subsection{Criteria for Diagonalizability}
+
+\begin{theorem}{Diagonalizable Endomorphisms and Matrices}{}
+An endomorphism $u$ (or a matrix $M$) is diagonalizable if:
+\begin{enumerate}
+    \item There exists a basis $\mathcal{E}$ such that $\text{Mat}_{\mathcal{E}}(u)$ is diagonal.
+    \item There exists an invertible change-of-basis matrix $P$ such that $P^{-1}MP$ is diagonal.
+    \item Its minimal polynomial $P_M$ splits into distinct linear factors ($P_M(X) = \prod_{i=1}^k (X - \lambda_i)$ with $\lambda_i$ distinct).
+    \item There exists a basis of $E$ consisting entirely of eigenvectors of $u$.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}{Change of Basis for Eigenvectors}{}
+If there is a basis of eigenvectors $\mathcal{E} = \{v_1, \dots, v_N\}$ with corresponding eigenvalues $\lambda_1, \dots, \lambda_N$, and we form the matrix $P = [v_1 \mid \dots \mid v_N]$, then:
+$$ MP = [Mv_1 \mid \dots \mid Mv_N] = [\lambda_1 v_1 \mid \dots \mid \lambda_N v_N] = P\Delta $$ %
+where $\Delta = \text{diag}(\lambda_1, \dots, \lambda_N)$. This implies $P^{-1}MP = \Delta$.
+\end{remark}
+
+\subsection{Application: The Fibonacci Sequence}
+
+\begin{example}{Solving Fibonacci Numbers via Matrices}{}
+Consider the Fibonacci sequence defined by $F_0 = 1, F_1 = 1$, and $F_{n+2} = F_{n+1} + F_n$ for $n \ge 0$ (with $F_2 = 2$).
+We can represent the recurrence relation using a vector $X_n = \begin{pmatrix} F_{n+1} \\ F_n \end{pmatrix} \in \R^2$ and the companion matrix $M = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}$:
+$$ X_{n+1} = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} X_n \implies X_n = M^n X_0 $$ %
+The characteristic polynomial of $M$ is:
+$$ \chi_M(X) = \det \begin{pmatrix} X - 1 & -1 \\ -1 & X \end{pmatrix} = X(X-1) - 1 = X^2 - X - 1 = (X - \phi)(X - \bar{\phi}) $$ %
+where $\phi = \frac{1+\sqrt{5}}{2}$ is the golden ratio.
+Since $M$ has two distinct eigenvalues, it is diagonalizable: there exists an invertible matrix $P$ such that $\Delta = P^{-1}MP = \begin{pmatrix} \phi & 0 \\ 0 & \bar{\phi} \end{pmatrix}$.
+Thus, $M^n = P \Delta^n P^{-1}$, which allows explicit computation of $F_n$.
+\end{example}
+
+\begin{example}{A Non-Diagonalizable Matrix}{}
+Let $M = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}$.
+The characteristic polynomial is $\chi_M(X) = (X-1)^2$, so the only eigenvalue is $\lambda = 1$ with algebraic multiplicity $2$.
+The minimal polynomial is $P_M(X) = (X-1)^2$.
+Here, $M - \text{Id} \neq 0$, but $(M - \text{Id})^2 = 0$. Because the minimal polynomial does not split into distinct linear factors, $M$ is not diagonalizable.
+\end{example}
 
 
 \end{document}
