@@ -1590,6 +1590,169 @@ d(g \circ f)_{x_0} = dg_{f(x_0)} \circ df_{x_0}.
 \]
 \end{proposition}
 
+\begin{example}{Differentiability of a Rational Function on $\R^2$}{diff_rational_r2}
+Consider the function $f: \R^2 \to \R$ defined by:
+\[
+f(x, y) = \begin{cases}
+0 & \text{if } (x, y) = (0, 0), \\
+\dfrac{x^2 y^2}{x^2 + y^2} & \text{otherwise.}
+\end{cases}
+\]
+We study the differentiability of $f$ on $\R^2$:
+\begin{enumerate}
+    \item The coordinate projections $\pi_1: (x, y) \mapsto x$ and $\pi_2: (x, y) \mapsto y$ from $\R^2$ to $\R$ are continuous linear maps, hence $C^1$ (in fact, $C^\infty$) on $\R^2$.
+    \item By algebraic operations on $C^1$ functions, any polynomial map $P: \R^2 \to \R$, $(x, y) \mapsto \sum_{(a, b) \in \N^2} c_{a,b} x^a y^b$ (with finitely many non-zero coefficients), is $C^1$ on $\R^2$. In particular, $(x, y) \mapsto x^2 y^2$ and $(x, y) \mapsto x^2 + y^2$ are $C^1$ on $\R^2$.
+    \item If $g: \Omega \to \R$ is differentiable (resp. $C^1$) at $x_0 \in \Omega$ and $g(x_0) \neq 0$, then $1/g$ is defined on a neighborhood of $x_0$, is differentiable (resp. $C^1$) at $x_0$, and $d(1/g)_{x_0} = -\frac{1}{g(x_0)^2} dg_{x_0}$. Since $x^2 + y^2 > 0$ on $\R^2 \setminus \{(0, 0)\}$, it follows that $f$ is $C^1$ (and hence differentiable) on $\R^2 \setminus \{(0, 0)\}$.
+    \item At the origin $0_{\R^2} = (0, 0)$, for any $(h, k) \in \R^2 \setminus \{(0, 0)\}$ we have:
+    \[
+    |f(h, k) - f(0, 0) - 0| = \frac{h^2 k^2}{h^2 + k^2} \le h^2 \le h^2 + k^2 = \|(h, k)\|_2^2 = o_{(0, 0)}\big((h, k)\big).
+    \]
+    Since $f(0, 0) = 0$, this shows that $f$ is differentiable at $(0, 0)$ with $df_{(0, 0)} = 0_{\mathcal{L}(\R^2, \R)}$.
+\end{enumerate}
+Consequently, $f$ is differentiable everywhere on $\R^2$.
+\end{example}
 
+% ── Lecture 9 ───────────────────────────────────────────────
+\section{Lecture 9: Partial Derivatives}
+Let $(E, N)$ be a normed vector space over $\R$, and let $\Omega \subset E$ be a non-empty open subset.
+
+\subsection{Directional Derivatives, Partial Derivatives, and Gradient}
+\begin{definition}{Numerical Function and Directional Derivative}{dir_deriv_def}
+A map $f: \Omega \to \R$ is called a \textbf{numerical function}. Let $x_0 \in \Omega$ and $e \in E \setminus \{0_E\}$. We say that $f$ admits a \textbf{directional derivative} at $x_0$ in the direction of $e$ if the single-variable function $t \mapsto f(x_0 + t e)$ is differentiable at $t = 0$. In this case, we set:
+\[
+\partial_e f(x_0) = \left.\frac{d}{dt} f(x_0 + t e)\right|_{t=0} = \lim_{t \to 0} \frac{f(x_0 + t e) - f(x_0)}{t} \in \R.
+\]
+\end{definition}
+
+\begin{remark}{}{}
+Since $\Omega$ is open and $x_0 \in \Omega$, there exists $\eps > 0$ such that $x_0 + t e \in \Omega$ for all $t \in (-\eps, \eps)$. Thus $t \mapsto f(x_0 + t e)$ is always well-defined on an open interval around $0$.
+\end{remark}
+
+\begin{definition}{Partial Derivatives and Gradient}{partial_grad_def}
+Suppose $E = \R^d$ is equipped with its canonical basis $(e_1, \dots, e_d)$, where $e_1 = (1, 0, \dots, 0), \dots, e_d = (0, \dots, 0, 1)$, and denote the associated canonical coordinates by $(x_1, \dots, x_d)$. Let $w_0 \in \Omega$.
+\begin{itemize}
+    \item If $f: \Omega \to \R$ admits a directional derivative along $e_i$ at $w_0$, we call it the \textbf{$i$-th partial derivative} of $f$ at $w_0$ and denote it by:
+    \[
+    \partial_{x_i} f(w_0) = \frac{\partial f}{\partial x_i}(w_0) = \partial_{e_i} f(w_0) = \left.\frac{d}{dt} f(w_0 + t e_i)\right|_{t=0} \in \R.
+    \]
+    \item When $f$ admits partial derivatives with respect to all variables $x_1, \dots, x_d$ at $w_0$, the \textbf{gradient} of $f$ at $w_0$ is the vector:
+    \[
+    \nabla f(w_0) = \left(\frac{\partial f}{\partial x_1}(w_0), \dots, \frac{\partial f}{\partial x_d}(w_0)\right) \in \R^d.
+    \]
+\end{itemize}
+\end{definition}
+
+\begin{proposition}{Differentiability and Directional / Partial Derivatives}{diff_dir_partial}
+Let $f: \Omega \to \R$ and $w_0 \in \Omega$. Consider the following assertions:
+\begin{enumerate}
+    \item $f$ is differentiable at $w_0$.
+    \item $f$ admits directional derivatives $\partial_e f(w_0)$ in every direction $e \in E \setminus \{0_E\}$.
+    \item (When $E = \R^d$) $f$ admits partial derivatives $\frac{\partial f}{\partial x_i}(w_0)$ for all $i \in \{1, \dots, d\}$.
+\end{enumerate}
+Then $(1) \implies (2) \implies (3)$. Moreover, if $(1)$ holds, then for every $e \in E \setminus \{0_E\}$, $\partial_e f(w_0) = df_{w_0}(e)$. In particular, when $E = \R^d$, for every $h = (h_1, \dots, h_d) \in \R^d$:
+\[
+df_{w_0}(h) = \sum_{i=1}^d \frac{\partial f}{\partial x_i}(w_0) h_i = \inner{\nabla f(w_0)}{h},
+\]
+where $\inner{u}{v} = \sum_{i=1}^d u_i v_i$ is the standard Euclidean inner product on $\R^d$.
+\end{proposition}
+\begin{proof}
+$(1) \implies (2)$: Let $e \in E \setminus \{0_E\}$. Choose $\eps > 0$ such that $w_0 + t e \in \Omega$ for all $t \in (-\eps, \eps)$. Since $f$ is differentiable at $w_0$, for $t \in (-\eps, \eps) \setminus \{0\}$ we have:
+\[
+f(w_0 + t e) = f(w_0) + df_{w_0}(t e) + o_0(t e) = f(w_0) + t \, df_{w_0}(e) + o_0(t),
+\]
+because $N(t e) = |t| N(e) = O_0(t)$ as $t \to 0$. Dividing by $t$ and passing to the limit gives:
+\[
+\lim_{t \to 0} \frac{f(w_0 + t e) - f(w_0)}{t} = df_{w_0}(e) \in \R.
+\]
+Hence $f$ admits a directional derivative along $e$ at $w_0$ and $\partial_e f(w_0) = df_{w_0}(e)$.
+
+$(2) \implies (3)$: Immediate, since the canonical basis vectors $e_1, \dots, e_d$ are non-zero vectors in $\R^d$. Finally, when $E = \R^d$ and $f$ is differentiable at $w_0$, linearity of $df_{w_0}$ yields $df_{w_0}(h) = \sum_{i=1}^d h_i df_{w_0}(e_i) = \sum_{i=1}^d \frac{\partial f}{\partial x_i}(w_0) h_i = \inner{\nabla f(w_0)}{h}$.
+\end{proof}
+
+\begin{example}{Existence of All Dir. Derivatives Does Not Imply Diff-bility}{dir_not_diff_ex}
+Let $f: \R^2 \to \R$ be defined by:
+\[
+f(x, y) = \begin{cases}
+0 & \text{if } (x, y) = (0, 0), \\
+\dfrac{x^3}{x^2 + y^2} & \text{otherwise.}
+\end{cases}
+\]
+\begin{itemize}
+    \item \textbf{$f$ admits directional derivatives in every direction at $(0, 0)$:} For any $e = (a, b) \in \R^2 \setminus \{(0, 0)\}$ and $t \neq 0$, we have:
+    \[
+    f(t(a, b)) = \frac{(ta)^3}{(ta)^2 + (tb)^2} = t \frac{a^3}{a^2 + b^2},
+    \]
+    which also holds at $t = 0$. Thus $t \mapsto f(t(a, b))$ is differentiable at $t = 0$ with $\partial_{(a, b)} f(0, 0) = \frac{a^3}{a^2 + b^2}$. In particular, $\frac{\partial f}{\partial x}(0, 0) = \partial_{(1, 0)} f(0, 0) = 1$ and $\frac{\partial f}{\partial y}(0, 0) = \partial_{(0, 1)} f(0, 0) = 0$.
+    \item \textbf{$f$ is not differentiable at $(0, 0)$:} Assume for contradiction that $f$ is differentiable at $(0, 0)$. By Proposition \ref{prop:diff_dir_partial}, for every $(h_1, h_2) \in \R^2$:
+    \[
+    df_{(0, 0)}(h_1, h_2) = h_1 \frac{\partial f}{\partial x}(0, 0) + h_2 \frac{\partial f}{\partial y}(0, 0) = h_1.
+    \]
+    However, for $(h_1, h_2) \neq (0, 0)$, we must also have $df_{(0, 0)}(h_1, h_2) = \partial_{(h_1, h_2)} f(0, 0) = \frac{h_1^3}{h_1^2 + h_2^2}$. Evaluating at $(h_1, h_2) = (1, 1)$ gives $\frac{1}{2} = 1$, a contradiction.
+\end{itemize}
+\end{example}
+
+\subsection{Sufficient Condition for $C^1$ Regularity}
+\begin{theorem}{Continuous Partial Derivatives Imply $C^1$}{continuous_partials_c1}
+Let $\Omega \subset \R^d$ be an open subset and $f: \Omega \to \R$ be a function. Assume that for every $i \in \{1, \dots, d\}$, the partial derivative $\frac{\partial f}{\partial x_i}: \Omega \to \R$ exists on $\Omega$ and is continuous on $\Omega$. Then $f$ is $C^1$ on $\Omega$.
+\end{theorem}
+\begin{proof}
+We prove the result for $d = 2$ (the general case $d \ge 1$ is completely analogous). Fix $a = (a_1, a_2) \in \Omega$. Since $\Omega$ is open, there exists $r > 0$ such that the open ball $B_\infty(a, r) = (a_1 - r, a_1 + r) \times (a_2 - r, a_2 + r)$ is contained in $\Omega$. For $h = (h_1, h_2) \in \R^2$ with $\|h\|_\infty < r$, we write:
+\[
+f(a + h) - f(a) = \big(f(a_1 + h_1, a_2 + h_2) - f(a_1, a_2 + h_2)\big) + \big(f(a_1, a_2 + h_2) - f(a_1, a_2)\big).
+\]
+Applying the 1D Mean Value Theorem to $t \mapsto f(a_1 + t h_1, a_2 + h_2)$ and $t \mapsto f(a_1, a_2 + t h_2)$ on $[0, 1]$, there exist $\theta_1, \theta_2 \in (0, 1)$ such that:
+\begin{align*}
+f(a_1 + h_1, a_2 + h_2) - f(a_1, a_2 + h_2) &= h_1 \frac{\partial f}{\partial x}(a_1 + \theta_1 h_1, a_2 + h_2), \\
+f(a_1, a_2 + h_2) - f(a_1, a_2) &= h_2 \frac{\partial f}{\partial y}(a_1, a_2 + \theta_2 h_2).
+\end{align*}
+Subtracting $h_1 \frac{\partial f}{\partial x}(a) + h_2 \frac{\partial f}{\partial y}(a)$ and taking absolute values gives:
+\begin{align*}
+\left| f(a + h) - f(a) - h_1 \frac{\partial f}{\partial x}(a) - h_2 \frac{\partial f}{\partial y}(a) \right| &\le |h_1| \left| \frac{\partial f}{\partial x}(a_1 + \theta_1 h_1, a_2 + h_2) - \frac{\partial f}{\partial x}(a) \right| \\
+&\quad + |h_2| \left| \frac{\partial f}{\partial y}(a_1, a_2 + \theta_2 h_2) - \frac{\partial f}{\partial y}(a) \right|.
+\end{align*}
+As $h \to (0, 0)$, both $(a_1 + \theta_1 h_1, a_2 + h_2) \to a$ and $(a_1, a_2 + \theta_2 h_2) \to a$. By continuity of $\frac{\partial f}{\partial x}$ and $\frac{\partial f}{\partial y}$ at $a$, both absolute differences are $o_{(0, 0)}(1)$. Since $|h_1|, |h_2| \le \|h\|_\infty$, we obtain:
+\[
+f(a + h) - f(a) - \left(h_1 \frac{\partial f}{\partial x}(a) + h_2 \frac{\partial f}{\partial y}(a)\right) = h_1 o_{(0, 0)}(1) + h_2 o_{(0, 0)}(1) = o_{(0, 0)}(h).
+\]
+Because $(h_1, h_2) \mapsto h_1 \frac{\partial f}{\partial x}(a) + h_2 \frac{\partial f}{\partial y}(a)$ is continuous and linear, $f$ is differentiable at $a$ with $df_a(h_1, h_2) = h_1 \frac{\partial f}{\partial x}(a) + h_2 \frac{\partial f}{\partial y}(a)$.
+
+Finally, under the canonical linear isomorphism (natural identification):
+\[
+\mathcal{L}(\R^2, \R) \xrightarrow{\sim} \R^2, \qquad \ell \longmapsto \big(\ell(e_1), \ell(e_2)\big),
+\]
+the differential map $df: \Omega \to \mathcal{L}(\R^2, \R)$ corresponds to the gradient map $\nabla f = \left(\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}\right): \Omega \to \R^2$. Since $\frac{\partial f}{\partial x}$ and $\frac{\partial f}{\partial y}$ are continuous on $\Omega$, $\nabla f$ is continuous on $\Omega$, so $df$ is continuous on $\Omega$. Thus $f \in C^1(\Omega, \R)$.
+\end{proof}
+
+\subsection{Vector-Valued Maps and the Jacobian Matrix}
+Let $(E, N_E)$ be a normed vector space over $\R$, $\Omega \subset E$ be a non-empty open subset, and $\varphi: \Omega \to \R^m$ be a map. Let $(f_1, \dots, f_m)$ be the canonical basis of $\R^m$. For every $w \in \Omega$, we write:
+\[
+\varphi(w) = \sum_{i=1}^m \varphi_i(w) f_i = \big(\varphi_1(w), \dots, \varphi_m(w)\big),
+\]
+where $\varphi_i: \Omega \to \R$ is the $i$-th component function of $\varphi$ ($i = 1, \dots, m$).
+
+\begin{proposition}{Component-Wise Characterization}{component_char}
+The map $\varphi: \Omega \to \R^m$ is continuous (resp. differentiable, resp. $C^1$) at $w_0 \in \Omega$ (or on $\Omega$) if and only if for every $i \in \{1, \dots, m\}$, the component function $\varphi_i: \Omega \to \R$ is continuous (resp. differentiable, resp. $C^1$) at $w_0$ (or on $\Omega$). Moreover, when $\varphi$ is differentiable at $w_0$, $d\varphi_{w_0}(h) = \big(d(\varphi_1)_{w_0}(h), \dots, d(\varphi_m)_{w_0}(h)\big)$ for all $h \in E$.
+\end{proposition}
+
+\begin{definition}{Jacobian Matrix}{jacobian_def}
+Let $\Omega \subset \R^d$ be open and $\varphi = (\varphi_1, \dots, \varphi_m): \Omega \to \R^m$. If all component functions $\varphi_i$ ($i = 1, \dots, m$) admit partial derivatives with respect to all variables $x_j$ ($j = 1, \dots, d$) at $w \in \Omega$, we define the \textbf{Jacobian matrix} of $\varphi$ at $w$ as the $m \times d$ matrix:
+\[
+\operatorname{Jac}(\varphi)_w = \left(\frac{\partial \varphi_i}{\partial x_j}(w)\right)_{\substack{1 \le i \le m \\ 1 \le j \le d}} = \begin{pmatrix}
+\frac{\partial \varphi_1}{\partial x_1}(w) & \cdots & \frac{\partial \varphi_1}{\partial x_d}(w) \\
+\vdots & \ddots & \vdots \\
+\frac{\partial \varphi_m}{\partial x_1}(w) & \cdots & \frac{\partial \varphi_m}{\partial x_d}(w)
+\end{pmatrix} \in M_{m, d}(\R).
+\]
+In particular, when $m = 1$ (so $\varphi: \Omega \to \R$ is a numerical function admitting all partial derivatives at $w$), the Jacobian matrix is the $1 \times d$ row vector:
+\[
+\operatorname{Jac}(\varphi)_w = \begin{pmatrix}
+\frac{\partial \varphi}{\partial x_1}(w) & \cdots & \frac{\partial \varphi}{\partial x_d}(w)
+\end{pmatrix} = \big(\nabla \varphi(w)\big)^T \in M_{1, d}(\R).
+\]
+\end{definition}
+
+\begin{proposition}{Matrix Representation of the Differential}{jacobian_matrix_rep}
+If $\varphi: \Omega \to \R^m$ (with $\Omega \subset \R^d$ open) is differentiable at $w \in \Omega$, then $\operatorname{Jac}(\varphi)_w$ is well-defined, and it is the matrix of the linear map $d\varphi_w \in \mathcal{L}(\R^d, \R^m)$ with respect to the canonical bases $(e_1, \dots, e_d)$ of $\R^d$ and $(f_1, \dots, f_m)$ of $\R^m$. That is, for every $h = (h_1, \dots, h_d)^T \in \R^d$, $d\varphi_w(h) = \operatorname{Jac}(\varphi)_w \, h$.
+\end{proposition}
 
 \end{document}
