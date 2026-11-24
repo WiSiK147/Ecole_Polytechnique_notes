@@ -1221,7 +1221,7 @@ This implies that $d_F(f(x_{\varphi(n)}), f(y_{\varphi(n)})) \to 0$ as $n \to \i
 
 % ── Lecture 6 ───────────────────────────────────────────────
 \section{Lecture 6: Completeness}
-Let $(E, N)$ be a NVS over $K$ (where $K = \R$ or $\C$).
+Let $(E, N)$ be a NVS over $\mathbb{K}$ (where $\mathbb{K} = \R$ or $\C$).
 
 \subsection{Series and Banach Spaces}
 \begin{remark}{}{}
@@ -1249,7 +1249,7 @@ For every $n > n_0 \ge 1$, the $n$-th coordinate of $S_N$ (for $N \ge n$) is $\f
 \end{example}
 
 \begin{example}{Complete Space}{complete_ex}
-$E = C^0([0,1], K)$ endowed with $\Vert \cdot \Vert_\infty$ is complete.
+$E = C^0([0,1], \mathbb{K})$ endowed with $\Vert \cdot \Vert_\infty$ is complete.
 Let $\sum f_n$ normally converge in $E$. Let $f = \sum_{n=0}^\infty \Vert f_n \Vert_\infty < +\infty$.
 For any fixed $x \in [0,1]$, $\sum_{k=0}^N |f_k(x)| \le \sum_{k=0}^N \Vert f_k \Vert_\infty \le f < +\infty$.
 Thus, the real series $\sum f_n(x)$ normally converges in $\R$ (or $\C$). Since $\R$ is complete, we can define a point-wise limit function $g: [0,1] \to \R$ as $g(x) = \sum_{n=0}^\infty f_n(x)$.
@@ -1259,7 +1259,7 @@ This shows $S_N \to g$ uniformly on $[0,1]$. Because each $S_N$ is continuous, t
 \end{example}
 
 \begin{theorem}{Completeness of Finite-Dimensional Spaces}{finite_dim_complete}
-For $d \ge 0$, $E = K^d$ is complete for any norm.
+For $d \ge 0$, $E = \mathbb{K}^d$ is complete for any norm.
 \end{theorem}
 \begin{corollary}{}{finite_dim_coro}
 Any finite-dimensional normed vector space is complete.
@@ -1267,7 +1267,7 @@ Any finite-dimensional normed vector space is complete.
 \begin{lemma}{Equivalence and Completeness}{equiv_complete}
 \begin{enumerate}
     \item Let $N$ and $\tilde{N}$ be equivalent norms on $E$. A series normally converges for $N$ if and only if it normally converges for $\tilde{N}$. Thus, $(E, N)$ is complete if and only if $(E, \tilde{N})$ is complete.
-    \item When $K = \C$, $E$ is a $\C$-vector space. $(E, N)$ is complete over $\C$ if and only if it is complete over $\R$.
+    \item When $\mathbb{K} = \C$, $E$ is a $\C$-vector space. $(E, N)$ is complete over $\C$ if and only if it is complete over $\R$.
 \end{enumerate}
 \end{lemma}
 \begin{proof}[Proof of Theorem \ref{thm:finite_dim_complete}]
