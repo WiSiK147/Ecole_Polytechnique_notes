@@ -1296,5 +1296,77 @@ The minimal polynomial is $P_M(X) = (X-1)^2$.
 Here, $M - \text{Id} \neq 0$, but $(M - \text{Id})^2 = 0$. Because the minimal polynomial does not split into distinct linear factors, $M$ is not diagonalizable.
 \end{example}
 
+% ============================================================
+%  LECTURE 9: CAYLEY-HAMILTON & KERNEL LEMMA
+% ============================================================
+\section{Lecture 9: Cayley-Hamilton Theorem and Kernel Lemma}
+
+\begin{example}{Characteristic and Minimal Polynomials}{}
+\begin{enumerate}
+    \item Let $M = \begin{pmatrix} \alpha & 0 & 0 \\ 0 & \beta & 0 \\ 0 & 0 & \gamma \end{pmatrix}$ with $\alpha < \beta < \gamma$. Then $\chi_M(X) = (X-\alpha)(X-\beta)(X-\gamma) = P_M(X)$.
+    \item Let $M = \begin{pmatrix} \alpha & 0 & 0 \\ 0 & \alpha & 0 \\ 0 & 0 & \gamma \end{pmatrix}$ with $\alpha \neq \gamma$. Then $\chi_M(X) = (X-\alpha)^2(X-\gamma)$ and $P_M(X) = (X-\alpha)(X-\gamma)$.
+    \item Let $M = \begin{pmatrix} \alpha & 1 & 0 \\ 0 & \alpha & 0 \\ 0 & 0 & \gamma \end{pmatrix}$ with $\alpha \neq \gamma$. Then $\chi_M(X) = (X-\alpha)^2(X-\gamma)$ and $P_M(X) = (X-\alpha)^2(X-\gamma)$ (since $M - \alpha I_3 \neq 0$ but $(M - \alpha I_3)^2$ has zero top-left block).
+\end{enumerate}
+\end{example}
+
+\begin{theorem}{Cayley-Hamilton Theorem}{}
+For any square matrix $M \in \mathcal{M}_N(\mathbb{K})$ (or endomorphism $u \in \mathcal{L}(E)$), we have $\chi_M(M) = 0_{\mathcal{M}_N(\mathbb{K})}$ (respectively $\chi_u(u) = 0_{\mathcal{L}(E)}$). Equivalently, the minimal polynomial $P_M$ divides the characteristic polynomial $\chi_M$.
+\end{theorem}
+\begin{proof}
+\textit{Warning (Common Trap):} Writing $\chi_M(X) = \det(X I_N - M)$ and plugging in $X = M$ to get $\det(M I_N - M) = \det(0) = 0$ is \textbf{illegal} because $\det$ is scalar-valued while $M$ is a matrix. (A rigorous proof via adjugate matrices / polynomial matrices is deferred.)
+\end{proof}
+
+\begin{example}{2D Rotations}{}
+For a rotation matrix $R_\theta = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}$ over $\R$:
+$$ \chi_{R_\theta}(X) = \det\begin{pmatrix} X - \cos\theta & \sin\theta \\ -\sin\theta & X - \cos\theta \end{pmatrix} = (X - \cos\theta)^2 + \sin^2\theta = X^2 - 2X\cos\theta + 1. $$
+\begin{itemize}
+    \item If $\theta \equiv 0 \pmod{2\pi}$, then $R_0 = I_2$, so $P_{R_0}(X) = X - 1$ (diagonalizable over $\R$).
+    \item If $\theta \equiv \pi \pmod{2\pi}$, then $R_\pi = -I_2$, so $P_{R_\pi}(X) = X + 1$ (diagonalizable over $\R$).
+    \item Otherwise ($\theta \not\equiv 0, \pi \pmod{\pi}$), $\chi_{R_\theta}(X)$ has no real roots, so it is irreducible over $\R$ and $P_{R_\theta} = \chi_{R_\theta}$ (not diagonalizable over $\R$).
+\end{itemize}
+\end{example}
+
+\begin{remark}{Midterm Diagonalizability Checklist \& Distinct Eigenvalues}{}
+A typical procedure to test diagonalizability of $M \in \mathcal{M}_N(\mathbb{K})$:
+\begin{enumerate}
+    \item Compute $\chi_M(X)$.
+    \item Determine $P_M(X)$ (it shares the same roots as $\chi_M$ and divides $\chi_M$, with $P_M(M) = 0$).
+    \item If $P_M$ splits into distinct linear factors (simple roots), then $M$ is diagonalizable (equivalently, $\exists P \in GL_N(\mathbb{K})$ such that $P^{-1}MP$ is diagonal, or there is a basis of eigenvectors forming the columns of $P$).
+\end{enumerate}
+\end{remark}
+
+\begin{proposition}{Distinct Eigenvalues Imply Diagonalizability}{}
+If $M \in \mathcal{M}_N(\mathbb{K})$ has $N$ distinct eigenvalues in $\mathbb{K}$, then $M$ is diagonalizable.
+\end{proposition}
+\begin{proof}
+Since $\chi_M(X)$ is monic of degree $N$ and has $N$ distinct roots $\lambda_1, \dots, \lambda_N \in \mathbb{K}$, it factors as $\chi_M(X) = \prod_{i=1}^N (X - \lambda_i)$. Because $P_M$ has the same roots and divides $\chi_M$, we must have $P_M(X) = \prod_{i=1}^N (X - \lambda_i)$, which splits into distinct linear factors.
+\end{proof}
+
+\subsection{The Kernel Lemma}
+
+To analyze generalized eigenspaces and block decompositions, we study kernels of polynomial operators $\ker(Q(u))$ for $Q \in \mathbb{K}[X]$.
+
+\begin{theorem}{Kernel Lemma (Decomposition Lemma)}{}
+Let $u \in \mathcal{L}(E)$ and let $P, Q \in \mathbb{K}[X]$ be coprime polynomials ($\gcd(P, Q) = 1$). Then:
+$$ \ker\big((PQ)(u)\big) = \ker\big(P(u)\big) \oplus \ker\big(Q(u)\big). $$
+\end{theorem}
+\begin{proof}
+Since $P$ and $Q$ are coprime, by Bézout's theorem there exist polynomials $U, V \in \mathbb{K}[X]$ such that $UP + VQ = 1$. Evaluating at $u$ gives:
+$$ U(u)P(u) + V(u)Q(u) = \operatorname{Id}_E. $$
+
+\textbf{1. Direct sum ($\ker(P(u)) \cap \ker(Q(u)) = \{0\}$):} Let $x \in \ker(P(u)) \cap \ker(Q(u))$. Then $P(u)(x) = 0$ and $Q(u)(x) = 0$. Applying the Bézout identity to $x$:
+$$ x = U(u)P(u)(x) + V(u)Q(u)(x) = U(u)(0) + V(u)(0) = 0. $$
+Hence the sum $\ker(P(u)) + \ker(Q(u))$ is direct.
+
+\textbf{2. Inclusion $\ker(P(u)) \oplus \ker(Q(u)) \subseteq \ker((PQ)(u))$:} Since polynomials in $u$ commute, $(PQ)(u) = P(u)Q(u) = Q(u)P(u)$. If $x \in \ker(P(u))$, then $(PQ)(u)(x) = Q(u)(P(u)(x)) = Q(u)(0) = 0$, so $x \in \ker((PQ)(u))$. Similarly, if $x \in \ker(Q(u))$, then $(PQ)(u)(x) = P(u)(Q(u)(x)) = 0$, so $x \in \ker((PQ)(u))$. By linearity of $(PQ)(u)$, the whole sum lies in $\ker((PQ)(u))$.
+
+\textbf{3. Reverse inclusion $\ker((PQ)(u)) \subseteq \ker(P(u)) \oplus \ker(Q(u))$:} Let $x \in \ker((PQ)(u))$, so $P(u)(Q(u)(x)) = 0$ and $Q(u)(P(u)(x)) = 0$. Write:
+$$ x = U(u)P(u)(x) + V(u)Q(u)(x). $$
+Observe that:
+$$ Q(u)\big(U(u)P(u)(x)\big) = U(u)\big(Q(u)P(u)(x)\big) = U(u)(0) = 0 \implies U(u)P(u)(x) \in \ker(Q(u)), $$
+and
+$$ P(u)\big(V(u)Q(u)(x)\big) = V(u)\big(P(u)Q(u)(x)\big) = V(u)(0) = 0 \implies V(u)Q(u)(x) \in \ker(P(u)). $$
+Thus $x$ decomposes into an element of $\ker(Q(u))$ and an element of $\ker(P(u))$, completing the proof.
+\end{proof}
 
 \end{document}
